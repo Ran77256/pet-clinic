@@ -1,7 +1,7 @@
 package com.iis.PetClinic.model;
 
 public enum Role {
-
+    USER,
     VETERINARIAN,
     WAREHOUSE_ADMIN,
     MANAGER,
