@@ -1,0 +1,35 @@
+.category-block {
+    width: 60%; 
+    max-width: 400px;
+    height: 150px;
+    background: #FFFFFF;
+    border: 1px solid #E8EEF7;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    font-size: 24px;
+    font-weight: 600;
+    color: #3B82F6; 
+    
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.category-block:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+.subcategory-table-view {
+    padding: 20px;
+    background: #FFFFFF;
+    border: 1px solid #E8EEF7;
+}
+
+.subcategory-table-view h3 {
+    margin-top: 0;
+    color: #6B7280;
+}

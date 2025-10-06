@@ -1,0 +1,125 @@
+.subcategory-wrapper {
+    padding: 20px;
+}
+
+.subcategory-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #0B1220;
+}
+
+.items-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    gap: 20px; 
+}
+
+.item-block {
+    background: #EAF3FF; 
+    border: 1px solid #DCEEFF;
+    border-radius: 8px;
+    padding: 15px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.1s;
+}
+
+.item-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-name {
+    font-weight: 700;
+    font-size: 18px;
+    color: #0B1220;
+    margin-bottom: 5px;
+}
+
+.item-details p {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 3px 0;
+}
+
+.current-qty, .min-qty {
+    font-weight: 600;
+    color: #0B1220;
+}
+
+.item-block.low-stock {
+    background: #FEE2E2; 
+    border-color: #EF4444; 
+}
+
+.item-block.low-stock .current-qty {
+    color: #EF4444; 
+    font-weight: 700;
+}
+
+.subcategory-wrapper {
+    padding: 20px;
+}
+
+.subcategory-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #0B1220;
+}
+
+.items-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    gap: 20px; 
+}
+
+.item-block {
+    background: #EAF3FF; 
+    border: 1px solid #DCEEFF;
+    border-radius: 8px;
+    padding: 15px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.1s;
+}
+
+.item-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-name {
+    font-weight: 700;
+    font-size: 18px;
+    color: #0B1220;
+    margin-bottom: 5px;
+}
+
+.item-details p {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 3px 0;
+}
+
+.current-qty, .min-qty {
+    font-weight: 600;
+    color: #0B1220;
+}
+
+.item-block.low-stock {
+    background: #FEE2E2; 
+    border-color: #EF4444; 
+}
+
+.item-block.low-stock .current-qty {
+    color: #EF4444; 
+    font-weight: 700;
+}

@@ -1,0 +1,57 @@
+.warehouse-frame {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background: #F3F7FB; 
+    overflow: hidden;
+    position: relative;
+}
+
+.sidebar {
+    width: 25%; 
+    min-width: 250px; 
+    height: 100%;
+    background: #FFFFFF;
+    border-right: 1px solid #DCEEFF; 
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-header-sidebar {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E6EEF9;
+}
+
+.nav-menu {
+    margin-top: 30px;
+    flex-grow: 1; /* Da zauzme sav preostali prostor */
+}
+
+.nav-item {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 19px;
+    color: #333333;
+    padding: 10px;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+    margin-bottom: 5px;
+}
+
+.nav-item.active {
+    background: #EAF3FF; 
+    border-left: 4px solid #3B82F6;
+    font-weight: 700;
+}
+
+.btn-logout {
+    padding: 10px;
+    background: #3B82F6;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    margin-top: auto; 
+}

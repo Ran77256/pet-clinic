@@ -1,0 +1,16 @@
+.subcategory-wrapper {
+    padding: 20px 0; 
+}
+
+.subcategory-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #0B1220;
+}
+
+.items-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    gap: 20px; 
+}
