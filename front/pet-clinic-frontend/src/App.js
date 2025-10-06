@@ -6,13 +6,16 @@ import NotificationsPage from './pages/warehouseAdmin/notifications/Notification
 import CatalogPage from './pages/warehouseAdmin/catalog/CatalogPage';
 import MedicamentsPage from './pages/warehouseAdmin/catalog/medicamentsPage/MedicamentsPage'
 import CatalogCategories from './pages/warehouseAdmin/catalog/catalogCategories/CatalogCategories'
+import  RegisterForm  from "./register/RegisterForm";
+
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LoginForm />} />
-        
+        <Route path="/register" element={<RegisterForm />} />
+
         <Route path="/orders" element={<OrdersPage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/catalog" element={<CatalogPage />} >
