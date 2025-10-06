@@ -3,14 +3,16 @@
 }
 
 .subcategory-title {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     color: #0B1220;
+    text-align: center;
 }
+
 
 .items-grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    grid-template-columns: repeat(3, minmax(200px, 1fr)); 
     gap: 20px; 
 }

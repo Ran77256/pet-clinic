@@ -19,8 +19,8 @@
     background: #EAF3FF; 
     border: 1px solid #DCEEFF;
     border-radius: 8px;
-    padding: 15px;
-    height: 120px;
+    padding: 20px; 
+    height: 140px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -28,22 +28,22 @@
     transition: transform 0.1s;
 }
 
-.item-block:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 .item-name {
     font-weight: 700;
-    font-size: 18px;
+    font-size: 20px; 
     color: #0B1220;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
 .item-details p {
-    font-size: 14px;
+    font-size: 15px; 
     color: #6B7280;
-    margin: 3px 0;
+    margin: 4px 0;
+}
+
+.item-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .current-qty, .min-qty {
@@ -122,4 +122,28 @@
 .item-block.low-stock .current-qty {
     color: #EF4444; 
     font-weight: 700;
+}
+
+.item-block.category-block-style {
+    background: #D3E5ED;
+    border-radius: 15px; 
+    margin: 20px auto;
+    border: none;
+    
+    width: 477px; 
+    height: 184px; 
+    
+    justify-content: center; 
+    align-items: center;
+}
+
+.item-block.category-block-style .item-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0B1220; 
+    margin: 0;
+}
+
+.item-block.category-block-style:hover {
+    background: #c3d5dd; 
 }

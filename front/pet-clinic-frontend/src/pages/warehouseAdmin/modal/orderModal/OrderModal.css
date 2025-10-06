@@ -1,0 +1,109 @@
+.oder-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6); 
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    backdrop-filter: blur(7px); 
+}
+
+.oder-modal-content {
+    background: #CADBE2; 
+    border-radius: 2px;
+    
+    padding: 30px;
+    width: 90%;
+    max-width: 500px; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.oder-modal-header {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    padding-bottom: 10px;
+    color: #0B1220;
+    position: relative;
+    border-bottom: none; 
+}
+
+.oder-close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #444;
+    padding: 10px;
+}
+
+
+.oder-form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.oder-form-group label {
+    width: 40%;
+    margin-bottom: 0; 
+    margin-right: 40px;
+    font-weight: 600;
+    color: #0B1220;
+}
+
+.oder-form-group input {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.oder-readonly-field {
+    background-color: #e9ecef; 
+    color: #495057;
+    font-weight: bold;
+}
+
+.oder-modal-footer {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 25px;
+}
+
+.oder-action-button.oder-confirm-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    background-color: #B3C1C0; 
+    color: #0B1220;
+    transition: background-color 0.2s;
+}
+
+.oder-action-button.oder-confirm-button:hover:not(:disabled) {
+    background-color: #98a9a8;;
+}
+
+.oder-action-button.oder-confirm-button:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+}
+
+.oder-submit-error-message {
+    color: #ef4444;
+    text-align: right;
+    margin-top: 10px;
+    font-weight: 600;
+}

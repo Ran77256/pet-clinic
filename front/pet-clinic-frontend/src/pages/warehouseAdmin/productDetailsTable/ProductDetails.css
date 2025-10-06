@@ -1,0 +1,100 @@
+.product-details-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.details-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #0B1220;
+    text-align: center;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+
+.item-info-actions-container {
+    position: relative;
+}
+
+.item-info-block p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.item-info-actions-container {
+    position: relative; /* ne diraj ovo */
+}
+
+.item-actions-block {
+    position: absolute;
+    top: 0.25%;
+    left: auto;
+    right: 0%; /* poravnato desno */
+    
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.action-button {
+    padding: 10px 15px;
+    min-width: 120px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+
+    background: #6B7280;
+    color: white;
+
+    transition: background-color 0.2s;
+}
+
+.action-button:hover {
+    opacity: 0.9;
+}
+
+
+.series-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    color: #0B1220;
+    visibility: hidden;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f7f9;
+    color: #0B1220;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.written-off {
+    background-color: #fef2f2; 
+    color: #991b1b; 
+}

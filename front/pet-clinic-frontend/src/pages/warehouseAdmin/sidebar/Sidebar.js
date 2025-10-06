@@ -1,10 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+
 const Sidebar = ({ activeItem, onNavigate }) => {
+
+    const navigate = useNavigate();
+
     return (
         <div className="sidebar">
-            <div className="brand-header-sidebar">
-                <p className="pet-clinic-title">PetClinic</p>
-                <p className="ambulanta-subtitle">Ambulanta za ljubimce</p>
-            </div>
             
             <nav className="nav-menu">
                 <div 
@@ -25,9 +26,20 @@ const Sidebar = ({ activeItem, onNavigate }) => {
                 >
                     📚 Katalog
                 </div>
-            </nav>
+                <p className="user-role-info">Administrator - magacin</p>
+            <div className="user-logout-footer">
+                <p className="user-name">Icy Trix</p> 
+                <button 
+                    className="btn-logout" 
+                    onClick={() => {
+                        navigate('/');
+                    }}
+                >
+                    Logout
+                </button>
 
-            <button className="btn-logout">Izloguj se</button>
+            </div>
+            </nav>
         </div>
     );
 }

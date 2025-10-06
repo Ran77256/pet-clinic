@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import OrdersPage from './pages/warehouseAdmin/orders/OrdersPage'
 import NotificationsPage from './pages/warehouseAdmin/notifications/NotificationsPage';
 import CatalogPage from './pages/warehouseAdmin/catalog/CatalogPage';
-import MedicamentsPage from './pages/warehouseAdmin/catalog/medicamentsPage/MedicamentsPage'
 import CatalogCategories from './pages/warehouseAdmin/catalog/catalogCategories/CatalogCategories'
 import  RegisterForm  from "./register/RegisterForm";
 
@@ -15,6 +14,9 @@ import PetDetails from './petDetails/PetDetails';
 
 import PriceAdminPage from './priceAdmin/PriceAdminPage';
 
+import ItemsPage from './pages/warehouseAdmin/catalog/itemsPage/ItemsPage';
+import ProductDetails from './pages/warehouseAdmin/productDetailsTable/ProductDetails';
+import OrderListPage from './pages/warehouseAdmin/orders/OrderListPage';
 
 function App() {
   return (
@@ -24,25 +26,23 @@ function App() {
         <Route path="/register" element={<RegisterForm />} />
 
 
-        <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/orders" element={<OrderListPage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/catalog" element={<CatalogPage />} >
-            
-            <Route index element={<CatalogCategories />} /> 
 
-            <Route path="medicaments" element={<MedicamentsPage />} />
-            
-            <Route path="food" element={<h2>Hrana Placehoder</h2>} />
-            
-            <Route path="equipment" element={<h2>Oprema Placehoder</h2>} />
-            
+            <Route index element={<CatalogCategories />} />
+
+                <Route path=":subcategorySlug/:categoryId" element={<ItemsPage />} />
+                <Route path="/catalog/:subcategorySlug/:categoryId/items/:itemId" element={<ProductDetails />}
+/>
+
         </Route>
-        
+
         <Route path="/animal-admin" element={<AnimalAdminPage />} />
         <Route path="/user" element={<UserDashboard />} />
         <Route path="/add-pet" element={<AddPetPage />} />
         <Route path="/pet-details/:petId" element={<PetDetails />} />
-        
+
         <Route path="/priceAdmin" element={<PriceAdminPage />} />
 
       </Routes>

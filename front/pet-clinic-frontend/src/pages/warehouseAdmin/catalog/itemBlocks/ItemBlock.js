@@ -1,19 +1,24 @@
 import './ItemBlocks.css'; 
 
-const ItemBlock = ({ name, minQuantity, stockLevel }) => {
+const ItemBlock = ({ name, minQuantity, stockLevel, onClick }) => {
     
-    const isLowStock = stockLevel < minQuantity;
+    const isCategoryBlock = minQuantity === undefined && stockLevel === undefined;
 
-    const blockClassName = `item-block ${isLowStock ? 'low-stock' : ''}`;
+    const isLowStock = !isCategoryBlock && stockLevel < minQuantity;
+
+    const blockClassName = `item-block ${isLowStock ? 'low-stock' : ''} ${isCategoryBlock ? 'category-block-style' : ''}`;
 
     return (
-        <div className={blockClassName}>
+        <div className={blockClassName} onClick={onClick}> 
             <p className="item-name">{name}</p>
             
-            <div className="item-details">
-                <p>Trenutna količina: <span className="current-qty">{stockLevel}</span></p>
-                <p>Min: <span className="min-qty">{minQuantity}</span></p>
-            </div>
+            {!isCategoryBlock && (
+                <div className="item-details">
+                    <p>Trenutna količina: <span className="current-qty">{stockLevel}</span></p>
+                    <p>Min: <span className="min-qty">{minQuantity}</span></p>
+                </div>
+            )}
+            
         </div>
     );
 };
