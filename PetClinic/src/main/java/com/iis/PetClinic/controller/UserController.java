@@ -3,6 +3,7 @@ package com.iis.PetClinic.controller;
 import com.iis.PetClinic.dto.request.LoginDTO;
 import com.iis.PetClinic.dto.request.RegisterDTO;
 import com.iis.PetClinic.dto.response.LoginResponse;
+import com.iis.PetClinic.model.User;
 import com.iis.PetClinic.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,10 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<LoginResponse> register(@RequestBody RegisterDTO registerDTO) {
         return userService.register(registerDTO);
+    }
+    @GetMapping("/user")
+    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
+        return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
 }

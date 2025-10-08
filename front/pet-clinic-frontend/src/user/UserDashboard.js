@@ -13,29 +13,54 @@ function UserDashboard() {
   useEffect(() => {
     // Get user info from localStorage or session
     const userData = localStorage.getItem('user');
+    console.log('Raw user data from localStorage:', userData);
+    
     if (userData) {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
-      fetchUserPets(parsedUser.id);
+      try {
+        const parsedUser = JSON.parse(userData);
+        console.log('Parsed user data:', parsedUser);
+        console.log('User ID:', parsedUser.id);
+        console.log('User firstName:', parsedUser.firstName);
+        console.log('User lastName:', parsedUser.lastName);
+        
+        setUser(parsedUser);
+        if (parsedUser.id) {
+          console.log('User has ID, fetching pets for user ID:', parsedUser.id);
+          fetchUserPets(parsedUser.id);
+        } else {
+          console.log('User has no ID, showing empty pets list');
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        setUser({ firstName: 'Klijent' });
+        setLoading(false);
+      }
     } else {
-      // If no user data, redirect to login
-      navigate('/');
+      console.log('No user data found in localStorage, showing empty pets list');
+      setUser({ firstName: 'Klijent' });
+      setLoading(false);
     }
   }, [navigate]);
 
   const fetchUserPets = async (userId) => {
     try {
       setLoading(true);
+      console.log('Fetching pets for user ID:', userId);
       const response = await fetch(`${API_BASE}/pets/by-owner/${userId}`);
       if (response.ok) {
         const data = await response.json();
-        setPets(data);
+        console.log('Pets data received:', data);
+        setPets(Array.isArray(data) ? data : []);
+      } else if (response.status === 404) {
+        console.log('No pets found for user (404)');
+        setPets([]);
       } else {
-        console.error('Failed to fetch pets');
+        console.error('Error fetching pets:', response.status, response.statusText);
         setPets([]);
       }
     } catch (error) {
-      console.error('Error fetching pets:', error);
+      console.error('Network error fetching pets:', error);
       setPets([]);
     } finally {
       setLoading(false);
@@ -66,14 +91,6 @@ function UserDashboard() {
     navigate(`/pet-details/${petId}`);
   };
 
-  if (loading) {
-    return (
-      <div className="user-dashboard">
-        <div className="loading">Učitavanje...</div>
-      </div>
-    );
-  }
-
   return (
     <div className="user-dashboard">
       {/* Header */}
@@ -103,7 +120,14 @@ function UserDashboard() {
         </div>
 
         <div className="user-section">
-          <span className="user-name">{user?.firstName || 'Klijent'}</span>
+          <span className="user-name">
+            {(() => {
+              const displayName = user?.firstName || 'Klijent';
+              console.log('Displaying user name:', displayName);
+              console.log('Current user state:', user);
+              return displayName;
+            })()}
+          </span>
           <button className="logout-btn" onClick={handleLogout}>
             Log out
           </button>
@@ -115,9 +139,14 @@ function UserDashboard() {
         <div className="pets-section">
           <h2 className="section-title">Tvoji ljubimci</h2>
           
-          {pets.length === 0 ? (
+          {loading ? (
+            <div className="loading">Učitavanje ljubimaca...</div>
+          ) : pets.length === 0 ? (
             <div className="no-pets">
-              <p>Nemaš registrovane ljubimce</p>
+              <p>Nemate registrovane ljubimce</p>
+              <p style={{fontSize: '14px', color: '#6B7280', marginTop: '10px'}}>
+                Možete dodati svojeg prvog ljubimca klikom na dugme ispod.
+              </p>
               <button className="add-first-pet-btn" onClick={handleAddPet}>
                 Dodaj prvog ljubimca
               </button>
