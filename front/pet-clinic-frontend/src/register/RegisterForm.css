@@ -1,163 +1,148 @@
-/* Pozadina i layout */
+/* === REGISTER SCREEN === */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #F7FAFF 0%, #EEF4FF 100%);
+}
+
+/* === POZADINA === */
 .auth-wrapper {
   position: relative;
   width: 100vw;
-  height: 100vh;
-  background: linear-gradient(135deg, #f7faff 0%, #eef4ff 100%);
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue",
-    Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 20px 0;
 }
 
-/* dekor krugovi */
-.bg-blob {
+.auth-wrapper::before,
+.auth-wrapper::after {
+  content: '';
   position: absolute;
-  background: #3b82f6;
+  background: #3B82F6;
   opacity: 0.08;
-  border-radius: 9999px;
-  filter: blur(0.5px);
-}
-.bg-blob-right {
-  width: 520px;
-  height: 520px;
-  right: -120px;
-  top: -60px;
-}
-.bg-blob-left {
-  width: 420px;
-  height: 420px;
-  left: -120px;
-  bottom: -80px;
 }
 
-/* brend u gornjem levom uglu */
+.auth-wrapper::before {
+  top: 0;
+  right: 0;
+  width: 25%;
+  height: 35%;
+  border-bottom-left-radius: 120px;
+}
+
+.auth-wrapper::after {
+  bottom: 0;
+  left: 0;
+  width: 28%;
+  height: 38%;
+  border-top-right-radius: 120px;
+}
+
+/* === LOGO (gore levo) === */
 .brand-header {
   position: absolute;
-  top: 24px;
-  left: 24px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.brand-logo {
-  width: 48px;
-  height: 48px;
-  position: relative;
-}
-.ear {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  background: #3b82f6;
-  opacity: 0.9;
-  top: 2px;
-  border-radius: 6px 6px 10px 10px;
-}
-.ear-left { left: 6px; transform: rotate(-12deg); }
-.ear-right { right: 6px; transform: rotate(12deg); }
-
-.face {
-  position: absolute;
-  left: 6px;
-  right: 6px;
-  top: 12px;
-  bottom: 4px;
-  background: #ffffff;
-  border: 2px solid #3b82f6;
-  border-radius: 14px;
-}
-.eye {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: #0b1220;
-  border-radius: 50%;
-  top: 16px;
-}
-.eye-left { left: 12px; }
-.eye-right { right: 12px; }
-.nose {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: #0b1220;
-  border-radius: 50%;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 24px;
-}
-.smile {
-  position: absolute;
-  width: 18px;
-  height: 10px;
-  border: 2px solid #3b82f6;
-  border-top: none;
-  border-radius: 0 0 16px 16px;
-  left: 50%;
-  transform: translateX(-50%);
   top: 30px;
+  left: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.brand-text { line-height: 1.1; }
-.brand-title {
+.app-name {
   font-style: italic;
   font-weight: 700;
-  font-size: 22px;
-  color: #0b1220;
-}
-.brand-subtitle {
-  margin-top: 2px;
-  font-size: 12px;
-  color: #6b7280;
+  font-size: 24px;
+  color: #0B1220;
+  margin: 0;
 }
 
-/* kartica */
+.app-subtitle {
+  font-weight: 400;
+  font-size: 14px;
+  color: #6B7280;
+  margin: 2px 0 0 0;
+}
+
+/* Custom scrollbar */
+.auth-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.auth-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.auth-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 4px;
+}
+
+.auth-wrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}
+
+
+
+/* === REGISTER BOX === */
 .register-card {
-  width: 520px;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08);
-  padding: 28px 28px 18px;
+  position: relative;
+  width: 380px;
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(11, 18, 32, 0.08);
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
 }
 .register-title {
   font-style: italic;
   font-weight: 700;
-  font-size: 34px;
-  color: #0b1220;
-  margin: 6px 6px 18px;
+  font-size: 28px;
+  color: #0B1220;
+  margin-bottom: 24px;
+  text-align: left;
 }
 
-/* forma */
-.register-form {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
+/* === INPUTI === */
 .field-label {
   font-style: italic;
   font-weight: 700;
   font-size: 14px;
-  color: #0b1220;
-  margin-top: 6px;
+  color: #0B1220;
+  margin-bottom: 6px;
 }
+
+.input-group {
+  margin-bottom: 14px;
+}
+
 .text-input {
   width: 100%;
-  height: 44px;
-  border: 1px solid #e5e7eb;
-  background: #ffffff;
-  border-radius: 8px;
-  padding: 0 14px;
+  height: 46px;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 12px 14px;
   font-size: 15px;
-  color: #0b1220;
-  outline: none;
-  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  color: #0B1220;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
+
 .text-input:focus {
-  border-color: #93c5fd;
+  outline: none;
+  border-color: #3B82F6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.text-input::placeholder {
+  color: #6B7280;
 }
 
 /* input sa ikonom */
@@ -250,9 +235,31 @@
 }
 
 
-/* responsive */
-@media (max-width: 640px) {
-  .register-card { width: 92%; padding: 22px 18px 16px; }
-  .register-title { font-size: 28px; }
-  .bg-blob-right, .bg-blob-left { display: none; }
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .register-card {
+    width: 90%;
+    padding: 28px 24px;
+  }
+
+  .brand-header {
+    left: 25px;
+    top: 20px;
+  }
+  
+  .app-name {
+    font-size: 18px;
+  }
+  
+  .app-subtitle {
+    font-size: 11px;
+  }
+  
+  .register-title {
+    font-size: 26px;
+  }
+  
+  .auth-wrapper {
+    padding: 15px 0;
+  }
 }

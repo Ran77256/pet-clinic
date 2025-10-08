@@ -80,8 +80,10 @@ function RegisterForm() {
 
   return (
     <div className="auth-wrapper">
-      <span className="bg-blob bg-blob-right" />
-      <span className="bg-blob bg-blob-left" />
+      <div className="brand-header">
+        <p className="app-name">PetClinic</p>
+        <p className="app-subtitle">Ambulanta za ljubimce</p>
+      </div>
 
       <div className="register-card">
         <h1 className="register-title">Registruj se</h1>
@@ -146,7 +148,7 @@ function RegisterForm() {
           <div className="divider" />
           <div className="below-text">
             <span>Ako imate već profil,</span>{" "}
-            <Link to="/login" className="link-strong">
+            <Link to="/" className="link-strong">
               prijavite se
             </Link>
           </div>
