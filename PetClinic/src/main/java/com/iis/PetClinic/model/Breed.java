@@ -17,11 +17,7 @@ public class Breed {
     @Column(nullable = false)
     private String name;
 
-    @Column
-    private String healthPredispositions;
 
-    @Column
-    private String dietaryNeeds;
 
     @ManyToOne
     @JoinColumn(name = "animal_type_id", nullable = false)
@@ -43,21 +39,8 @@ public class Breed {
         this.name = name;
     }
 
-    public String getHealthPredispositions() {
-        return healthPredispositions;
-    }
 
-    public void setHealthPredispositions(String healthPredispositions) {
-        this.healthPredispositions = healthPredispositions;
-    }
 
-    public String getDietaryNeeds() {
-        return dietaryNeeds;
-    }
-
-    public void setDietaryNeeds(String dietaryNeeds) {
-        this.dietaryNeeds = dietaryNeeds;
-    }
 
     public AnimalType getAnimalType() {
         return animalType;
