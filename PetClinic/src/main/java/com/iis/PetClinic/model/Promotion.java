@@ -26,6 +26,10 @@ public class Promotion {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    private Status status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ClientType clientType; // INDIVIDUAL / FARM / SHELTER
 
     @ManyToOne(optional = false)

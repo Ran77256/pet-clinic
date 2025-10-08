@@ -29,6 +29,8 @@ const LoginForm = () => {
       } else if (userRole === 'VETERINARIAN') {
         // TODO: prilagodi rutu po potrebi
         navigate('/vet/dashboard');
+      } else if (userRole === 'PRICE_ADMIN') { 
+        navigate('/priceAdmin');
       } else {
         setMessage(`SUCCESS: Login successful, but role ${userRole} is not mapped.`);
       }

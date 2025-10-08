@@ -1,0 +1,111 @@
+.price-admin-container {
+  background: #f7f7f7;
+  min-height: 100vh;
+  font-family: 'Inter', Arial, sans-serif;
+}
+.price-admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 48px 0 48px;
+  background: none;
+}
+.logo-title {
+  display: flex;
+  align-items: center;
+}
+.logo {
+  width: 64px;
+  height: 64px;
+  background: url('../logo.svg') no-repeat center center;
+  background-size: contain;
+  margin-right: 16px;
+}
+.admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.logout-btn {
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+.price-admin-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 0;
+}
+.add-btn {
+  background: #2979ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(41,121,255,0.07);
+}
+.price-list-section, .promotion-section {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(41,121,255,0.07);
+  padding: 24px;
+  margin-bottom: 32px;
+}
+.price-list-table, .promotion-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+.price-list-table th, .price-list-table td,
+.promotion-table th, .promotion-table td {
+  padding: 12px 8px;
+  text-align: left;
+  border-bottom: 1px solid #eaeaea;
+}
+.price-list-table th, .promotion-table th {
+  background: #f0f6ff;
+  font-weight: 600;
+}
+.edit-btn, .delete-btn, .deactivate-btn, .activate-btn {
+  background: #fff;
+  border: 1px solid #2979ff;
+  color: #2979ff;
+  border-radius: 6px;
+  padding: 6px 14px;
+  margin-right: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.delete-btn {
+  border-color: #ff5252;
+  color: #ff5252;
+}
+.deactivate-btn {
+  border-color: #ffb300;
+  color: #ffb300;
+}
+.activate-btn {
+  border-color: #43a047;
+  color: #43a047;
+}
+.edit-btn:hover, .delete-btn:hover, .deactivate-btn:hover, .activate-btn:hover {
+  background: #2979ff;
+  color: #fff;
+}
+.delete-btn:hover {
+  background: #ff5252;
+}
+.deactivate-btn:hover {
+  background: #ffb300;
+}
+.activate-btn:hover {
+  background: #43a047;
+}
