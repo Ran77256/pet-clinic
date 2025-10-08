@@ -1,5 +1,6 @@
 package com.iis.PetClinic.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -12,8 +13,9 @@ public class AnimalType {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "animalType", cascade = CascadeType.ALL)
-    private List<Breed> breeds;
+    @OneToMany(mappedBy = "animalType", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private java.util.List<Breed> breeds = new java.util.ArrayList<>();
 
     // Getters and setters
 
