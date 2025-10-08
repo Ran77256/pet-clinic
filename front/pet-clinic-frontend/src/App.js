@@ -7,6 +7,7 @@ import CatalogPage from './pages/warehouseAdmin/catalog/CatalogPage';
 import MedicamentsPage from './pages/warehouseAdmin/catalog/medicamentsPage/MedicamentsPage'
 import CatalogCategories from './pages/warehouseAdmin/catalog/catalogCategories/CatalogCategories'
 import  RegisterForm  from "./register/RegisterForm";
+import AnimalAdminPage from './animalAdmin/AnimalAdminPage';
 
 
 function App() {
@@ -29,6 +30,8 @@ function App() {
             <Route path="equipment" element={<h2>Oprema Placehoder</h2>} />
             
         </Route>
+        
+        <Route path="/animal-admin" element={<AnimalAdminPage />} />
         
       </Routes>
     </Router>
