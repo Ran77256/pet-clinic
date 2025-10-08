@@ -75,6 +75,8 @@ const LoginForm = () => {
       } else if (userRole === 'VETERINARIAN') {
         console.log('Navigating to /vet/dashboard');
         navigate('/vet/dashboard');
+      } else if (userRole === 'PRICE_ADMIN') { 
+        navigate('/priceAdmin');
       } else if (userRole === 'ANIMALS_ADMIN') {
         console.log('Navigating to /animal-admin');
         navigate('/animal-admin');
