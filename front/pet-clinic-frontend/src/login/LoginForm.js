@@ -19,10 +19,19 @@ const LoginForm = () => {
     try {
       const response = await axios.post(API_URL, { email, password });
 
-      // očekujemo { message, role, ... }
+      // očekujemo { message, role, user, ... }
       setMessage(`SUCCESS: ${response?.data?.message || 'Login successful'}`);
 
       const userRole = response?.data?.role;
+      const userData = response?.data?.user;
+
+      // Store user data in localStorage
+      if (userData) {
+        localStorage.setItem('user', JSON.stringify(userData));
+      }
+      if (response?.data?.token) {
+        localStorage.setItem('token', response.data.token);
+      }
 
       if (userRole === 'WAREHOUSE_ADMIN') {
         navigate('/orders');
@@ -31,6 +40,8 @@ const LoginForm = () => {
         navigate('/vet/dashboard');
       } else if (userRole === 'ANIMALS_ADMIN') {
         navigate('/animal-admin');
+      } else if (userRole === 'USER') {
+        navigate('/UserDashboard');
       } else {
         setMessage(`SUCCESS: Login successful, but role ${userRole} is not mapped.`);
       }
