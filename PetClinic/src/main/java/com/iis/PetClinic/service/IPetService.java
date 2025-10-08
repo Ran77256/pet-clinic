@@ -32,6 +32,8 @@ public interface IPetService {
     @Transactional(readOnly = true)
     List<Pet> getByBreed(Long breedId);
 
+
     void assignVeterinarian(Long petId, Long vetId);
+
 
 }

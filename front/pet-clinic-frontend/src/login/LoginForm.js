@@ -68,13 +68,17 @@ const LoginForm = () => {
 
       // Navigate based on role, default to /user for regular users
       console.log('Determining navigation for role:', userRole);
+<<<<<<< HEAD
       console.log('Role type:', typeof userRole);
       console.log('Role comparison with USER:', userRole === 'USER');
+=======
+>>>>>>> ab7aac6 (WebConfig)
       
       if (userRole === 'WAREHOUSE_ADMIN') {
         console.log('Navigating to /orders');
         navigate('/orders');
       } else if (userRole === 'VETERINARIAN') {
+<<<<<<< HEAD
         console.log('Navigating to /vet/dashboard');
         navigate('/vet/dashboard');
       } else if (userRole === 'PRICE_ADMIN') { 
@@ -89,6 +93,21 @@ const LoginForm = () => {
       } else {
         // Default navigation for any other/unknown role
         console.log(`Unknown or null role "${userRole}", defaulting to /user`);
+=======
+        console.log('Navigating to /vet');
+        navigate('/vet');
+      } else if (userRole === 'ANIMALS_ADMIN') {
+        console.log('Navigating to /animal-admin');
+        navigate('/animal-admin');
+      }
+      else if (userRole === 'STAFF_ADMIN') {
+        console.log('Navigating to /staff-calendar');
+        navigate('/staff-calendar');
+      } 
+       else {
+        // Default navigation for USER role or any other role
+        console.log('Navigating to /user (default for USER role or unknown role)');
+>>>>>>> ab7aac6 (WebConfig)
         navigate('/user');
       }
     } catch (error) {

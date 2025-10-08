@@ -20,8 +20,10 @@ public class Pet {
 
     @Column(nullable = false)
     private LocalDate birthDate;
+
     @Column(nullable = false)
     private String name;
+
 
     @Column(unique = true)
     private String microchipNumber;
@@ -56,9 +58,11 @@ public class Pet {
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
     private List<Appointment> appointments;
 
+
     @ManyToOne
     @JoinColumn(name = "veterinarian_id", nullable = true)
     private Veterinarian veterinarian;
+
 
 
 }

@@ -25,12 +25,19 @@ function UserDashboard() {
         
         setUser(parsedUser);
         if (parsedUser.id) {
+<<<<<<< HEAD
           console.log('✓ User has ID:', parsedUser.id, 'Type:', typeof parsedUser.id);
           console.log('✓ About to fetch pets for owner ID:', parsedUser.id);
           fetchUserPets(parsedUser.id);
         } else {
           console.log('✗ User has no ID, showing empty pets list');
           console.log('✗ Parsed user object:', parsedUser);
+=======
+          console.log('User has ID, fetching pets for user ID:', parsedUser.id);
+          fetchUserPets(parsedUser.id);
+        } else {
+          console.log('User has no ID, showing empty pets list');
+>>>>>>> ab7aac6 (WebConfig)
           setLoading(false);
         }
       } catch (error) {
@@ -48,6 +55,7 @@ function UserDashboard() {
   const fetchUserPets = async (userId) => {
     try {
       setLoading(true);
+<<<<<<< HEAD
       console.log('=== STARTING FETCH PETS ===');
       console.log('🔍 Fetching pets for user ID:', userId);
       console.log('🔍 User ID type:', typeof userId);
@@ -182,6 +190,21 @@ function UserDashboard() {
         setPets([]);
       }
       
+=======
+      console.log('Fetching pets for user ID:', userId);
+      const response = await fetch(`${API_BASE}/pets/by-owner/${userId}`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Pets data received:', data);
+        setPets(Array.isArray(data) ? data : []);
+      } else if (response.status === 404) {
+        console.log('No pets found for user (404)');
+        setPets([]);
+      } else {
+        console.error('Error fetching pets:', response.status, response.statusText);
+        setPets([]);
+      }
+>>>>>>> ab7aac6 (WebConfig)
     } catch (error) {
       console.error('Network error fetching pets:', error);
       setPets([]);
@@ -210,11 +233,15 @@ function UserDashboard() {
     navigate('/schedule-appointment');
   };
 
+<<<<<<< HEAD
   const handlePetDetails = (petId, event) => {
     if (event) {
       event.stopPropagation(); // Sprečava aktiviranje onClick-a na parent div-u
     }
     console.log('Navigating to pet details for pet ID:', petId);
+=======
+  const handlePetDetails = (petId) => {
+>>>>>>> ab7aac6 (WebConfig)
     navigate(`/pet-details/${petId}`);
   };
 
@@ -223,8 +250,20 @@ function UserDashboard() {
       {/* Header */}
       <div className="dashboard-header">
         <div className="brand-section">
+<<<<<<< HEAD
           <p className="pet-clinic-title">PetClinic</p>
           <p className="ambulanta-subtitle">Ambulanta za ljubimce</p>
+=======
+          <div className="brand-logo">
+            <div className="logo-circle">
+              <span className="logo-text">🐾</span>
+            </div>
+          </div>
+          <div className="brand-info">
+            <h1 className="brand-title">PetClinic</h1>
+            <p className="brand-subtitle">Ambulanta za ljubimce</p>
+          </div>
+>>>>>>> ab7aac6 (WebConfig)
         </div>
         
         <div className="action-buttons">
@@ -259,6 +298,7 @@ function UserDashboard() {
         <div className="pets-section">
           <h2 className="section-title">Tvoji ljubimci</h2>
           
+<<<<<<< HEAD
           {(() => {
             console.log('RENDER: Loading state:', loading);
             console.log('RENDER: Pets array:', pets);
@@ -266,6 +306,8 @@ function UserDashboard() {
             return null;
           })()}
           
+=======
+>>>>>>> ab7aac6 (WebConfig)
           {loading ? (
             <div className="loading">Učitavanje ljubimaca...</div>
           ) : pets.length === 0 ? (
@@ -280,6 +322,7 @@ function UserDashboard() {
             </div>
           ) : (
             <div className="pets-grid">
+<<<<<<< HEAD
               {(() => {
                 console.log('RENDER: Mapping over pets:', pets);
                 return pets.map((pet, index) => {
@@ -315,6 +358,20 @@ function UserDashboard() {
                   );
                 });
               })()}
+=======
+              {pets.map((pet) => (
+                <div key={pet.id} className="pet-card" onClick={() => handlePetDetails(pet.id)}>
+                  <div className="pet-info">
+                    <h3 className="pet-name">Ime: {pet.name}</h3>
+                    <p className="pet-detail">Vrsta: {pet.animalType?.name || 'N/A'}</p>
+                    <p className="pet-detail">Rasa: {pet.breed?.name || 'N/A'}</p>
+                  </div>
+                  <button className="pet-action-btn">
+                    Profil
+                  </button>
+                </div>
+              ))}
+>>>>>>> ab7aac6 (WebConfig)
             </div>
           )}
         </div>

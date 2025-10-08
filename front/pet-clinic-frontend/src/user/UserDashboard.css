@@ -271,6 +271,7 @@
   .pets-grid {
     grid-template-columns: 1fr;
   }
+<<<<<<< HEAD
 }
 
 /* Pet Profile Modal Styles */
@@ -405,4 +406,6 @@
 
 .btn-primary:hover {
   background: #2563EB;
+=======
+>>>>>>> ab7aac6 (WebConfig)
 }

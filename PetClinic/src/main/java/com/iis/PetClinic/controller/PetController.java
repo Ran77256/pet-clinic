@@ -1,25 +1,35 @@
 package com.iis.PetClinic.controller;
 
+
 import com.iis.PetClinic.dto.request.PetDTO;
 import com.iis.PetClinic.model.Pet;
 import com.iis.PetClinic.service.IPetService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+
+import com.iis.PetClinic.dto.response.PetLiteDTO;
+import com.iis.PetClinic.repository.IPetRepository;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+
 @RequestMapping("/api/pets")
 @CrossOrigin // po potrebi
+
 public class PetController {
 
     private final IPetService petService;
+    private final IPetRepository petRepo;
 
-    public PetController(IPetService petService) {
+    public PetController(IPetService petService, IPetRepository petRepo) {
         this.petService = petService;
+        this.petRepo = petRepo;
     }
+
 
     // CREATE
     @PostMapping(
@@ -46,6 +56,8 @@ public class PetController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
+
     // READ - by microchip
     @GetMapping("/by-microchip/{microchip}")
     public ResponseEntity<Pet> getByMicrochip(@PathVariable("microchip") String microchip) {
@@ -56,6 +68,7 @@ public class PetController {
 
     // READ - filters
     @GetMapping("/by-owner/{ownerId}")
+
     public List<PetDTO> getByOwner(@PathVariable Long ownerId) {
         return petService.getByOwner(ownerId)
                 .stream()
@@ -77,6 +90,9 @@ public class PetController {
                 .healthConditions(pet.getHealthConditions())
                 .build();
     }
+
+
+
 
 
     @GetMapping("/by-species/{animalTypeId}")
@@ -103,10 +119,27 @@ public class PetController {
         return ResponseEntity.noContent().build();
     }
 
+
     @PutMapping("/{petId}/assign-vet/{vetId}")
     public ResponseEntity<Void> assignVeterinarian(@PathVariable Long petId, @PathVariable Long vetId) {
         petService.assignVeterinarian(petId, vetId);
         return ResponseEntity.noContent().build();
+    }
+
+
+
+
+    // Sve za dropdown (bez paginacije)
+    @GetMapping("/flat")
+    public List<PetLiteDTO> allFlat() {
+
+        return petRepo.findAllLite();
+    }
+
+    // Pretraga (opciono: ?q=maza)
+    @GetMapping("/flat/search")
+    public List<PetLiteDTO> searchFlat(@RequestParam String q) {
+        return petRepo.searchLite(q);
     }
 
 }
