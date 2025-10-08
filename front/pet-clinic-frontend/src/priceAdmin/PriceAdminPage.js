@@ -49,10 +49,10 @@ function PriceAdminPage() {
             <tbody>
               {priceList.map(item => (
                 <tr key={item.id}>
-                  <td>{item.name}</td>
-                  <td>{item.animalType}</td>
-                  <td>{item.clientType}</td>
-                  <td>{item.price}</td>
+                  <td>{item.service?.name || ''}</td>
+                  <td>{item.service?.animalType?.name || ''}</td>
+                  <td>{item.service?.clientType || ''}</td>
+                  <td>{item.price || ''}</td>
                   <td>
                     <button className="edit-btn">Izmeni</button>
                     <button className="delete-btn">Obriši</button>

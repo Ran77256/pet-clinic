@@ -1,5 +1,6 @@
 package com.iis.PetClinic.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,9 @@ public class Breed {
 
 
 
-    @ManyToOne
-    @JoinColumn(name = "animal_type_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "animal_type_id")
+    @JsonBackReference
     private AnimalType animalType;
 
     public Long getId() {
