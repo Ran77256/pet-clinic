@@ -68,6 +68,13 @@ public class UserService implements IUserService {
         userRepository.save(user);
 
         return ResponseEntity.ok(new LoginResponse("Registration successful"));
+
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
 
 }

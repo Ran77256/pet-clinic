@@ -63,8 +63,51 @@ function RegisterForm() {
         confirmPassword: form.confirmPassword,
       });
 
-      // backend vraća LoginResponse; očekujemo { message, role }
+      // backend vraća LoginResponse; očekujemo { message, role, user }
       const role = data?.role || "USER";
+      let userData = data?.user;
+
+      // Debug: Log the response data
+      console.log('Register response:', data);
+      console.log('User role:', role);
+      console.log('User data:', userData);
+
+      // Always fetch complete user data from /user endpoint using email
+      console.log('Fetching complete user data from /user endpoint with email:', form.email);
+      try {
+        const userResponse = await axios.get(`http://localhost:8080/api/user?email=${encodeURIComponent(form.email)}`);
+        userData = userResponse.data;
+        console.log('Successfully fetched complete user data:', userData);
+        console.log('User ID from endpoint:', userData.id);
+        console.log('User firstName from endpoint:', userData.firstName);
+        console.log('User lastName from endpoint:', userData.lastName);
+      } catch (userError) {
+        console.error('Failed to fetch complete user data from /user endpoint:', userError);
+        console.error('Error details:', userError.response?.data || userError.message);
+        
+        // Create user object from form data as fallback
+        userData = {
+          id: data.id || data.userId,
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          role: role
+        };
+        console.log('Using fallback user object due to API error:', userData);
+      }
+
+      // Store user data in localStorage for UserDashboard
+      if (userData) {
+        console.log('Storing user data in localStorage:', userData);
+        localStorage.setItem('user', JSON.stringify(userData));
+      } else {
+        console.error('No user data to store from registration!');
+      }
+      
+      if (data?.token) {
+        localStorage.setItem('token', data.token);
+      }
+
       setMsg(data?.message || "Uspešna registracija.");
       navigateByRole(role);
     } catch (err) {

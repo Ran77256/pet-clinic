@@ -8,7 +8,7 @@ import MedicamentsPage from './pages/warehouseAdmin/catalog/medicamentsPage/Medi
 import CatalogCategories from './pages/warehouseAdmin/catalog/catalogCategories/CatalogCategories'
 import  RegisterForm  from "./register/RegisterForm";
 import AnimalAdminPage from './animalAdmin/AnimalAdminPage';
-import UserDashboard from './UserDashboard';
+import UserDashboard from './user/UserDashboard';
 
 
 function App() {
@@ -33,7 +33,7 @@ function App() {
         </Route>
         
         <Route path="/animal-admin" element={<AnimalAdminPage />} />
-        <Route path="/UserDashboard" element={<UserDashboard />} />
+        <Route path="/user" element={<UserDashboard />} />
         
       </Routes>
     </Router>

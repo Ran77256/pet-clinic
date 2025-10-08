@@ -23,27 +23,65 @@ const LoginForm = () => {
       setMessage(`SUCCESS: ${response?.data?.message || 'Login successful'}`);
 
       const userRole = response?.data?.role;
-      const userData = response?.data?.user;
+      let userData = response?.data?.user;
+
+      // Debug: Log the response data
+      console.log('Login response:', response.data);
+      console.log('User role:', userRole);
+      console.log('User data:', userData);
+
+      // Always fetch complete user data from /user endpoint using email  
+      console.log('Fetching complete user data from /user endpoint with email:', email);
+      try {
+        const userResponse = await axios.get(`http://localhost:8080/api/user?email=${encodeURIComponent(email)}`);
+        userData = userResponse.data;
+        console.log('Successfully fetched complete user data:', userData);
+        console.log('User ID from endpoint:', userData.id);
+        console.log('User firstName from endpoint:', userData.firstName);
+        console.log('User lastName from endpoint:', userData.lastName);
+      } catch (userError) {
+        console.error('Failed to fetch complete user data from /user endpoint:', userError);
+        console.error('Error details:', userError.response?.data || userError.message);
+        
+        // Create minimal user object as fallback
+        userData = {
+          id: response.data.id || response.data.userId,
+          firstName: response.data.firstName || 'Korisnik',
+          lastName: response.data.lastName || '',
+          email: email,
+          role: userRole
+        };
+        console.log('Using fallback user object due to API error:', userData);
+      }
 
       // Store user data in localStorage
       if (userData) {
+        console.log('Storing user data in localStorage:', userData);
         localStorage.setItem('user', JSON.stringify(userData));
+      } else {
+        console.error('No user data to store!');
       }
+      
       if (response?.data?.token) {
         localStorage.setItem('token', response.data.token);
       }
 
+      // Navigate based on role, default to /user for regular users
+      console.log('Determining navigation for role:', userRole);
+      
       if (userRole === 'WAREHOUSE_ADMIN') {
+        console.log('Navigating to /orders');
         navigate('/orders');
       } else if (userRole === 'VETERINARIAN') {
-        // TODO: prilagodi rutu po potrebi
+        console.log('Navigating to /vet/dashboard');
         navigate('/vet/dashboard');
       } else if (userRole === 'ANIMALS_ADMIN') {
+        console.log('Navigating to /animal-admin');
         navigate('/animal-admin');
-      } else if (userRole === 'USER') {
-        navigate('/UserDashboard');
       } else {
-        setMessage(`SUCCESS: Login successful, but role ${userRole} is not mapped.`);
+        // Default navigation for USER role or any other role
+        console.log('Navigating to /user (default for USER role or unknown role)');
+        navigate('/user');
       }
     } catch (error) {
       if (error.response) {
