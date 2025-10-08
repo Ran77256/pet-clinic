@@ -62,12 +62,19 @@ public class UserService implements IUserService {
         user.setFirstName(registerDTO.getFirstName());
         user.setLastName(registerDTO.getLastName());
         user.setEmail(registerDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        user.setPassword(registerDTO.getPassword());
         user.setRole(Role.USER);
 
         userRepository.save(user);
 
         return ResponseEntity.ok(new LoginResponse("Registration successful"));
+
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
 
 }

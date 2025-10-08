@@ -1,0 +1,407 @@
+.animal-admin-page {
+    min-height: 100vh;
+    height: 100vh;
+    background: linear-gradient(135deg, #F7FAFF 0%, #EEF4FF 100%);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+}
+
+.animal-admin-page::before,
+.animal-admin-page::after {
+    content: '';
+    position: absolute;
+    background: #3B82F6;
+    opacity: 0.08;
+    z-index: 0;
+}
+
+.animal-admin-page::before {
+    top: 0;
+    right: 0;
+    width: 25%;
+    height: 35%;
+    border-bottom-left-radius: 120px;
+}
+
+.animal-admin-page::after {
+    bottom: 0;
+    left: 0;
+    width: 28%;
+    height: 38%;
+    border-top-right-radius: 120px;
+}
+
+.brand-header {
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 10;
+}
+
+.pet-clinic-title {
+    font-style: italic;
+    font-weight: 700;
+    font-size: 24px;
+    color: #0B1220;
+    margin: 0;
+}
+
+.ambulanta-subtitle {
+    font-weight: 400;
+    font-size: 14px;
+    color: #6B7280;
+    margin: 2px 0 0 0;
+}
+
+.user-section-top {
+    position: absolute;
+    top: 40px;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 10;
+}
+
+.user-section-top span {
+    color: #0B1220;
+    font-weight: 500;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: #6B7280;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+.logout-btn:hover {
+    color: #0B1220;
+}
+
+.admin-content {
+    padding: 2rem 2rem 4rem 2rem;
+    max-width: 1200px;
+    margin: 120px auto 0;
+    overflow-x: auto;
+    position: relative;
+    z-index: 5;
+}
+
+.admin-content h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+}
+
+.admin-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    width: 100%;
+}
+
+.admin-section {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-section h3 {
+    color: #333;
+    font-size: 1.2rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+}
+
+.admin-section > p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0 0 1.5rem 0;
+}
+
+.items-list {
+    min-height: 100px;
+    max-height: 120px;
+    margin-bottom: 1.5rem;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    background-color: #fafafa;
+    padding: 0.5rem;
+}
+
+/* Custom scrollbar */
+.items-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.items-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+    margin: 4px;
+}
+
+.items-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.items-list::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+.items-list::-webkit-scrollbar-corner {
+    background: #fafafa;
+}
+
+/* Main page scrollbar */
+.animal-admin-page::-webkit-scrollbar {
+    width: 8px;
+}
+
+.animal-admin-page::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.animal-admin-page::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.3);
+    border-radius: 4px;
+}
+
+.animal-admin-page::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.5);
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+    position: relative;
+}
+
+.item-row:hover {
+    background-color: #f8f9fa;
+}
+
+.item-row span {
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+}
+
+.delete-btn:hover {
+    background-color: #fee;
+}
+
+.add-section {
+    border-top: 1px solid #e9ecef;
+    padding-top: 1rem;
+}
+
+.add-section p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0 0 0.75rem 0;
+}
+
+.add-form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.add-form-breed {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.add-form input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.add-form input:focus {
+    outline: none;
+    border-color: #4285f4;
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+}
+
+.add-form input::placeholder {
+    color: #999;
+}
+
+.add-form-breed input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.add-form-breed input:focus {
+    outline: none;
+    border-color: #4285f4;
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+}
+
+.add-form-breed input::placeholder {
+    color: #999;
+}
+
+.animal-type-select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: white;
+    cursor: pointer;
+}
+
+.animal-type-select:focus {
+    outline: none;
+    border-color: #4285f4;
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+}
+
+.add-form-breed .add-btn {
+    margin-top: 0.25rem;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.breed-name {
+    font-weight: 500;
+    word-wrap: break-word;
+}
+
+.breed-type {
+    font-size: 0.8rem;
+    color: #666;
+    font-style: italic;
+    word-wrap: break-word;
+}
+
+.add-btn {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.add-btn:hover {
+    background-color: #3367d6;
+}
+
+.add-btn:active {
+    background-color: #2a56c6;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .admin-sections {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .admin-content {
+        padding: 1rem 1rem 3rem 1rem;
+        margin-top: 100px;
+    }
+    
+    .brand-header {
+        top: 20px;
+        left: 20px;
+    }
+    
+    .user-section-top {
+        top: 20px;
+        right: 20px;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .add-form {
+        flex-direction: column;
+    }
+    
+    .add-form-breed {
+        gap: 0.75rem;
+    }
+    
+    .items-list {
+        max-height: 100px;
+        min-height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-content {
+        padding: 0.5rem 0.5rem 2rem 0.5rem;
+        margin-top: 80px;
+    }
+    
+    .admin-sections {
+        gap: 1rem;
+    }
+    
+    .admin-section {
+        padding: 1rem;
+    }
+    
+    .brand-header {
+        top: 10px;
+        left: 10px;
+    }
+    
+    .pet-clinic-title {
+        font-size: 20px;
+    }
+    
+    .user-section-top {
+        top: 10px;
+        right: 10px;
+    }
+}
