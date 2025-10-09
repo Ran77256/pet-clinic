@@ -3,6 +3,7 @@ package com.iis.PetClinic.controller;
 import com.iis.PetClinic.model.HealthCondition;
 import com.iis.PetClinic.service.IHealthConditionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +14,11 @@ public class HealthConditionController {
     @Autowired
     private IHealthConditionService healthConditionService;
 
-    @PostMapping
-    @RequestMapping("/add")
+    @PostMapping(
+            value = "/add",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public HealthCondition addHealthCondition(@RequestBody HealthCondition healthCondition) {
         return healthConditionService.addHealthCondition(healthCondition);
     }

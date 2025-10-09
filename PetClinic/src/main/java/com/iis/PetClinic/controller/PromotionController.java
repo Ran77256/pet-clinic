@@ -4,6 +4,7 @@ package com.iis.PetClinic.controller;
 import com.iis.PetClinic.model.Promotion;
 import com.iis.PetClinic.service.IPromotionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,12 @@ public class PromotionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/add")
+    @PostMapping(
+            value = "/add",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+
     public Promotion add(@RequestBody Promotion promotion) {
         return promotionService.addPromotion(promotion);
     }

@@ -4,6 +4,7 @@ package com.iis.PetClinic.controller;
 import com.iis.PetClinic.model.Service;
 import com.iis.PetClinic.service.impl.ClinicServiceServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,13 @@ public class ServiceController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // ✅ Add new service
-    @PostMapping("/add")
+    // ✅ Add new service\
+    @PostMapping(
+            value = "/add",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+
     public Service addService(@RequestBody Service service) {
         return serviceEntityService.create(service);
     }

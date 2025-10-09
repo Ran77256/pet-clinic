@@ -22,6 +22,7 @@ public interface IPetService {
 
     void delete(Long id);
 
+
     @Transactional(readOnly = true)
     List<Pet> getByOwner(Long ownerId);
 
@@ -30,4 +31,6 @@ public interface IPetService {
 
     @Transactional(readOnly = true)
     List<Pet> getByBreed(Long breedId);
+
+
 }

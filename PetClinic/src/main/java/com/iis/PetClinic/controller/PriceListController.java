@@ -5,6 +5,7 @@ import com.iis.PetClinic.model.PriceList;
 import com.iis.PetClinic.service.IPriceListService;
 import com.iis.PetClinic.service.impl.PriceListServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,12 @@ public class PriceListController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/add")
+    @PostMapping(
+            value = "/add",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+
     public PriceList add(@RequestBody PriceList priceList) {
         return service.create(priceList);
     }

@@ -4,6 +4,7 @@ import com.iis.PetClinic.dto.request.AnimalTypeDTO;
 import com.iis.PetClinic.model.AnimalType;
 import com.iis.PetClinic.service.IAnimalTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +14,14 @@ import java.util.List;
 public class AnimalTypeController {
     @Autowired
     private IAnimalTypeService animalTypeService;
-    @RequestMapping("/add")
-    @PostMapping
+
+    @PostMapping(
+            value = "/add",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public AnimalType addAnimalType(@RequestBody AnimalType animalType) {
+
         return animalTypeService.addAnimalType(animalType);
     }
     @RequestMapping("/all")

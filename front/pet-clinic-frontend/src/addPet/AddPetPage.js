@@ -184,6 +184,18 @@ const AddPetPage = () => {
         navigate('/user');
     };
 
+    const handleScheduleAppointment = () => {
+        navigate('/schedule-appointment');
+    };
+
+    const handlePriceList = () => {
+        navigate('/price-list');
+    };
+
+    const handleBackToDashboard = () => {
+        navigate('/user');
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -218,7 +230,16 @@ const AddPetPage = () => {
 
             console.log('Submitting pet data:', petData);
 
-            const response = await axios.post(`${API_BASE}/pets`, petData);
+            const response = await axios.post(
+                `${API_BASE}/pets/add`, 
+                petData,
+                { 
+                    headers: { 
+                        'Content-Type': 'application/json', 
+                        'Accept': 'application/json' 
+                    } 
+                }
+            );
             
             if (response.status === 201) {
                 alert('Ljubimac je uspešno dodat!');
@@ -250,6 +271,18 @@ const AddPetPage = () => {
                         <h1 className="brand-title">PetClinic</h1>
                         <p className="brand-subtitle">Ambulanta za ljubimce</p>
                     </div>
+                </div>
+                
+                <div className="action-buttons">
+                    <button className="action-btn primary" onClick={handleScheduleAppointment}>
+                        Zakaži termin
+                    </button>
+                    <button className="action-btn secondary" onClick={handlePriceList}>
+                        Cenovnik
+                    </button>
+                    <button className="action-btn tertiary" onClick={handleBackToDashboard}>
+                        Nazad na ljubimce
+                    </button>
                 </div>
 
                 <div className="user-section">

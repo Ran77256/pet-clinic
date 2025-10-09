@@ -20,6 +20,8 @@ public class Pet {
 
     @Column(nullable = false)
     private LocalDate birthDate;
+    @Column(nullable = false)
+    private String name;
 
     @Column(unique = true)
     private String microchipNumber;

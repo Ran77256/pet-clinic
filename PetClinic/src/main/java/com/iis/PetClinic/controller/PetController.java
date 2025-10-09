@@ -1,8 +1,10 @@
 package com.iis.PetClinic.controller;
 
+import com.iis.PetClinic.dto.request.PetDTO;
 import com.iis.PetClinic.model.Pet;
 import com.iis.PetClinic.service.IPetService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,11 @@ public class PetController {
     }
 
     // CREATE
-    @PostMapping
+    @PostMapping(
+            value = "/add",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<Pet> create(@RequestBody Pet pet) {
         Pet saved = petService.create(pet);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
@@ -34,9 +40,9 @@ public class PetController {
 
     // READ - by id
     @GetMapping("/{id}")
-    public ResponseEntity<Pet> getById(@PathVariable Long id) {
+    public ResponseEntity<PetDTO> getById(@PathVariable Long id) {
         return petService.getById(id)
-                .map(ResponseEntity::ok)
+                .map(pet -> ResponseEntity.ok(mapToDTO(pet)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -50,9 +56,27 @@ public class PetController {
 
     // READ - filters
     @GetMapping("/by-owner/{ownerId}")
-    public List<Pet> getByOwner(@PathVariable Long ownerId) {
-        return petService.getByOwner(ownerId);
+    public List<PetDTO> getByOwner(@PathVariable Long ownerId) {
+        return petService.getByOwner(ownerId)
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
     }
+
+    // ✅ Mapira Pet → PetDTO
+    private PetDTO mapToDTO(Pet pet) {
+        return PetDTO.builder()
+                .id(pet.getId())
+                .name(pet.getName())
+                .birthDate(pet.getBirthDate())
+                .microchipNumber(pet.getMicrochipNumber())
+                .ownerId(pet.getOwner() != null ? (long) pet.getOwner().getId() : null)
+                .breedName(pet.getBreed() != null ? pet.getBreed().getName() : null)
+                .animalTypeName(pet.getAnimaltype() != null ? pet.getAnimaltype().getName() : null)
+                .healthConditions(pet.getHealthConditions())
+                .build();
+    }
+
 
     @GetMapping("/by-species/{animalTypeId}")
     public List<Pet> getBySpecies(@PathVariable Long animalTypeId) {

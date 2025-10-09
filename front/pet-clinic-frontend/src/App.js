@@ -11,6 +11,7 @@ import  RegisterForm  from "./register/RegisterForm";
 import AnimalAdminPage from './animalAdmin/AnimalAdminPage';
 import UserDashboard from './user/UserDashboard';
 import AddPetPage from './addPet/AddPetPage';
+import PetDetails from './petDetails/PetDetails';
 
 import PriceAdminPage from './priceAdmin/PriceAdminPage';
 
@@ -40,17 +41,9 @@ function App() {
         <Route path="/animal-admin" element={<AnimalAdminPage />} />
         <Route path="/user" element={<UserDashboard />} />
         <Route path="/add-pet" element={<AddPetPage />} />
+        <Route path="/pet-details/:petId" element={<PetDetails />} />
         
-
-    <Route path="/orders" element={<OrdersPage />} />
-    <Route path="/notifications" element={<NotificationsPage />} />
-    <Route path="/catalog" element={<CatalogPage />} >
-      <Route index element={<CatalogCategories />} /> 
-      <Route path="medicaments" element={<MedicamentsPage />} />
-      <Route path="food" element={<h2>Hrana Placehoder</h2>} />
-      <Route path="equipment" element={<h2>Oprema Placehoder</h2>} />
-    </Route>
-    <Route path="/priceAdmin" element={<PriceAdminPage />} />
+        <Route path="/priceAdmin" element={<PriceAdminPage />} />
 
       </Routes>
     </Router>
