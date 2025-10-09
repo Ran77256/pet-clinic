@@ -25,7 +25,7 @@ const AnimalAdminPage = () => {
     // API pozivi za učitavanje podataka
     const fetchAnimalTypes = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/animal-types/all');
+            const response = await fetch('http://localhost:8080/api/animal-types/alldto');
             const responseText = await response.text();
             console.log('Raw response for animal types:', responseText);
             

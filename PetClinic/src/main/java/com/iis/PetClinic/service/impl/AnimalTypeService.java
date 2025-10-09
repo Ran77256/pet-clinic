@@ -1,5 +1,7 @@
 package com.iis.PetClinic.service.impl;
 
+import com.iis.PetClinic.dto.request.AnimalTypeDTO;
+import com.iis.PetClinic.dto.request.BreedDTO;
 import com.iis.PetClinic.model.AnimalType;
 import com.iis.PetClinic.repository.IAnimalTypeRepository;
 import com.iis.PetClinic.service.IAnimalTypeService;
@@ -30,4 +32,23 @@ public class AnimalTypeService implements IAnimalTypeService {
         } else {
             throw new RuntimeException("Zdravstveno stanje sa ID " + id + " nije pronađeno.");
         }
-}}
+}
+@Override
+    public List<AnimalTypeDTO> getAllAsDTO() {
+        return animalTypeRepository.findAll().stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    @Override
+    public AnimalTypeDTO toDTO(AnimalType t) {
+        var breedDTOs = (t.getBreeds() == null) ? List.<BreedDTO>of()
+                : t.getBreeds().stream()
+                .map(b -> new BreedDTO(b.getId(), b.getName()))
+                .toList();
+
+        return new AnimalTypeDTO(t.getId(), t.getName(), breedDTOs);
+    }
+
+
+}

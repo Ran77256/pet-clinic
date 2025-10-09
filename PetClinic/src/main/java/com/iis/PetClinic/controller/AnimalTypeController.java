@@ -1,5 +1,6 @@
 package com.iis.PetClinic.controller;
 
+import com.iis.PetClinic.dto.request.AnimalTypeDTO;
 import com.iis.PetClinic.model.AnimalType;
 import com.iis.PetClinic.service.IAnimalTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,10 @@ public class AnimalTypeController {
     @DeleteMapping("/delete/{id}")
     public void deleteHealthCondition(@PathVariable Long id) {
         animalTypeService.deleteHealthCondition(id);
+    }
+
+    @GetMapping("/alldto")
+    public List<AnimalTypeDTO> getAllTypes() {
+        return animalTypeService.getAllAsDTO();
     }
 }
