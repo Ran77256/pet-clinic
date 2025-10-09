@@ -396,6 +396,11 @@
     text-align: center;
   }
 
+  .action-buttons {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   .add-pet-content {
     padding: 0 20px;
   }
