@@ -2,7 +2,7 @@
 .add-pet-page {
   min-height: 100vh;
   height: 100vh;
-  background: linear-gradient(135deg, #F7FAFF 0%, #EEF4FF 100%);
+  background: #f8fafc;
   font-family: 'Inter', sans-serif;
   overflow-y: auto;
   overflow-x: hidden;
@@ -52,13 +52,14 @@
 .logo-circle {
   width: 50px;
   height: 50px;
-  background: #3B82F6;
-  border-radius: 50%;
+  background: #1e40af;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .brand-info {

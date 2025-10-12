@@ -223,15 +223,8 @@ function UserDashboard() {
       {/* Header */}
       <div className="dashboard-header">
         <div className="brand-section">
-          <div className="brand-logo">
-            <div className="logo-circle">
-              <span className="logo-text">🐾</span>
-            </div>
-          </div>
-          <div className="brand-info">
-            <h1 className="brand-title">PetClinic</h1>
-            <p className="brand-subtitle">Ambulanta za ljubimce</p>
-          </div>
+          <p className="pet-clinic-title">PetClinic</p>
+          <p className="ambulanta-subtitle">Ambulanta za ljubimce</p>
         </div>
         
         <div className="action-buttons">

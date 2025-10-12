@@ -14,6 +14,8 @@ import AddPetPage from './addPet/AddPetPage';
 import PetDetails from './petDetails/PetDetails';
 
 import PriceAdminPage from './priceAdmin/PriceAdminPage';
+import PriceListPage from './priceList/PriceListPage';
+import ScheduleAppointmentPage from './appointment/ScheduleAppointmentPage';
 
 
 function App() {
@@ -42,6 +44,8 @@ function App() {
         <Route path="/user" element={<UserDashboard />} />
         <Route path="/add-pet" element={<AddPetPage />} />
         <Route path="/pet-details/:petId" element={<PetDetails />} />
+        <Route path="/price-list" element={<PriceListPage />} />
+        <Route path="/schedule-appointment" element={<ScheduleAppointmentPage />} />
         
         <Route path="/priceAdmin" element={<PriceAdminPage />} />
 

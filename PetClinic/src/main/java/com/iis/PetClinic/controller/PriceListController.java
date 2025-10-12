@@ -1,6 +1,7 @@
 // com/iis/PetClinic/controller/PriceListController.java
 package com.iis.PetClinic.controller;
 
+import com.iis.PetClinic.dto.PriceListDTO;
 import com.iis.PetClinic.model.PriceList;
 import com.iis.PetClinic.service.IPriceListService;
 import com.iis.PetClinic.service.impl.PriceListServiceImpl;
@@ -19,9 +20,19 @@ public class PriceListController {
     private final PriceListServiceImpl service;
 
     @GetMapping("/all")
-    public List<PriceList> getAll() {
-        return service.findAll();
+    public List<PriceListDTO> getAll() {
+        return service.findAll()
+                .stream()
+                .map(priceList -> PriceListDTO.builder()
+                        .id(priceList.getId())
+                        .serviceId(priceList.getService().getId())
+                        .startDate(priceList.getStartDate())
+                        .endDate(priceList.getEndDate())
+                        .price(priceList.getPrice())
+                        .build())
+                .toList();
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<PriceList> getById(@PathVariable Long id) {
