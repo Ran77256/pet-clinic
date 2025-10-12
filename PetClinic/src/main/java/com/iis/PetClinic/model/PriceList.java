@@ -25,12 +25,11 @@ public class PriceList {
     @ManyToOne(optional = false)
     private Service service;
 
-    @Column(nullable = false)
-    private LocalDateTime startDate;
+    //@Column(nullable = false)
+   // private LocalDateTime startDate;
 
     @Column
     private LocalDateTime endDate; // nullable = unlimited duration
 
-    @Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal price; // in RSD
+
 }

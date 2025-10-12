@@ -3,6 +3,8 @@ package com.iis.PetClinic.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
@@ -26,4 +28,6 @@ public class Service {
 
     @ManyToOne(optional = false)
     private AnimalType animalType;
+
+    private BigDecimal price;
 }
