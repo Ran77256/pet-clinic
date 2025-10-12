@@ -1,32 +1,23 @@
-import { useNavigate } from 'react-router-dom';
-import Sidebar from '../sidebar/Sidebar' 
+import { useLocation } from 'react-router-dom';
 import '../WarehousePage.css'; 
 import { Outlet } from 'react-router-dom';
+import WarehousePage from '../WarehousePage'
+import './CatalogPage.css'
+
 const CatalogPage = () => {
-    const navigate = useNavigate();
+    const location = useLocation();
 
-    const getActiveItem = () => {
-        return 'catalog'; 
-    };
+    const isRootCatalog = location.pathname === '/catalog';
 
-    const handleNavigate = (path) => {
-        navigate(path);
-    }
 
     return (
-        <div className="warehouse-frame">
-            <Sidebar activeItem={getActiveItem()} onNavigate={handleNavigate} />
+        <WarehousePage>
 
-            <div className="main-content">
-                <header className="main-header">
-                    <h2>Katalog</h2>
-                </header>
-                
-                <div className="catalog-content-wrapper">
-                    <Outlet />  
-                </div>
+            <div className="catalog-page">
+                {isRootCatalog && <h2 className="main-title">Katalog</h2>}
+                <Outlet />
             </div>
-        </div>
+        </WarehousePage>
     );
 }
 

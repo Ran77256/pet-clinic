@@ -19,6 +19,10 @@ const WarehouseLayout = ({ children }) => {
 
     return (
         <div className="warehouse-frame">
+            <div className="app-header-outside">
+                <p className="pet-clinic-title">PetClinic</p>
+                <p className="ambulanta-subtitle">Ambulanta za ljubimce</p>
+            </div>
             <Sidebar activeItem={getActiveItem()} onNavigate={handleNavigate} />
 
             <div className="main-content">

@@ -1,0 +1,55 @@
+.consumed-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.consumed-modal-content {
+    background: #F9FAFB; 
+    border: 1px solid #E6EEF9;
+    width: 80%; 
+    max-width: 600px;
+    margin: 0 auto; 
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden; 
+}
+
+
+.consumed-modal-header {
+    display: flex;
+    justify-content: flex-end; 
+    margin-bottom: 15px;
+    border-bottom: none;
+}
+
+.consumed-close-button {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+    padding: 0;
+}
+
+
+.table-responsive table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-responsive th,
+.table-responsive td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}

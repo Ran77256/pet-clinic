@@ -1,32 +1,85 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; 
+    width: 1440;
+    height: 1024;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 .warehouse-frame {
     display: flex;
     width: 100vw;
     height: 100vh;
     background: #F3F7FB; 
-    overflow: hidden;
+    overflow: hidden; 
     position: relative;
+    padding: 20px; 
+    align-items: center; 
+    gap: 20px; 
 }
 
 .sidebar {
-    width: 25%; 
-    min-width: 250px; 
-    height: 100%;
+    width: 250px; 
+    height: 50%;
     background: #FFFFFF;
-    border-right: 1px solid #DCEEFF; 
+    border-radius: 15px; 
     padding: 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0; 
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
-.brand-header-sidebar {
-    padding-bottom: 20px;
-    border-bottom: 1px solid #E6EEF9;
+.main-content {
+    flex-grow: 1; 
+    height: 100%; 
+    background: #FFFFFF; 
+    border-radius: 15px; 
+    padding: 20px; 
+    box-sizing: border-box;
+    overflow-x: hidden; 
+    overflow-y: auto; 
+}
+
+/* WarehousePage.css */
+
+/* ... (Ostali stilovi, uključujući .warehouse-frame) ... */
+
+/* NOVI STILOVI ZA HEADER NA PLAVOJ POZADINI */
+.app-header-outside {
+    /* Pozicioniranje u gornji levi ugao, izvan glavnih panela */
+    position: absolute;
+    top: 20px; /* Isto kao padding na .warehouse-frame */
+    left: 20px; /* Isto kao padding na .warehouse-frame */
+    
+    /* Osiguravamo da se prikazuje iznad ostalih elemenata */
+    z-index: 10; 
+    
+    /* Stilizacija teksta */
+    color: #333333; /* Tamniji tekst, kao na slici */
+}
+
+.pet-clinic-title {
+    font-size: 40px; 
+    font-weight: 700;
+    margin-left: 20px;
+}
+
+.ambulanta-subtitle {
+    font-size: 14px;
+    margin-left: 20px;
+    color: #6B7280; 
 }
 
 .nav-menu {
     margin-top: 30px;
-    flex-grow: 1; /* Da zauzme sav preostali prostor */
+    flex-grow: 1; 
 }
 
 .nav-item {
@@ -37,7 +90,21 @@
     padding: 10px;
     cursor: pointer;
     border-left: 4px solid transparent;
+    border-bottom: 1px solid #E6EEF9;
     margin-bottom: 5px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.user-role-info {
+    font-size: 14px;
+    color: #6B7280; 
+    
+    margin-top: 0; 
+    margin-bottom: 20px;
+    
+    padding-left: 10px; 
+    text-align: left;
 }
 
 .nav-item.active {
@@ -46,12 +113,34 @@
     font-weight: 700;
 }
 
+.user-name {
+    margin-top: auto; 
+    margin-bottom: 10px; 
+    padding: 10px;
+    text-align: center;
+    font-weight: 600;
+    color: #333333;
+    /* border-top: 1px solid #E6EEF9; */
+    padding-top: 20px;
+}
+
 .btn-logout {
     padding: 10px;
-    background: #3B82F6;
+    background: #6B7280; 
     color: white;
     border: none;
     cursor: pointer;
     text-align: center;
+    margin-top: 0; 
+    border-radius: 8px; 
+}
+.user-logout-footer {
     margin-top: auto; 
+    
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    
+    padding: 10px 0 0 0; 
+    /* border-top: 1px solid #E6EEF9;  */
 }

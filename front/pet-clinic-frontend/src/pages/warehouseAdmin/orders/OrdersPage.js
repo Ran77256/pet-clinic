@@ -1,16 +1,17 @@
 import './OrdersPage.css'; 
 import WarehousePage from '../WarehousePage'
+import OrderListPage from './OrderListPage';
 
 const OrdersPage = () => {
     return (
-            <WarehousePage>
+        <div>
                 <header className="main-header">
                     <h2>Narudžbine</h2>
                 </header>
                 <div className="orders-table-container">
-                    <p>Prikazuje 5 od 5 transakcija</p>
+                    <OrderListPage/>
                 </div>
-</WarehousePage>
+                </div>
     );
 };
 

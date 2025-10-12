@@ -1,0 +1,121 @@
+.add-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1010;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(7px);
+}
+
+.add-product-modal-content {
+    background: #CADBE2;
+    border-radius: 2px;
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.add-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+}
+
+.add-modal-title {
+    flex-grow: 1;
+    text-align: center;
+    margin-right: -24px;
+    font-size: 24px;
+    color: #0B1220;
+}
+
+.add-close-button {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #444;
+    padding: 0;
+}
+
+.add-form-group {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.add-form-group label {
+    width: 40%;
+    font-weight: 600;
+    color: #333;
+    text-align: left;
+    margin-top: 12px;
+}
+
+.add-input-wrapper {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+}
+
+.add-form-group input {
+    padding: 12px;
+    border: 1px solid #999;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.add-form-group input.input-error {
+    border-color: #cc0000;
+}
+
+.add-input-error-message {
+    color: #cc0000;
+    font-size: 14px;
+    margin: 4px 0 0 0;
+    font-weight: 500;
+    text-align: left;
+}
+
+.add-submit-error-message {
+    color: #cc0000;
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.add-modal-footer {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.add-action-button.add-confirm-button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    background-color: #B3C1C0;
+    color: #0B1220;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.add-action-button.add-confirm-button:hover:not(:disabled) {
+    background-color: #98a9a8;
+}
+
+.add-action-button.add-confirm-button:disabled {
+    background-color: #c9d5d4;
+    cursor: not-allowed;
+}
