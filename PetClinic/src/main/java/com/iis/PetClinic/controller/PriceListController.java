@@ -52,6 +52,17 @@ public class PriceListController {
         PriceList published = versioningService.publishDraft(draftId, req.getEffectiveFrom());
         return ResponseEntity.ok(toDTO(published));
     }
+    @PutMapping("/activate/{id}")
+    public ResponseEntity<String> activatePriceList(@PathVariable Long id) {
+        try {
+            versioningService.activatePriceList(id);
+            return ResponseEntity.ok("Price list " + id + " successfully activated.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Unexpected error occurred: " + e.getMessage());
+        }
+    }
 
     // 3) Vratiti cenu usluge u trenutku "at"
     @GetMapping("/price")

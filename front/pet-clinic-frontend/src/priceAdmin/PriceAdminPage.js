@@ -254,6 +254,32 @@ function PriceAdminPage() {
     }
   };
 
+  const handleActivateVersion = async (versionId) => {
+    if (!window.confirm('Da li ste sigurni da želite da aktivirate ovu verziju cenovnika?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE}/price-lists/activate/${versionId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (response.ok) {
+        await fetchCurrentPriceList();
+        await fetchPriceListHistory();
+        alert('Verzija je uspešno aktivirana!');
+      } else {
+        alert('Greška pri aktiviranju verzije');
+      }
+    } catch (error) {
+      console.error('Error activating version:', error);
+      alert('Greška pri aktiviranju verzije');
+    }
+  };
+
   const handleAddService = async (e) => {
     e.preventDefault();
     try {
@@ -381,20 +407,35 @@ function PriceAdminPage() {
               <p>Prošle verzije</p>
               {priceListHistory.map((priceList, index) => (
                 <div key={priceList.id} className="version-item">
-                  <div className="version-date">
-                    Verzija {priceList.version}
+                  <div className="version-content">
+                    <div className="version-date">
+                      Verzija {priceList.version}
+                    </div>
+                    <div className="version-details">
+                      {priceList.name || 'Standardni cenovnik'}
+                    </div>
+                    <div className="version-status">
+                      {priceList.validFrom ? 
+                        `Aktivna od ${new Date(priceList.validFrom).toLocaleDateString('sr-RS')}` : 
+                        'Draft verzija'
+                      }
+                    </div>
+                    <div className="version-info-small">
+                      {priceList.items?.length || 0} stavki
+                    </div>
                   </div>
-                  <div className="version-details">
-                    {priceList.name || 'Standardni cenovnik'}
-                  </div>
-                  <div className="version-status">
-                    {priceList.validFrom ? 
-                      `Aktivna od ${new Date(priceList.validFrom).toLocaleDateString('sr-RS')}` : 
-                      'Aktivna verzija'
-                    }
-                  </div>
-                  <div className="version-info-small">
-                    {priceList.items?.length || 0} stavki
+                  <div className="version-actions">
+                    {!priceList.isActive && (
+                      <button 
+                        className="activate-version-btn"
+                        onClick={() => handleActivateVersion(priceList.id)}
+                      >
+                        Aktiviraj verziju
+                      </button>
+                    )}
+                    {priceList.isActive && (
+                      <span className="active-badge">Aktivna</span>
+                    )}
                   </div>
                 </div>
               ))}

@@ -59,8 +59,8 @@ public class PriceListVersioningService implements IPriceListVersioningService {
         PriceList draft = priceListRepo.findById(draftId)
                 .orElseThrow(() -> new IllegalArgumentException("Draft not found: " + draftId));
 
-        if (draft.getStatus() != PriceListStatus.DRAFT) {
-            throw new IllegalStateException("Only DRAFT can be published.");
+        if (draft.getStatus() != PriceListStatus.DRAFT || draft.getStatus() != PriceListStatus.ARCHIVED) {
+            throw new IllegalStateException("Only DRAFT  and ARCHIVED can be published.");
         }
 
         // zatvori prethodni ACTIVE (ako postoji)
@@ -89,6 +89,34 @@ public class PriceListVersioningService implements IPriceListVersioningService {
                 .orElseThrow(() -> new IllegalStateException(
                         "Service " + serviceId + " is not priced in the active price list at " + at));
     }
+
+    @Transactional
+    public void activatePriceList(Long id) {
+        // 1️⃣ Nađi trenutno aktivan cenovnik
+        PriceList currentActive = priceListRepo.findFirstByStatus(PriceListStatus.ACTIVE)
+                .orElse(null);
+
+        // 2️⃣ Nađi onaj koji treba aktivirati
+        PriceList toActivate = priceListRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Price list not found: " + id));
+
+        // 3️⃣ Dozvoli aktivaciju samo ako je bio DRAFT ili ARCHIVED
+        if (toActivate.getStatus() != PriceListStatus.DRAFT &&
+                toActivate.getStatus() != PriceListStatus.ARCHIVED) {
+            throw new IllegalArgumentException("Only DRAFT or ARCHIVED price lists can be activated.");
+        }
+
+        // 4️⃣ Deaktiviraj stari (ako postoji)
+        if (currentActive != null) {
+            currentActive.setStatus(PriceListStatus.DRAFT);
+            priceListRepo.save(currentActive);
+        }
+
+        // 5️⃣ Aktiviraj novi
+        toActivate.setStatus(PriceListStatus.ACTIVE);
+        priceListRepo.save(toActivate);
+    }
+
 
 }
 

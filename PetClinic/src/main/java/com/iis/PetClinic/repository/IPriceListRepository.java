@@ -35,4 +35,6 @@ public interface IPriceListRepository extends JpaRepository<PriceList, Long> {
        order by p.version desc
     """)
     List<PriceList> findDraftsWithItems();
+    Optional<PriceList> findFirstByStatus(PriceListStatus status);
+
 }
