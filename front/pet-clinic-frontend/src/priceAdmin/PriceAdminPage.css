@@ -248,6 +248,19 @@ html, body {
   font-weight: 500;
 }
 
+.version-info-small {
+  color: #888;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.no-history {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-style: italic;
+}
+
 /* Modal Styles */
 .modal-overlay {
   position: fixed;

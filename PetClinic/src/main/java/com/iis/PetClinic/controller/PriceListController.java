@@ -5,6 +5,7 @@ import com.iis.PetClinic.dto.request.PriceListDTO;
 import com.iis.PetClinic.dto.request.PriceListItemDTO;
 import com.iis.PetClinic.dto.request.PublishPriceListRequest;
 import com.iis.PetClinic.model.PriceList;
+import com.iis.PetClinic.model.PriceListItem;
 import com.iis.PetClinic.repository.IPriceListRepository;
 import com.iis.PetClinic.service.impl.PriceListVersioningService;
 import lombok.RequiredArgsConstructor;
@@ -62,8 +63,11 @@ public class PriceListController {
         return ResponseEntity.ok(versioningService.getPriceAt(serviceId, at));
     }
 
-    // --- Mapperi (brzi manualni) ---
+
+
     private PriceListDTO toDTO(PriceList e) {
+        var items = (e.getItems() == null) ? java.util.List.<PriceListItem>of() : e.getItems();
+
         return PriceListDTO.builder()
                 .id(e.getId())
                 .name(e.getName())
@@ -72,15 +76,31 @@ public class PriceListController {
                 .validFrom(e.getValidFrom())
                 .validTo(e.getValidTo())
                 .items(
-                        e.getItems().stream()
+                        items.stream()
                                 .map(it -> PriceListItemDTO.builder()
                                         .id(it.getId())
                                         .serviceId(it.getService().getId())
                                         .serviceName(it.getService().getName())
                                         .price(it.getPrice())
                                         .build())
-                                .collect(Collectors.toList())
+                                .toList()
                 )
                 .build();
     }
+
+    @GetMapping("/drafts")
+    public ResponseEntity<java.util.List<PriceListDTO>> getDrafts(
+            @RequestParam(defaultValue = "true") boolean includeItems
+    ) {
+        var drafts = includeItems
+                ? priceListRepo.findDraftsWithItems()
+                : priceListRepo.findByStatusOrderByVersionDesc(com.iis.PetClinic.model.PriceListStatus.DRAFT);
+
+        var dtos = drafts.stream()
+                .map(this::toDTO)
+                .toList();
+
+        return ResponseEntity.ok(dtos);
+    }
+
 }

@@ -89,4 +89,6 @@ public class PriceListVersioningService implements IPriceListVersioningService {
                 .orElseThrow(() -> new IllegalStateException(
                         "Service " + serviceId + " is not priced in the active price list at " + at));
     }
+
 }
+

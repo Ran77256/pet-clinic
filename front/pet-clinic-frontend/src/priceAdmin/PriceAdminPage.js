@@ -72,6 +72,7 @@ const PriceListItemRow = ({ item, onUpdatePrice, onDelete, services }) => {
 function PriceAdminPage() {
   const navigate = useNavigate();
   const [currentPriceList, setCurrentPriceList] = useState(null);
+  const [priceListHistory, setPriceListHistory] = useState([]);
   const [services, setServices] = useState([]);
   const [animalTypes, setAnimalTypes] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -89,6 +90,7 @@ function PriceAdminPage() {
 
   useEffect(() => {
     fetchCurrentPriceList();
+    fetchPriceListHistory();
     fetchServices();
     fetchAnimalTypes();
   }, []);
@@ -139,6 +141,19 @@ function PriceAdminPage() {
       }
     } catch (error) {
       console.error('Error fetching animal types:', error);
+    }
+  };
+
+  const fetchPriceListHistory = async () => {
+    try {
+      const response = await fetch(`${API_BASE}/price-lists/drafts`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Price list history:', data); // Debug log
+        setPriceListHistory(data);
+      }
+    } catch (error) {
+      console.error('Error fetching price list history:', error);
     }
   };
 
@@ -229,6 +244,7 @@ function PriceAdminPage() {
         
         if (publishResponse.ok) {
           await fetchCurrentPriceList();
+          await fetchPriceListHistory();
           alert('Verzija cenovnika je uspešno sačuvana!');
         }
       }
@@ -362,22 +378,31 @@ function PriceAdminPage() {
           <div className="right-section">
             <div className="history-section">
               <h3>Istorija cenovnika</h3>
-              <p>Prošle verzije — aktivna po ponedl</p>
-              <div className="version-item">
-                <div className="version-date">Verzija 2025-06-15</div>
-                <div className="version-details">Letnja sezona (do kraja)</div>
-                <div className="version-status">200 RSD</div>
-              </div>
-              <div className="version-item">
-                <div className="version-date">Verzija 2025-05-01</div>
-                <div className="version-details">Letnja sezona (do kraja)</div>
-                <div className="version-status">200 RSD</div>
-              </div>
-              <div className="version-item">
-                <div className="version-date">Verzija 2025-04-10</div>
-                <div className="version-details">Lipnji essjanj 15%</div>
-                <div className="version-status">Aktivna ona verzija</div>
-              </div>
+              <p>Prošle verzije</p>
+              {priceListHistory.map((priceList, index) => (
+                <div key={priceList.id} className="version-item">
+                  <div className="version-date">
+                    Verzija {priceList.version}
+                  </div>
+                  <div className="version-details">
+                    {priceList.name || 'Standardni cenovnik'}
+                  </div>
+                  <div className="version-status">
+                    {priceList.validFrom ? 
+                      `Aktivna od ${new Date(priceList.validFrom).toLocaleDateString('sr-RS')}` : 
+                      'Aktivna verzija'
+                    }
+                  </div>
+                  <div className="version-info-small">
+                    {priceList.items?.length || 0} stavki
+                  </div>
+                </div>
+              ))}
+              {priceListHistory.length === 0 && (
+                <div className="no-history">
+                  <p>Nema dostupne istorije cenovnika</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
