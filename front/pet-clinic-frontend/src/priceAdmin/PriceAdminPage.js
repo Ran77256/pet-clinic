@@ -369,10 +369,10 @@ function PriceAdminPage() {
             </div>
             
             <section className="price-list-section">
-              <h3>Aktivna verzija cenovnika</h3>
+              <h3>Cenovnik {currentPriceList?.id}</h3>
               <div className="version-info">
-                {currentPriceList && (
-                  <span>Verzija {currentPriceList.version} — aktivna po ponedl</span>
+                {currentPriceList && currentPriceList.validTo && (
+                  <span>Važi do {new Date(currentPriceList.validTo).toLocaleDateString('sr-RS')}</span>
                 )}
               </div>
               
@@ -409,19 +409,13 @@ function PriceAdminPage() {
                 <div key={priceList.id} className="version-item">
                   <div className="version-content">
                     <div className="version-date">
-                      Verzija {priceList.version}
-                    </div>
-                    <div className="version-details">
-                      {priceList.name || 'Standardni cenovnik'}
+                      Cenovnik {priceList.id}
                     </div>
                     <div className="version-status">
-                      {priceList.validFrom ? 
-                        `Aktivna od ${new Date(priceList.validFrom).toLocaleDateString('sr-RS')}` : 
-                        'Draft verzija'
+                      {priceList.validTo ? 
+                        `Važi do ${new Date(priceList.validTo).toLocaleDateString('sr-RS')}` : 
+                        'Bez ograničenja'
                       }
-                    </div>
-                    <div className="version-info-small">
-                      {priceList.items?.length || 0} stavki
                     </div>
                   </div>
                   <div className="version-actions">
