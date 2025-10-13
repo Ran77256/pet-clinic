@@ -1,8 +1,9 @@
-package com.iis.PetClinic.dto;
+package com.iis.PetClinic.dto.request;
 
+import com.iis.PetClinic.dto.request.PriceListItemDTO;
 import lombok.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,11 +14,15 @@ public class PriceListDTO {
 
     private Long id;
 
-    private Long serviceId; // umesto celog objekta Service, samo ID
+    private String name; // npr. "Zimski cenovnik"
 
-    private LocalDateTime startDate;
+    private Integer version; // broj verzije (1,2,3,...)
 
-    private LocalDateTime endDate;
+    private String status; // DRAFT / ACTIVE / ARCHIVED (kao String radi jednostavnijeg prikaza)
 
-    private BigDecimal price;
+    private LocalDateTime validFrom; // datum početka važenja
+
+    private LocalDateTime validTo;   // datum isteka važenja (null = i dalje važi)
+
+    private List<PriceListItemDTO> items; // stavke cenovnika
 }

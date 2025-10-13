@@ -20,14 +20,29 @@ public class PriceListServiceImpl implements IPriceListService {
     @Override public Optional<PriceList> findById(Long id) { return repo.findById(id); }
 
     @Override
-    public PriceList update(Long id, PriceList p) {
-        PriceList existing = repo.findById(id).orElseThrow();
-        existing.setService(p.getService());
-        existing.setStartDate(p.getStartDate());
-        existing.setEndDate(p.getEndDate());
-        existing.setPrice(p.getPrice());
+    public PriceList update(Long id, PriceList updated) {
+        PriceList existing = repo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Price list not found with ID: " + id));
+
+        // Ažuriramo osnovne podatke o cenovniku
+        existing.setName(updated.getName());
+        existing.setVersion(updated.getVersion());
+        existing.setStatus(updated.getStatus());
+        existing.setValidFrom(updated.getValidFrom());
+        existing.setValidTo(updated.getValidTo());
+
+        // Ako korisnik menja i stavke (npr. cene usluga)
+        if (updated.getItems() != null) {
+            existing.getItems().clear();
+            updated.getItems().forEach(item -> {
+                item.setPriceList(existing); // poveži nazad roditelja
+                existing.getItems().add(item);
+            });
+        }
+
         return repo.save(existing);
     }
+
 
     @Override public void delete(Long id) { repo.deleteById(id); }
 }

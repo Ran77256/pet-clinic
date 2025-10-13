@@ -29,5 +29,5 @@ public class Service {
     @ManyToOne(optional = false)
     private AnimalType animalType;
 
-    private BigDecimal price;
+
 }
