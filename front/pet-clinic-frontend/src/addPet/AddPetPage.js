@@ -17,7 +17,8 @@ const AddPetPage = () => {
         breedId: '',
         birthDate: '',
         microchip: '',
-        description: ''
+        description: '',
+        veterinarianId: ''
     });
     
     // Options from API
@@ -25,6 +26,7 @@ const AddPetPage = () => {
     const [breeds, setBreeds] = useState([]);
     const [filteredBreeds, setFilteredBreeds] = useState([]);
     const [availableHealthConditions, setAvailableHealthConditions] = useState([]);
+    const [veterinarians, setVeterinarians] = useState([]);
     
     // Selected health conditions - stores the condition IDs that are selected
     const [selectedHealthConditions, setSelectedHealthConditions] = useState([]);
@@ -46,9 +48,10 @@ const AddPetPage = () => {
             return;
         }
 
-        // Load animal types and health conditions
+        // Load animal types, health conditions, and veterinarians
         fetchAnimalTypes();
         fetchHealthConditions();
+        fetchVeterinarians();
     }, [navigate]);
 
     // Filter breeds when animal type changes
@@ -147,6 +150,25 @@ const AddPetPage = () => {
         }
     };
 
+    const fetchVeterinarians = async () => {
+        try {
+            console.log('Fetching veterinarians from:', `${API_BASE}/veterinarians/getall`);
+            const response = await axios.get(`${API_BASE}/veterinarians/getall`);
+            console.log('Veterinarians response:', response.data);
+            
+            if (Array.isArray(response.data)) {
+                setVeterinarians(response.data);
+            } else {
+                console.error('Veterinarians response is not an array:', response.data);
+                setVeterinarians([]);
+            }
+        } catch (error) {
+            console.error('Error fetching veterinarians:', error);
+            console.error('Error details:', error.response?.data || error.message);
+            setVeterinarians([]);
+        }
+    };
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -225,6 +247,7 @@ const AddPetPage = () => {
                 microchipNumber: formData.microchip.trim() || null,
                 description: formData.description.trim() || null,
                 owner: { id: user.id },
+                veterinarian: formData.veterinarianId ? { id: parseInt(formData.veterinarianId) } : null,
                 healthConditions: selectedHealthConditions.map(id => ({ id }))
             };
 
@@ -311,8 +334,19 @@ const AddPetPage = () => {
 
                                 <div className="input-group">
                                     <label className="input-label">Veterinar</label>
-                                    <select className="form-select" disabled>
-                                        <option>Odaberite veterinara</option>
+                                    <select 
+                                        name="veterinarianId"
+                                        value={formData.veterinarianId}
+                                        onChange={handleInputChange}
+                                        className="form-select"
+                                        required
+                                    >
+                                        <option value="">Odaberite veterinara</option>
+                                        {Array.isArray(veterinarians) && veterinarians.map(vet => (
+                                            <option key={vet.id} value={vet.id}>
+                                                Dr {vet.firstName} {vet.lastName} - {vet.specialization}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
 

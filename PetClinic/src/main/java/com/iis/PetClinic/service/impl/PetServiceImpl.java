@@ -1,7 +1,10 @@
 package com.iis.PetClinic.service.impl;
 
+import com.iis.PetClinic.exception.NotFoundException;
 import com.iis.PetClinic.model.Pet;
+import com.iis.PetClinic.model.Veterinarian;
 import com.iis.PetClinic.repository.IPetRepository;
+import com.iis.PetClinic.repository.IVeterinarianRepository;
 import com.iis.PetClinic.service.IPetService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +20,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class PetServiceImpl implements IPetService {
 
     private final IPetRepository petRepository;
+    private final IVeterinarianRepository veterinarianRepository;
 
-    public PetServiceImpl(IPetRepository petRepository) {
+    public PetServiceImpl(IPetRepository petRepository, IVeterinarianRepository veterinarianRepository) {
         this.petRepository = petRepository;
+        this.veterinarianRepository = veterinarianRepository;
     }
 
     @Override
@@ -93,4 +98,17 @@ public class PetServiceImpl implements IPetService {
     public List<Pet> getByBreed(Long breedId) {
         return petRepository.findAllByBreed_Id(breedId);
     }
+    @Override
+    @Transactional
+    public void assignVeterinarian(Long petId, Long vetId) {
+        Pet pet = petRepository.findById(petId)
+                .orElseThrow(() -> new NotFoundException("Pet not found: " + petId));
+
+        Veterinarian vet = veterinarianRepository.findById(vetId)
+                .orElseThrow(() -> new NotFoundException("Veterinarian not found: " + vetId));
+
+        pet.setVeterinarian(vet);
+        petRepository.save(pet); // nije nužno u transakciji, ali ok je ostaviti
+    }
+
 }
