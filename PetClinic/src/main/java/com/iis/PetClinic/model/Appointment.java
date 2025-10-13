@@ -22,8 +22,7 @@ public class Appointment {
     private Long id;
 
 
-    @Column(nullable = false)
-    private LocalDateTime appointmentDate;
+
 
 //    @Column(nullable = false)
 //    private LocalDateTime appointmentDate;

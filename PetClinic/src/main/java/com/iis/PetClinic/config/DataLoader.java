@@ -105,6 +105,7 @@ public class DataLoader implements CommandLineRunner {
         // --- PETS -----------------------------------------------------------
         Pet maza = petRepo.findByMicrochipNumber("MC-001").orElseGet(() -> {
             Pet p = new Pet();
+            p.setName("");
             p.setOwner(owner1);
             p.setAnimaltype(cat);
             p.setBreed(siam);
@@ -116,6 +117,7 @@ public class DataLoader implements CommandLineRunner {
 
         Pet luna = petRepo.findByMicrochipNumber("MC-002").orElseGet(() -> {
             Pet p = new Pet();
+            p.setName("");
             p.setOwner(owner2);
             p.setAnimaltype(dog);
             p.setBreed(labrador);

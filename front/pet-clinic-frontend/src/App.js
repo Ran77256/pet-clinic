@@ -6,13 +6,11 @@ import NotificationsPage from './pages/warehouseAdmin/notifications/Notification
 import CatalogPage from './pages/warehouseAdmin/catalog/CatalogPage';
 import CatalogCategories from './pages/warehouseAdmin/catalog/catalogCategories/CatalogCategories'
 import  RegisterForm  from "./register/RegisterForm";
-<<<<<<< HEAD
-=======
-import AnimalAdminPage from './animalAdmin/AnimalAdminPage';
-import UserDashboard from './user/UserDashboard';
+
+
 import StaffCalendar from './StaffCalendar';
 import VetCalendar from './vet/VetCalendar'; 
->>>>>>> ab7aac6 (WebConfig)
+
 
 import AnimalAdminPage from './animalAdmin/AnimalAdminPage';
 import UserDashboard from './user/UserDashboard';
@@ -49,7 +47,7 @@ function App() {
 
         <Route path="/animal-admin" element={<AnimalAdminPage />} />
         <Route path="/user" element={<UserDashboard />} />
-<<<<<<< HEAD
+
         <Route path="/add-pet" element={<AddPetPage />} />
         <Route path="/pet-details/:petId" element={<PetDetails />} />
 
@@ -61,11 +59,11 @@ function App() {
 
         <Route path="/priceAdmin" element={<PriceAdminPage />} />
 
-=======
+
      
         <Route path="/staff-calendar" element={<StaffCalendar />} />
         <Route path="/vet" element={<VetCalendar />} />
->>>>>>> ab7aac6 (WebConfig)
+
       </Routes>
     </Router>
   )
