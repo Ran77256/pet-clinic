@@ -71,6 +71,7 @@ public class PetController {
                 .birthDate(pet.getBirthDate())
                 .microchipNumber(pet.getMicrochipNumber())
                 .ownerId(pet.getOwner() != null ? (long) pet.getOwner().getId() : null)
+                .veterinarianId(pet.getVeterinarian() != null ? pet.getVeterinarian().getId() : null)  // <-- Dodaj ovu liniju
                 .breedName(pet.getBreed() != null ? pet.getBreed().getName() : null)
                 .animalTypeName(pet.getAnimaltype() != null ? pet.getAnimaltype().getName() : null)
                 .healthConditions(pet.getHealthConditions())
@@ -101,4 +102,11 @@ public class PetController {
         petService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{petId}/assign-vet/{vetId}")
+    public ResponseEntity<Void> assignVeterinarian(@PathVariable Long petId, @PathVariable Long vetId) {
+        petService.assignVeterinarian(petId, vetId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

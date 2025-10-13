@@ -8,6 +8,7 @@ const PetDetails = () => {
   const { petId } = useParams();
   const navigate = useNavigate();
   const [pet, setPet] = useState(null);
+  const [veterinarian, setVeterinarian] = useState(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
@@ -48,6 +49,11 @@ const PetDetails = () => {
         const petData = await response.json();
         console.log('✅ Pet details received:', petData);
         setPet(petData);
+        
+        // Fetch veterinarian details if veterinarian ID is available
+        if (petData.veterinarianId) {
+          await fetchVeterinarian(petData.veterinarianId);
+        }
       } else if (response.status === 404) {
         console.error('❌ Pet not found (404)');
         setPet(null); // Eksplicitno postavi na null da prikaže error state
@@ -67,6 +73,36 @@ const PetDetails = () => {
 
   const handleBackToDashboard = () => {
     navigate('/user');
+  };
+
+  const fetchVeterinarian = async (veterinarianId) => {
+    try {
+      console.log('Fetching veterinarian details for ID:', veterinarianId);
+
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      };
+
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const response = await fetch(`${API_BASE}/veterinarians/${veterinarianId}`, { headers });
+
+      if (response.ok) {
+        const veterinarianData = await response.json();
+        console.log('✅ Veterinarian details received:', veterinarianData);
+        setVeterinarian(veterinarianData);
+      } else {
+        console.error('❌ Failed to fetch veterinarian details:', response.status);
+        setVeterinarian(null);
+      }
+    } catch (error) {
+      console.error('❌ Error fetching veterinarian details:', error);
+      setVeterinarian(null);
+    }
   };
 
   const handleLogout = () => {
@@ -176,6 +212,16 @@ const PetDetails = () => {
                 <div className="info-label">Datum rođenja</div>
                 <div className="info-value">
                   {pet.birthDate ? new Date(pet.birthDate).toLocaleDateString('sr-RS') : 'N/A'}
+                </div>
+              </div>
+              
+              <div className="info-row">
+                <div className="info-label">Veterinar</div>
+                <div className="info-value">
+                  {veterinarian ? 
+                    `Dr ${veterinarian.firstName} ${veterinarian.lastName}` : 
+                    'N/A'
+                  }
                 </div>
               </div>
               

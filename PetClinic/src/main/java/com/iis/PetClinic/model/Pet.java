@@ -55,4 +55,10 @@ public class Pet {
     // Ljubimac može imati više termina
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
     private List<Appointment> appointments;
+
+    @ManyToOne
+    @JoinColumn(name = "veterinarian_id", nullable = true)
+    private Veterinarian veterinarian;
+
+
 }
