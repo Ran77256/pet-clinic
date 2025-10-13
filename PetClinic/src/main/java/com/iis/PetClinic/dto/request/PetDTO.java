@@ -22,4 +22,5 @@ public class PetDTO {
     private String animalTypeName;
 
     private List<HealthCondition> healthConditions;
+    private Long veterinarianId;
 }

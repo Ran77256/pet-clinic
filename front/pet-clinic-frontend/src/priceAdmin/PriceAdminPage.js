@@ -370,11 +370,6 @@ function PriceAdminPage() {
             
             <section className="price-list-section">
               <h3>Cenovnik {currentPriceList?.id}</h3>
-              <div className="version-info">
-                {currentPriceList && currentPriceList.validTo && (
-                  <span>Važi do {new Date(currentPriceList.validTo).toLocaleDateString('sr-RS')}</span>
-                )}
-              </div>
               
               <table className="price-list-table">
                 <thead>
@@ -410,12 +405,6 @@ function PriceAdminPage() {
                   <div className="version-content">
                     <div className="version-date">
                       Cenovnik {priceList.id}
-                    </div>
-                    <div className="version-status">
-                      {priceList.validTo ? 
-                        `Važi do ${new Date(priceList.validTo).toLocaleDateString('sr-RS')}` : 
-                        'Bez ograničenja'
-                      }
                     </div>
                   </div>
                   <div className="version-actions">
