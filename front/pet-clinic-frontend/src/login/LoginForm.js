@@ -75,8 +75,15 @@ const LoginForm = () => {
         console.log('Navigating to /orders');
         navigate('/orders');
       } else if (userRole === 'VETERINARIAN') {
-        console.log('Navigating to /vet/dashboard');
-        navigate('/vet/dashboard');
+        // Get veterinarian ID from user data and use it dynamically
+        const veterinarianId = userData?.id;
+        if (veterinarianId) {
+          console.log('Navigating to /vet-pet-details with dynamic veterinarian ID:', veterinarianId);
+          navigate(`/vet-pet-details/${veterinarianId}`);
+        } else {
+          console.log('No veterinarian ID found, using default');
+          navigate('/vet-pet-details/1');
+        }
       } else if (userRole === 'PRICE_ADMIN') { 
         console.log('Navigating to /priceAdmin');
         navigate('/priceAdmin');

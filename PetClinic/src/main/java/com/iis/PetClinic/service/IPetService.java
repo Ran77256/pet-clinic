@@ -34,4 +34,5 @@ public interface IPetService {
 
     void assignVeterinarian(Long petId, Long vetId);
 
+    List<Pet> getByVeterinarian(Long veterinarianId);
 }

@@ -8,11 +8,12 @@ import java.util.Optional;
 
 public interface IPetRepository extends JpaRepository<Pet, Long> {
 
-    // Jedan mikrocip = jedan ljubimac
     Optional<Pet> findByMicrochipNumber(String microchipNumber);
 
-    // Filtri po odnosima
     List<Pet> findAllByOwner_Id(Long ownerId);
     List<Pet> findAllByAnimaltype_Id(Long animalTypeId);
     List<Pet> findAllByBreed_Id(Long breedId);
+
+    // ✔ ispravno: pretraga po ID-ju povezanog entiteta
+    List<Pet> findByVeterinarian_Id(Long veterinarianId);
 }

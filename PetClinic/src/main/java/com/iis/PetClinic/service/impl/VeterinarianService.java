@@ -1,12 +1,14 @@
 package com.iis.PetClinic.service.impl;
 
-
 import com.iis.PetClinic.dto.request.VeterinarianCreateUpdateDTO;
 import com.iis.PetClinic.dto.response.VeterinarianResponseDTO;
 import com.iis.PetClinic.exception.BadRequestException;
 import com.iis.PetClinic.exception.NotFoundException;
+import com.iis.PetClinic.model.Role;
+import com.iis.PetClinic.model.User;
 import com.iis.PetClinic.model.Veterinarian;
 import com.iis.PetClinic.repository.IVeterinarianRepository;
+import com.iis.PetClinic.repository.IUserRepository;
 import com.iis.PetClinic.service.IVeterinarianService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,55 +18,69 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class VeterinarianService implements IVeterinarianService {
 
-    private final IVeterinarianRepository repository;
+    private final IVeterinarianRepository vetRepo;
+    private final IUserRepository userRepo;
 
     @Override
+    @Transactional
     public VeterinarianResponseDTO create(VeterinarianCreateUpdateDTO dto) {
-        if (dto.getEmail() != null && repository.existsByEmailIgnoreCase(dto.getEmail())) {
-            throw new BadRequestException("Vet with given email already exists.");
+        User user = resolveOrCreateUser(dto);
+        ensureUserRoleIsVeterinarian(user);
+
+        if (vetRepo.findByUser_Id((long) user.getId()).isPresent()) {
+            throw new BadRequestException("Veterinarian already exists for user id=" + user.getId());
         }
-        Veterinarian v = toEntity(dto);
-        v = repository.save(v);
-        return toDto(v, 0);
+
+        Veterinarian v = Veterinarian.builder()
+                .user(user)
+                .specialization(dto.getSpecialization())
+                .phoneNumber(dto.getPhoneNumber())
+                .build();
+
+        v = vetRepo.save(v);
+        long petsCount = v.getPets() == null ? 0 : v.getPets().size();
+        return toDto(v, petsCount);
     }
 
     @Override
+    @Transactional
     public VeterinarianResponseDTO update(Long id, VeterinarianCreateUpdateDTO dto) {
-        Veterinarian v = repository.findById(id)
+        Veterinarian v = vetRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Veterinarian not found: " + id));
 
-        // provera jedinstvenosti email-a ako se menja
-        if (dto.getEmail() != null && !dto.getEmail().equalsIgnoreCase(v.getEmail())
-                && repository.existsByEmailIgnoreCase(dto.getEmail())) {
-            throw new BadRequestException("Email already in use.");
-        }
-
-        v.setFirstName(dto.getFirstName());
-        v.setLastName(dto.getLastName());
+        // update vet fields
         v.setSpecialization(dto.getSpecialization());
         v.setPhoneNumber(dto.getPhoneNumber());
-        v.setEmail(dto.getEmail());
 
-        return toDto(v, v.getPets() == null ? 0 : v.getPets().size());
+        // optionally (re)link to user
+        if (dto.getUserId() != null || dto.getEmail() != null) {
+            User user = resolveOrCreateUser(dto);
+            ensureUserRoleIsVeterinarian(user);
+            v.setUser(user);
+        }
+
+        v = vetRepo.save(v);
+        long petsCount = v.getPets() == null ? 0 : v.getPets().size();
+        return toDto(v, petsCount);
     }
 
     @Override
     @Transactional(readOnly = true)
     public VeterinarianResponseDTO get(Long id) {
-        Veterinarian v = repository.findById(id)
+        Veterinarian v = vetRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Veterinarian not found: " + id));
-        return toDto(v, v.getPets() == null ? 0 : v.getPets().size());
+        long petsCount = v.getPets() == null ? 0 : v.getPets().size();
+        return toDto(v, petsCount);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<VeterinarianResponseDTO> list(String q) {
         List<Veterinarian> list = (q == null || q.isBlank())
-                ? repository.findAll()
-                : repository.findByLastNameContainingIgnoreCaseOrFirstNameContainingIgnoreCase(q, q);
+                ? vetRepo.findAll()
+                : vetRepo.searchByUserName(q.trim());
 
         return list.stream()
                 .map(v -> toDto(v, v.getPets() == null ? 0 : v.getPets().size()))
@@ -72,31 +88,73 @@ public class VeterinarianService implements IVeterinarianService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        if (!repository.existsById(id)) throw new NotFoundException("Veterinarian not found: " + id);
-        repository.deleteById(id);
-    }
-
-    // helpers
-    private Veterinarian toEntity(VeterinarianCreateUpdateDTO dto) {
-        return Veterinarian.builder()
-                .firstName(dto.getFirstName())
-                .lastName(dto.getLastName())
-                .specialization(dto.getSpecialization())
-                .phoneNumber(dto.getPhoneNumber())
-                .email(dto.getEmail())
-                .build();
+        if (!vetRepo.existsById(id)) {
+            throw new NotFoundException("Veterinarian not found: " + id);
+        }
+        vetRepo.deleteById(id);
     }
 
     private VeterinarianResponseDTO toDto(Veterinarian v, long petsCount) {
+        User u = v.getUser();
         return VeterinarianResponseDTO.builder()
                 .id(v.getId())
-                .firstName(v.getFirstName())
-                .lastName(v.getLastName())
                 .specialization(v.getSpecialization())
                 .phoneNumber(v.getPhoneNumber())
-                .email(v.getEmail())
+                .userId(u != null ? (long) u.getId() : null)
+                .firstName(u != null ? u.getFirstName() : null)
+                .lastName(u != null ? u.getLastName() : null)
+                .email(u != null ? u.getEmail() : null)
                 .petsCount(petsCount)
                 .build();
+    }
+
+    private User resolveOrCreateUser(VeterinarianCreateUpdateDTO dto) {
+        if (dto.getUserId() != null) {
+            return userRepo.findById(dto.getUserId().intValue())
+                    .orElseThrow(() -> new NotFoundException("User not found: " + dto.getUserId()));
+        }
+        if (dto.getEmail() == null || dto.getEmail().isBlank()) {
+            throw new BadRequestException("Provide userId or email to link veterinarian to a user.");
+        }
+
+        // try to find by email
+        User existing = userRepo.findByEmailIgnoreCase(dto.getEmail()).orElse(null);
+        if (existing != null) {
+            // optionally update names/password if provided
+            if (dto.getFirstName() != null) existing.setFirstName(dto.getFirstName());
+            if (dto.getLastName() != null)  existing.setLastName(dto.getLastName());
+            if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+                existing.setPassword(dto.getPassword());
+            }
+            return userRepo.save(existing);
+        }
+
+        // create new user
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
+            throw new BadRequestException("Password is required when creating a new user.");
+        }
+
+        User u = new User();
+        u.setFirstName(dto.getFirstName());
+        u.setLastName(dto.getLastName());
+        u.setEmail(dto.getEmail());
+        u.setPassword(dto.getPassword());
+        u.setRole(Role.VETERINARIAN);
+        return userRepo.save(u);
+    }
+
+    private void ensureUserRoleIsVeterinarian(User user) {
+        if (user.getRole() == null) {
+            user.setRole(Role.VETERINARIAN);
+            userRepo.save(user);
+            return;
+        }
+        if (user.getRole() != Role.VETERINARIAN) {
+            // po potrebi možeš relaksirati (ADMIN kao VET, itd.)
+            throw new BadRequestException(
+                    "Linked user must have role VETERINARIAN (userId=" + user.getId() + ").");
+        }
     }
 }

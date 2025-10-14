@@ -110,5 +110,11 @@ public class PetServiceImpl implements IPetService {
         pet.setVeterinarian(vet);
         petRepository.save(pet); // nije nužno u transakciji, ali ok je ostaviti
     }
+    @Override
+    public List<Pet> getByVeterinarian(Long veterinarianId) {
+        return petRepository.findByVeterinarian_Id(veterinarianId);
+    }
+
+
 
 }

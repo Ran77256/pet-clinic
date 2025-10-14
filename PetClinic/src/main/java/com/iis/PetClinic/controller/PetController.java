@@ -109,4 +109,14 @@ public class PetController {
         return ResponseEntity.noContent().build();
     }
 
+    // READ - by veterinarian (PetDTO lista)
+    @GetMapping("/by-veterinarian/{veterinarianId}")
+    public List<PetDTO> getByVeterinarian(@PathVariable Long veterinarianId) {
+        return petService.getByVeterinarian(veterinarianId).stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+
+
+
 }

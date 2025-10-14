@@ -14,6 +14,8 @@ public class ItemController {
 
     @Autowired
     private IItemService itemService;
+    @Autowired
+    private com.iis.PetClinic.repository.IItemRepository itemRepository;
 
     @GetMapping("/items/{categoryId}")
     public List<ItemResponse> getAllItemsForCategory(@PathVariable int categoryId){
@@ -23,5 +25,15 @@ public class ItemController {
     @GetMapping("/item/{itemId}")
     public ItemResponse getItemById(@PathVariable int itemId){
         return itemService.getItemById(itemId);
+    }
+
+    @GetMapping("/items/lekovi")
+    public List<Item> getLekovi() {
+        return itemRepository.findByCategory_Id(1);
+    }
+
+    @GetMapping("/items/hrana")
+    public List<Item> getHrana() {
+        return itemRepository.findByCategory_Id(2);
     }
 }

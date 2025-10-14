@@ -11,6 +11,8 @@ import AnimalAdminPage from './animalAdmin/AnimalAdminPage';
 import UserDashboard from './user/UserDashboard';
 import AddPetPage from './addPet/AddPetPage';
 import PetDetails from './petDetails/PetDetails';
+import VetPetDetails from './vetPetDetails/VetPetDetails';
+import CreateMedicalReport from './medicalReport/CreateMedicalReport';
 
 import PriceAdminPage from './priceAdmin/PriceAdminPage';
 import PriceListPage from './priceList/PriceListPage';
@@ -44,6 +46,8 @@ function App() {
         <Route path="/user" element={<UserDashboard />} />
         <Route path="/add-pet" element={<AddPetPage />} />
         <Route path="/pet-details/:petId" element={<PetDetails />} />
+        <Route path="/vet-pet-details/:veterinarianId" element={<VetPetDetails />} />
+        <Route path="/create-medical-report/:petId/:veterinarianId" element={<CreateMedicalReport />} />
 
         <Route path="/price-list" element={<PriceListPage />} />
         <Route path="/schedule-appointment" element={<ScheduleAppointmentPage />} />
