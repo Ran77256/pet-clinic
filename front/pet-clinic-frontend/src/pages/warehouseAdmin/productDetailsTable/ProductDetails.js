@@ -52,7 +52,12 @@ const ProductDetails = () => {
         setError(null); 
         try {
             const response = await axios.get(`${API_BASE_URL}/products/${itemId}`);
+            if (Array.isArray(response.data)) {
             setProducts(response.data);
+        } else {
+            console.error("API nije vratio listu proizvoda (products), već:", response.data);
+            setProducts([]); 
+        }
         } catch (err) {
             setError('Neuspešno učitavanje serija proizvoda. Proverite konekciju sa serverom.');
             console.error("Fetch error:", err);
@@ -121,6 +126,8 @@ const ProductDetails = () => {
                 </div>
             </div>
             
+        {validProducts.length > 0 ? (
+            <>
             <h4 className="series-title">Detalji serija / pakovanja:</h4>
 
             <div className="table-responsive">
@@ -150,6 +157,12 @@ const ProductDetails = () => {
                     </tbody>
                 </table>
             </div>
+                </>
+            ) : (
+                <p className="no-products-message">
+                    ⚠️ **Nema aktivnih proizvoda za ovu stavku.**
+                </p>
+            )}
             {isModalOpen && itemDetails && (
                 <OrderModal
                     item={itemDetails} 

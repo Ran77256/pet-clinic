@@ -125,7 +125,7 @@ const OrderListPage = () => {
                                         <td>{order.quantity}</td>
                                         <td>{order.email || 'N/A'}</td>
                                         <td>{translateStatus(order.status)}</td> 
-                                        <td>{order.creationType || 'Manuelno'}</td> 
+                                        <td>{order.type || 'Manuelno'}</td> 
                                     </tr>
                                 ))
                             ) : (

@@ -26,14 +26,15 @@
     justify-content: space-between;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: transform 0.1s;
+    position: relative;
 }
-
+/* 
 .item-name {
     font-weight: 700;
     font-size: 20px; 
     color: #0B1220;
     margin-bottom: 8px;
-}
+} */
 
 .item-details p {
     font-size: 15px; 
@@ -146,4 +147,30 @@
 
 .item-block.category-block-style:hover {
     background: #c3d5dd; 
+}
+
+/* .item-block {
+    position: relative; 
+    padding: 15px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    overflow: hidden;
+} */
+
+.kebab-menu-container {
+    position: absolute;
+    top: 5px;       
+    right: 5px;     
+    z-index: 10;    
+}
+
+.kebab-button {
+    background: none;
+    border: none;
+    font-size: 1.5em; 
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 0.8; 
+    font-weight: bold; 
 }

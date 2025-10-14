@@ -1,9 +1,12 @@
 package com.iis.PetClinic.controller;
 
+import com.iis.PetClinic.dto.request.CreateItemRequest;
+import com.iis.PetClinic.dto.request.EditItemRequest;
 import com.iis.PetClinic.dto.response.ItemResponse;
 import com.iis.PetClinic.model.Item;
 import com.iis.PetClinic.service.IItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,5 +38,20 @@ public class ItemController {
     @GetMapping("/items/hrana")
     public List<Item> getHrana() {
         return itemRepository.findByCategory_Id(2);
+    }
+
+    @PutMapping("/items/edit")
+    public ResponseEntity<String> editItem(@RequestBody EditItemRequest request){
+        return itemService.editItem(request);
+    }
+
+    @DeleteMapping("/items/{itemId}")
+    public ResponseEntity<String> deleteItem(@PathVariable int itemId) {
+        return itemService.deleteItem(itemId);
+    }
+
+    @PostMapping("/items")
+    public ResponseEntity<Item> createItem(@RequestBody CreateItemRequest request) {
+        return itemService.createNewItem(request);
     }
 }

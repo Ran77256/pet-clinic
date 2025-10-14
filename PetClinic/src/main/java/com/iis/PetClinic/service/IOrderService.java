@@ -10,4 +10,5 @@ import java.util.List;
 public interface IOrderService {
     ResponseEntity<String> createOrder(CreateOrderRequest orderRequest);
     List<CreateOrderResponse> getOrders();
+    void simulateOrderArrival();
 }

@@ -1,0 +1,81 @@
+.notifications-list-container {
+    padding: 20px;
+    background-color: #F9FAFB; 
+    min-height: 80vh; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.notification-row {
+    display: flex; 
+    padding: 15px 20px;
+    padding-left: 0px;
+    border-bottom: 1px solid #E6EEF9; 
+    align-items: center; 
+    gap: 15px; 
+    margin-left: 0;
+}
+
+.notification-icon {
+    width: 35px; 
+    height: 35px;
+    min-width: 35px; 
+    
+    border-radius: 50%; 
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: #EAF3FF; 
+    
+    font-size: 18px; 
+    line-height: 1; 
+}
+
+.notification-content {
+    display: flex;
+    justify-content: space-between; 
+    flex-grow: 1; 
+    align-items: center; 
+}
+
+.notification-message {
+    font-size: 15px; 
+    color: #000000;
+    font-weight: 400; 
+    
+    width: 100%; 
+    max-width: 650px; 
+    
+    white-space: nowrap;     
+    overflow: hidden;        
+    text-overflow: ellipsis; 
+    
+    padding-right: 20px; 
+}
+
+.notification-date {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; 
+    color: #6B7280;
+    font-weight: 300;
+    
+    width: 160px; 
+    min-width: 160px; 
+    text-align: right;
+    
+    margin-left: auto; 
+}
+
+.no-notifications, .error-message, .notifications-list-container > p {
+    text-align: center;
+    padding: 15px;
+    color: #6B7280;
+    font-size: 15px;
+}
+.error-message {
+    color: #cc0000;
+    font-weight: bold;
+}

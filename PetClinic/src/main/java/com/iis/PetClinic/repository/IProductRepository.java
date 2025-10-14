@@ -9,4 +9,6 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
 
     List<Product> findAllByItem_Id(int itemId);
     Product save(Product product);
+    boolean existsByBarcode(int barcode);
+    void deleteAllByItem_Id(int itemId);
 }

@@ -2,17 +2,18 @@ package com.iis.PetClinic.service.impl;
 
 import com.iis.PetClinic.dto.request.CreateOrderRequest;
 import com.iis.PetClinic.dto.response.CreateOrderResponse;
-import com.iis.PetClinic.model.CreationType;
-import com.iis.PetClinic.model.Order;
-import com.iis.PetClinic.model.Status;
+import com.iis.PetClinic.model.*;
 import com.iis.PetClinic.repository.IItemRepository;
 import com.iis.PetClinic.repository.IOrderRepository;
 import com.iis.PetClinic.service.IOrderService;
+import com.iis.PetClinic.service.IProductService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +28,9 @@ public class OrderService implements IOrderService {
 
     @Autowired
     private IOrderRepository orderRepository;
+
+    @Autowired
+    private IProductService productService;
 
     @Override
     public ResponseEntity<String> createOrder(CreateOrderRequest orderRequest){
@@ -71,5 +75,18 @@ public class OrderService implements IOrderService {
 
             return orderResponse;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    @Scheduled(cron = "0 18 17 * * ?")
+    @Transactional
+    public void simulateOrderArrival(){
+        var orders = orderRepository.findAll();
+        for(Order order: orders){
+            if(order.getCreationDate().isBefore(LocalDateTime.now().minusHours(1))){
+                productService.updateProductsAfterOrder(order);
+                order.setStatus(Status.RECEIVED);
+            }
+        }
     }
 }
