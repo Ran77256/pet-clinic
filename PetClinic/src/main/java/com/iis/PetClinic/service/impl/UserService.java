@@ -3,6 +3,7 @@ package com.iis.PetClinic.service.impl;
 import com.iis.PetClinic.dto.request.LoginDTO;
 import com.iis.PetClinic.dto.request.RegisterDTO;
 import com.iis.PetClinic.dto.response.LoginResponse;
+import com.iis.PetClinic.dto.response.UserDTO;
 import com.iis.PetClinic.model.Role;
 import com.iis.PetClinic.model.User;
 import com.iis.PetClinic.repository.IUserRepository;
@@ -72,9 +73,26 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+    public UserDTO getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Mapiranje u DTO
+        return UserDTO.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .lastActivated(user.getLastActivated())
+                // Ako želiš i ljubimce:
+                //.pets(user.getPets().stream().map(PetDTO::fromEntity).toList())
+                .build();
+    }
+
+    @Override
+    public User getUserById(Integer id) {
+        return userRepository.findById(id).orElse(null);
     }
 
 }

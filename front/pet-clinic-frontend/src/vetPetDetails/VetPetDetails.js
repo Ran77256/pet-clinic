@@ -209,34 +209,7 @@ const VetPetDetails = () => {
                     </div>
                   )}
 
-                  {/* Current Medications */}
-                  {petReports[pet.id] && petReports[pet.id].length > 0 && (
-                    <div className="pet-current-medications">
-                      <span className="health-label">Trenutni lekovi/hrana:</span>
-                      <div className="current-items-badges">
-                        {petReports[pet.id]
-                          .filter(report => report.items && report.items.length > 0)
-                          .slice(0, 1)
-                          .map(report => (
-                            <div key={report.id} className="items-display">
-                              {report.items.slice(0, 3).map((item, index) => (
-                                <span key={index} className={`current-item-badge ${
-                                  item.category?.name?.toLowerCase() === 'lekovi' ? 'medicine' : 'food'
-                                }`}>
-                                  {item.category?.name?.toLowerCase() === 'lekovi' ? '💊' : '🥘'} {item.name}
-                                </span>
-                              ))}
-                              {report.items.length > 3 && (
-                                <span className="items-more">+{report.items.length - 3}</span>
-                              )}
-                            </div>
-                          ))}
-                        {petReports[pet.id].every(report => !report.items || report.items.length === 0) && (
-                          <span className="no-current-medications">Nema trenutnih lekova</span>
-                        )}
-                      </div>
-                    </div>
-                  )}
+
                   
                   <div className="pet-card-actions">
                     <button 

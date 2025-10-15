@@ -130,4 +130,10 @@ public class MedicalReportService implements IMedicalReportService {
                 .createdAt(mr.getCreatedAt())
                 .build();
     }
+    @Override
+    public MedicalReport findById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Medical report not found with id " + id));
+    }
+
 }
