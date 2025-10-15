@@ -2,12 +2,15 @@
 package com.iis.PetClinic.service.impl;
 
 
+import com.iis.PetClinic.dto.response.ServiceDTO;
 import com.iis.PetClinic.model.Service;
 import com.iis.PetClinic.repository.IClinicServiceRepository;
 
 
 import com.iis.PetClinic.service.IClinicService;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
@@ -27,6 +30,20 @@ public class ClinicServiceServiceImpl implements IClinicService {
         existing.setAnimalType(s.getAnimalType());
         return repo.save(existing);
     }
+    public List<ServiceDTO> findAllServices() {
+        return repo.findAll()
+                .stream()
+                .map(s -> ServiceDTO.builder()
+                        .id(s.getId())
+                        .name(s.getName())
+                        .description(s.getDescription())
+                        .clientType(s.getClientType().name())
+                        .animalTypeId(s.getAnimalType().getId())
+                        .animalTypeName(s.getAnimalType().getName())
+                        .build())
+                .toList();
+    }
+
 
     @Override public void delete(Long id) { repo.deleteById(id); }
 }

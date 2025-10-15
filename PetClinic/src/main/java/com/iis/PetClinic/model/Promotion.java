@@ -2,16 +2,12 @@ package com.iis.PetClinic.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor @Builder
 public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,11 +35,16 @@ public class Promotion {
     private AnimalType animalType;
 
     @Column(precision = 12, scale = 2)
-    private BigDecimal value; // used for percentage/fixed discount; null for free service
+    private BigDecimal value; // za procent/fiksni popust; null za besplatnu uslugu
 
     @Column(nullable = false)
     private LocalDateTime startDate;
 
     @Column
-    private LocalDateTime endDate; // nullable = unlimited duration
+    private LocalDateTime endDate; // null = neograničeno
+
+    // NOVO: veza na cenovnik
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "price_list_id")
+    private PriceList priceList;
 }

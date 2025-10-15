@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PriceAdminPage.css';
 
+
 const API_BASE = 'http://localhost:8080/api';
 
 // Component for individual price list item row with inline editing
@@ -47,33 +48,120 @@ const PriceListItemRow = ({ item, onUpdatePrice, onDelete, services }) => {
       <td>
         {isEditing ? (
           <div className="edit-actions">
-            <button className="save-btn" onClick={handleSavePrice}>
-              Sačuvaj
-            </button>
-            <button className="cancel-btn" onClick={handleCancelEdit}>
-              Otkaži
-            </button>
+            <button className="save-btn" onClick={handleSavePrice}>Sačuvaj</button>
+            <button className="cancel-btn" onClick={handleCancelEdit}>Otkaži</button>
           </div>
         ) : (
           <div className="item-actions">
-            <button className="edit-btn" onClick={() => setIsEditing(true)}>
-              Izmeni
-            </button>
-            <button className="delete-btn" onClick={() => onDelete(item.id)}>
-              Obriši
-            </button>
+            <button className="edit-btn" onClick={() => setIsEditing(true)}>Izmeni</button>
+            <button className="delete-btn" onClick={() => onDelete(item.id)}>Obriši</button>
           </div>
         )}
       </td>
     </tr>
   );
-};
-
-function PriceAdminPage() {
-  const navigate = useNavigate();
-  const [currentPriceList, setCurrentPriceList] = useState(null);
-  const [priceListHistory, setPriceListHistory] = useState([]);
-  const [services, setServices] = useState([]);
+                <button className="add-btn" onClick={() => setShowAddForm(true)}>
+                  Dodaj stavku u cenovnik
+                </button>
+                <button className="save-version-btn" onClick={handleSaveVersion}>
+                  Sačuvaj verziju
+                </button>
+                <button className="scroll-promotions-btn" onClick={scrollToPromotions}>
+                  Skroluj do promocija
+                </button>
+              </div>
+              <section className="price-list-section" ref={promotionsListRef}>
+                <h3>Cenovnik {currentPriceList?.id}</h3>
+                <table className="price-list-table">
+                  <thead>
+                    <tr>
+                      <th>Usluga</th>
+                      <th>Životinja</th>
+                      <th>Klijent</th>
+                      <th>Cena (RSD)</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentPriceList?.items?.map(item => (
+                      <PriceListItemRow 
+                        key={item.id} 
+                        item={item} 
+                        services={services}
+                        onUpdatePrice={handleUpdatePrice}
+                        onDelete={handleDeleteItem}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              </section>
+              {/* Promotion section visually below price list */}
+              <div style={{ marginTop: '32px' }}>
+                <section className="promotion-section">
+                  <button className="add-promotion-btn" style={{ marginBottom: '10px' }} onClick={() => setShowAddPromotionForm(true)}>
+                    Dodaj promociju
+                  </button>
+                  <div style={{ marginBottom: '8px' }}>
+                    <b>Promocije</b>
+                    <div style={{ fontSize: '14px', color: '#6B7280' }}>
+                      Kreiranje, aktiviranje/deaktiviranje, izmena
+                    </div>
+                  </div>
+                  <table className="promotion-table">
+                    <thead>
+                      <tr>
+                        <th>Naziv</th>
+                        <th>Tip popusta</th>
+                        <th>Period</th>
+                        <th>Status</th>
+                        <th>Akcije</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {promotions.map((promo) => (
+                        <tr key={promo.id}>
+                          <td>{promo.name}</td>
+                          <td>{promo.discountType} {promo.discountValue ? `(${promo.discountValue})` : ''}</td>
+                          <td>{promo.periodFrom} - {promo.periodTo}</td>
+                          <td>
+                            {promo.status === 'Aktivna' ? (
+                              <span style={{ background: '#D1FAE5', color: '#059669', borderRadius: '12px', padding: '2px 12px', fontSize: '13px' }}>Aktivna</span>
+                            ) : (
+                              <span style={{ background: '#FFF7E0', color: '#B45309', borderRadius: '12px', padding: '2px 12px', fontSize: '13px' }}>Neaktivna</span>
+                            )}
+                          </td>
+                          <td>
+                            <button className="edit-btn">Izmeni</button>
+                            {promo.status === 'Aktivna' ? (
+                              <button className="deactivate-btn">Deaktiviraj</button>
+                            ) : (
+                              <button className="activate-btn">Aktiviraj</button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {showAddPromotionForm && (
+                    <div className="modal-overlay">
+                      <div className="modal">
+                        <h3>Dodaj promociju</h3>
+                        <form onSubmit={handleAddPromotion}>
+                          <input type="text" placeholder="Naziv" value={newPromotion.name} onChange={e => setNewPromotion({ ...newPromotion, name: e.target.value })} required />
+                          <input type="text" placeholder="Tip popusta" value={newPromotion.discountType} onChange={e => setNewPromotion({ ...newPromotion, discountType: e.target.value })} required />
+                          <input type="text" placeholder="Vrednost popusta" value={newPromotion.discountValue} onChange={e => setNewPromotion({ ...newPromotion, discountValue: e.target.value })} required />
+                          <input type="date" placeholder="Od" value={newPromotion.periodFrom} onChange={e => setNewPromotion({ ...newPromotion, periodFrom: e.target.value })} required />
+                          <input type="date" placeholder="Do" value={newPromotion.periodTo} onChange={e => setNewPromotion({ ...newPromotion, periodTo: e.target.value })} required />
+                          <button type="submit">Dodaj</button>
+                          <button type="button" onClick={() => setShowAddPromotionForm(false)}>Otkaži</button>
+                        </form>
+                      </div>
+                    </div>
+                  )}
+                </section>
+              </div>
+            </div>
+            <div className="right-section">
   const [animalTypes, setAnimalTypes] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showAddServiceModal, setShowAddServiceModal] = useState(false);
@@ -87,13 +175,70 @@ function PriceAdminPage() {
     clientType: 'INDIVIDUAL',
     animalTypeId: ''
   });
+  // Promotion state
+  const [promotions, setPromotions] = useState([]);
+  const [showAddPromotionForm, setShowAddPromotionForm] = useState(false);
+  const [newPromotion, setNewPromotion] = useState({
+    name: '',
+    discountType: '',
+    discountValue: '',
+    periodFrom: '',
+    periodTo: '',
+    status: 'Aktivna'
+  });
+  // Refs for scrolling
+  const addButtonRef = React.useRef(null);
+  const promotionsListRef = React.useRef(null);
+  // Scroll to Dodaj button and promotions list
+  const scrollToPromotions = () => {
+    if (addButtonRef.current) {
+      addButtonRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    if (promotionsListRef.current) {
+      promotionsListRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   useEffect(() => {
     fetchCurrentPriceList();
     fetchPriceListHistory();
     fetchServices();
     fetchAnimalTypes();
+    fetchPromotions();
   }, []);
+
+  // Promotion API
+  const fetchPromotions = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/promotions/all');
+      if (response.ok) {
+        const data = await response.json();
+        setPromotions(data);
+      }
+    } catch (error) {
+      console.error('Error fetching promotions:', error);
+    }
+  };
+
+  const handleAddPromotion = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:8080/api/promotions/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newPromotion),
+      });
+      if (response.ok) {
+        await fetchPromotions();
+        setShowAddPromotionForm(false);
+        setNewPromotion({ name: '', discountType: '', discountValue: '', periodFrom: '', periodTo: '', status: 'Aktivna' });
+      }
+    } catch (error) {
+      console.error('Error adding promotion:', error);
+    }
+  };
 
   const fetchCurrentPriceList = async () => {
     try {
@@ -337,7 +482,7 @@ function PriceAdminPage() {
 
 
   return (
-    <div className="price-admin-container">
+    <div className="price-admin-container" style={{ height: '100vh', overflowY: 'auto' }}>
       <div className="price-admin-header">
         <div className="logo-title">
           <h2>PetClinic</h2>
@@ -349,14 +494,14 @@ function PriceAdminPage() {
         <button className="logout-btn" onClick={handleLogout}>Log out</button>
       </div>
       
-      <main className="price-admin-main">
+  <main className="price-admin-main" style={{ minHeight: '100vh', overflowY: 'auto' }}>
         <div className="main-header">
           <h1>Cenovnik usluga</h1>
         </div>
         
         <div className="content-wrapper">
           <div className="left-section">
-            <div className="action-buttons-row">
+            <div className="action-buttons-row" ref={addButtonRef}>
               <button className="add-service-btn" onClick={() => setShowAddServiceModal(true)}>
                 Dodaj uslugu
               </button>
@@ -366,11 +511,12 @@ function PriceAdminPage() {
               <button className="save-version-btn" onClick={handleSaveVersion}>
                 Sačuvaj verziju
               </button>
+              <button className="scroll-promotions-btn" onClick={scrollToPromotions}>
+                Skroluj do promocija
+              </button>
             </div>
-            
-            <section className="price-list-section">
+            <section className="price-list-section" ref={promotionsListRef}>
               <h3>Cenovnik {currentPriceList?.id}</h3>
-              
               <table className="price-list-table">
                 <thead>
                   <tr>
@@ -394,8 +540,74 @@ function PriceAdminPage() {
                 </tbody>
               </table>
             </section>
+            {/* Promotion Section - moved below price list */}
           </div>
-          
+          {/* Promotion section visually below price list - removed duplicate */}
+          {/* Promotion section visually below price list */}
+          <div style={{ gridColumn: '1 / -1', marginTop: '32px' }}>
+            <section className="promotion-section">
+              <button className="add-promotion-btn" style={{ marginBottom: '10px' }} onClick={() => setShowAddPromotionForm(true)}>
+                Dodaj promociju
+              </button>
+              <div style={{ marginBottom: '8px' }}>
+                <b>Promocije</b>
+                <div style={{ fontSize: '14px', color: '#6B7280' }}>
+                  Kreiranje, aktiviranje/deaktiviranje, izmena
+                </div>
+              </div>
+              <table className="promotion-table">
+                <thead>
+                  <tr>
+                    <th>Naziv</th>
+                    <th>Tip popusta</th>
+                    <th>Period</th>
+                    <th>Status</th>
+                    <th>Akcije</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {promotions.map((promo) => (
+                    <tr key={promo.id}>
+                      <td>{promo.name}</td>
+                      <td>{promo.discountType} {promo.discountValue ? `(${promo.discountValue})` : ''}</td>
+                      <td>{promo.periodFrom} - {promo.periodTo}</td>
+                      <td>
+                        {promo.status === 'Aktivna' ? (
+                          <span style={{ background: '#D1FAE5', color: '#059669', borderRadius: '12px', padding: '2px 12px', fontSize: '13px' }}>Aktivna</span>
+                        ) : (
+                          <span style={{ background: '#FFF7E0', color: '#B45309', borderRadius: '12px', padding: '2px 12px', fontSize: '13px' }}>Neaktivna</span>
+                        )}
+                      </td>
+                      <td>
+                        <button className="edit-btn">Izmeni</button>
+                        {promo.status === 'Aktivna' ? (
+                          <button className="deactivate-btn">Deaktiviraj</button>
+                        ) : (
+                          <button className="activate-btn">Aktiviraj</button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {showAddPromotionForm && (
+                <div className="modal-overlay">
+                  <div className="modal">
+                    <h3>Dodaj promociju</h3>
+                    <form onSubmit={handleAddPromotion}>
+                      <input type="text" placeholder="Naziv" value={newPromotion.name} onChange={e => setNewPromotion({ ...newPromotion, name: e.target.value })} required />
+                      <input type="text" placeholder="Tip popusta" value={newPromotion.discountType} onChange={e => setNewPromotion({ ...newPromotion, discountType: e.target.value })} required />
+                      <input type="text" placeholder="Vrednost popusta" value={newPromotion.discountValue} onChange={e => setNewPromotion({ ...newPromotion, discountValue: e.target.value })} required />
+                      <input type="date" placeholder="Od" value={newPromotion.periodFrom} onChange={e => setNewPromotion({ ...newPromotion, periodFrom: e.target.value })} required />
+                      <input type="date" placeholder="Do" value={newPromotion.periodTo} onChange={e => setNewPromotion({ ...newPromotion, periodTo: e.target.value })} required />
+                      <button type="submit">Dodaj</button>
+                      <button type="button" onClick={() => setShowAddPromotionForm(false)}>Otkaži</button>
+                    </form>
+                  </div>
+                </div>
+              )}
+            </section>
+          </div>
           <div className="right-section">
             <div className="history-section">
               <h3>Istorija cenovnika</h3>

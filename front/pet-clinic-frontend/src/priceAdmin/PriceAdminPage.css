@@ -3,8 +3,8 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-y: auto;
-}
-.price-admin-container {
+/* removed extra closing brace */
+ .price-admin-container {
   min-height: 100vh;
   height: 100vh;
   background: linear-gradient(135deg, #F7FAFF 0%, #EEF4FF 100%);
@@ -12,6 +12,27 @@ html, body {
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
+ }
+
+ .price-admin-main {
+  min-height: 100vh;
+  overflow-y: auto;
+ }
+
+ .scroll-promotions-btn {
+   background: #2979ff;
+   color: #fff;
+   border: none;
+   border-radius: 6px;
+   padding: 8px 18px;
+   font-size: 15px;
+   cursor: pointer;
+   margin-left: 8px;
+   transition: background 0.2s;
+ }
+ .scroll-promotions-btn:hover {
+   background: #1565c0;
+ }
 }
 
 .price-admin-container::before,

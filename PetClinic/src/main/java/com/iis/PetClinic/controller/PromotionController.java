@@ -1,6 +1,7 @@
 // com/iis/PetClinic/controller/PromotionController.java
 package com.iis.PetClinic.controller;
 
+import com.iis.PetClinic.dto.response.PromotionDTO;
 import com.iis.PetClinic.model.Promotion;
 import com.iis.PetClinic.service.IPromotionService;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,10 @@ public class PromotionController {
     private final IPromotionService promotionService;
 
     @GetMapping("/all")
-    public List<Promotion> getAll() {
-        return promotionService.getAllPromotions();
+    public List<PromotionDTO> getAll() {
+        return promotionService.getAllPromotionDTOs();
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Promotion> getById(@PathVariable Long id) {

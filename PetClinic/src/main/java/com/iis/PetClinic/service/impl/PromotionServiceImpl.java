@@ -1,6 +1,7 @@
 // com/iis/PetClinic/service/impl/PromotionServiceImpl.java
 package com.iis.PetClinic.service.impl;
 
+import com.iis.PetClinic.dto.response.PromotionDTO;
 import com.iis.PetClinic.model.Promotion;
 import com.iis.PetClinic.repository.IPromotionRepository;
 
@@ -56,4 +57,27 @@ public class PromotionServiceImpl implements IPromotionService {
         }
         repo.deleteById(id);
     }
+
+    public List<PromotionDTO> getAllPromotionDTOs() {
+        return repo.findAll().stream()
+                .map(p -> PromotionDTO.builder()
+                        .id(p.getId())
+                        .name(p.getName())
+                        .benefitType(p.getBenefitType().name())
+                        .status(p.getStatus().name())
+                        .clientType(p.getClientType().name())
+                        .serviceId(p.getService().getId())
+                        .serviceName(p.getService().getName())
+                        .animalTypeId(p.getAnimalType().getId())
+                        .animalTypeName(p.getAnimalType().getName())
+                        .value(p.getValue())
+                        .startDate(p.getStartDate())
+                        .endDate(p.getEndDate())
+                        .priceListId(p.getPriceList().getId())
+                        .priceListName(p.getPriceList().getName())        // ako postoji getName()
+                        .priceListStatus(p.getPriceList().getStatus().name()) // ako postoji getStatus()
+                        .build())
+                .toList();
+    }
+
 }

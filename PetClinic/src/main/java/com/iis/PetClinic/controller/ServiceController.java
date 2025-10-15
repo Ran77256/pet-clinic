@@ -1,6 +1,7 @@
 // com/iis/PetClinic/controller/ServiceController.java
 package com.iis.PetClinic.controller;
 
+import com.iis.PetClinic.dto.response.ServiceDTO;
 import com.iis.PetClinic.model.Service;
 import com.iis.PetClinic.service.impl.ClinicServiceServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,10 @@ public class ServiceController {
 
     // ✅ Get all services
     @GetMapping("/all")
-    public List<Service> getAllServices() {
-        return serviceEntityService.findAll();
+    public List<ServiceDTO> getAllServices() {
+        return serviceEntityService.findAllServices();
     }
+
 
     // ✅ Get one service by ID
     @GetMapping("/{id}")

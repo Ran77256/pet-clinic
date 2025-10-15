@@ -1,6 +1,7 @@
 // com/iis/PetClinic/service/PromotionService.java
 package com.iis.PetClinic.service;
 
+import com.iis.PetClinic.dto.response.PromotionDTO;
 import com.iis.PetClinic.model.Promotion;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface IPromotionService {
     Promotion addPromotion(Promotion promotion);
     Promotion updatePromotion(Long id, Promotion updatedPromotion);
     void deletePromotion(Long id);
+
+    List<PromotionDTO> getAllPromotionDTOs();
 }
