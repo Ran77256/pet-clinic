@@ -1,0 +1,535 @@
+.vet-pet-details {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.vet-pet-details-header {
+  background: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.brand-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.pet-clinic-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e40af;
+  margin: 0;
+}
+
+.ambulanta-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.logout-btn:hover {
+  color: #1e293b;
+}
+
+.navigation-bar {
+  background: white;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #e2e8f0;
+  position: relative;
+}
+
+/* Navigation back button removed */
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.vet-pet-details-content {
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.pet-info-section,
+.owner-info-section {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #3b82f6;
+}
+
+.pet-name-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #3b82f6;
+  margin: 0 0 20px 0;
+}
+
+.info-table {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #475569;
+  font-size: 14px;
+}
+
+.info-value {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.pet-description {
+  margin-top: 25px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.pet-description h4 {
+  margin: 0 0 10px 0;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.pet-description p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.health-conditions-section {
+  margin-top: 25px;
+}
+
+.health-conditions-section h4 {
+  margin: 0 0 15px 0;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.health-conditions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.health-condition-badge {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.owner-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.placeholder-text {
+  color: #64748b;
+  font-style: italic;
+}
+
+.medical-actions-section {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin: 0 40px 40px 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.medical-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.medical-action-btn:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.action-icon {
+  font-size: 32px;
+}
+
+.action-text {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.vet-pet-details-loading,
+.vet-pet-details-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+.loading-spinner {
+  font-size: 18px;
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.btn-back {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.btn-back:hover {
+  background: #2563eb;
+}
+
+/* Pets List Styles */
+.vet-pets-list-content {
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.pets-section {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.pet-card {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+.pet-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1);
+  transform: translateY(-2px);
+}
+
+.pet-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.pet-card-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.pet-card-type {
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pet-card-info {
+  margin-bottom: 15px;
+}
+
+.pet-info-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.pet-info-item .info-label {
+  font-weight: 600;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.pet-info-item .info-value {
+  color: #1e293b;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.pet-health-conditions {
+  margin-bottom: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.health-label {
+  font-weight: 600;
+  color: #64748b;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.health-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.health-condition-badge-small {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.health-more {
+  background: #e2e8f0;
+  color: #64748b;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.pet-card-actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 15px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.add-report-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+}
+
+.add-report-btn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transform: translateY(-1px);
+}
+
+.no-pets-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.placeholder-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.no-pets-placeholder .placeholder-text {
+  color: #64748b;
+  font-size: 16px;
+  font-style: italic;
+}
+
+/* Current Medications on Pet Cards */
+.pet-current-medications {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.current-items-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.items-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.current-item-badge {
+  padding: 3px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.current-item-badge.medicine {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.current-item-badge.food {
+  background: #fef3c7;
+  color: #a16207;
+}
+
+.items-more {
+  background: #e2e8f0;
+  color: #64748b;
+  padding: 3px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.no-current-medications {
+  color: #9ca3af;
+  font-style: italic;
+  font-size: 11px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .vet-pet-details-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .vet-pets-list-content {
+    padding: 20px;
+  }
+  
+  .pets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  
+  .vet-pet-details-header {
+    padding: 15px 20px;
+  }
+  
+  .navigation-bar {
+    padding: 15px 20px;
+  }
+  
+  .medical-actions-section {
+    margin: 0 20px 20px 20px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .action-buttons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .vet-pet-details-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .action-buttons {
+    order: 2;
+  }
+  
+  .user-section {
+    order: 1;
+  }
+}

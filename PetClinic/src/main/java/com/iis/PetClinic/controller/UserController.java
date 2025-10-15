@@ -3,6 +3,7 @@ package com.iis.PetClinic.controller;
 import com.iis.PetClinic.dto.request.LoginDTO;
 import com.iis.PetClinic.dto.request.RegisterDTO;
 import com.iis.PetClinic.dto.response.LoginResponse;
+import com.iis.PetClinic.dto.response.UserDTO;
 import com.iis.PetClinic.model.User;
 import com.iis.PetClinic.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,27 @@ public class UserController {
         return userService.register(registerDTO);
     }
     @GetMapping("/user")
-    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
-        return ResponseEntity.ok(userService.getUserByEmail(email));
+    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email) {
+        UserDTO user = userService.getUserByEmail(email);
+
+        UserDTO dto = UserDTO.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .lastActivated(user.getLastActivated())
+                // ako želiš da se vrate i ljubimci (ako imaš PetDTO)
+                //.pets(user.getPets().stream().map(PetDTO::fromEntity).toList())
+                .build();
+
+        return ResponseEntity.ok(dto);
+    }
+
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
 }

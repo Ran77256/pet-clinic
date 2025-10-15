@@ -11,6 +11,7 @@ const PetDetails = () => {
   const [veterinarian, setVeterinarian] = useState(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [reports, setReports] = useState([]);
 
   useEffect(() => {
     // Get user data from localStorage
@@ -54,6 +55,9 @@ const PetDetails = () => {
         if (petData.veterinarianId) {
           await fetchVeterinarian(petData.veterinarianId);
         }
+        
+        // Fetch medical reports for this pet
+        await fetchPetReports();
       } else if (response.status === 404) {
         console.error('❌ Pet not found (404)');
         setPet(null); // Eksplicitno postavi na null da prikaže error state
@@ -102,6 +106,80 @@ const PetDetails = () => {
     } catch (error) {
       console.error('❌ Error fetching veterinarian details:', error);
       setVeterinarian(null);
+    }
+  };
+
+  const fetchPetReports = async () => {
+    try {
+      console.log('Fetching medical reports for pet ID:', petId);
+
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      };
+
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const response = await fetch(`${API_BASE}/reports/by-pet/${petId}`, { headers });
+
+      if (response.ok) {
+        const reportsData = await response.json();
+        console.log('✅ Pet reports received:', reportsData);
+        setReports(Array.isArray(reportsData) ? reportsData : []);
+      } else {
+        console.error('❌ Failed to fetch pet reports:', response.status);
+        setReports([]);
+      }
+    } catch (error) {
+      console.error('❌ Error fetching pet reports:', error);
+      setReports([]);
+    }
+  };
+
+  const handleGeneratePDF = async (reportId, reportName) => {
+    try {
+      console.log('Generating PDF for report:', reportId);
+      
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Accept': 'application/pdf'
+      };
+
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const response = await fetch(`${API_BASE}/reports/${reportId}/pdf`, { headers });
+
+      if (response.ok) {
+        // Create blob from response
+        const blob = await response.blob();
+        
+        // Create download link
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${reportName}_${new Date().toISOString().split('T')[0]}.pdf`;
+        
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+        
+        // Cleanup
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        
+        console.log('✅ PDF downloaded successfully');
+      } else {
+        console.error('❌ Failed to generate PDF:', response.status);
+        alert('Greška pri generisanju PDF-a. Pokušajte ponovo.');
+      }
+    } catch (error) {
+      console.error('❌ Error generating PDF:', error);
+      alert('Greška pri generisanju PDF-a. Pokušajte ponovo.');
     }
   };
 
@@ -244,12 +322,41 @@ const PetDetails = () => {
         <div className="reports-section">
           <h2 className="section-title">Izveštaji doktora</h2>
           
-          <div className="reports-placeholder">
-            <p className="placeholder-text">
-              Izveštaji doktora će biti dodani u budućoj verziji.
-            </p>
-            <div className="placeholder-icon">📋</div>
-          </div>
+          {reports.length > 0 ? (
+            <div className="reports-list">
+              {reports.map((report) => (
+                <div key={report.id} className="report-item">
+                  <div className="report-info">
+                    <div className="report-date">
+                      {report.datum ? new Date(report.datum).toLocaleDateString('sr-RS') : 'N/A'} — dr {report.veterinarian?.firstName || ''} {report.veterinarian?.lastName || 'N/A'}
+                    </div>
+                    <div className="report-title">
+                      {report.ime || 'Bez naziva'}
+                    </div>
+                    {report.dijagnoza && (
+                      <div className="report-diagnosis">
+                        {report.dijagnoza}
+                      </div>
+                    )}
+                  </div>
+                  <button 
+                    className="pdf-btn"
+                    onClick={() => handleGeneratePDF(report.id, report.ime || 'Izvestaj')}
+                    title="Preuzmi PDF"
+                  >
+                    PDF
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="reports-placeholder">
+              <p className="placeholder-text">
+                Nema dostupnih izveštaja za ovog ljubimca.
+              </p>
+              <div className="placeholder-icon">📋</div>
+            </div>
+          )}
         </div>
       </div>
     </div>

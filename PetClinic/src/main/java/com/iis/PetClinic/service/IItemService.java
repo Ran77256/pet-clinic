@@ -9,4 +9,5 @@ import java.util.List;
 public interface IItemService {
     List<ItemResponse> getAllItemsForCategory(int categoryId);
     ItemResponse getItemById(int id);
+
 }
