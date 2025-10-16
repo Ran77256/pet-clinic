@@ -203,7 +203,7 @@ function UserDashboard() {
   };
 
   const handlePriceList = () => {
-    navigate('/price-list');
+    navigate('/user-price-list');
   };
 
   const handleScheduleAppointment = () => {
