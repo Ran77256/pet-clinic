@@ -90,6 +90,9 @@ const LoginForm = () => {
       } else if (userRole === 'ANIMALS_ADMIN') {
         console.log('Navigating to /animal-admin');
         navigate('/animal-admin');
+      } else if (userRole === 'MANAGER') {
+        console.log('Navigating to /manager-dashboard for MANAGER role');
+        navigate('/manager-dashboard');
       } else if (userRole === 'USER') {
         console.log('Explicitly navigating to /user for USER role');
         navigate('/user');

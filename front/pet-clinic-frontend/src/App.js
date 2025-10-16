@@ -18,6 +18,11 @@ import PriceAdminPage from './priceAdmin/PriceAdminPage';
 import PriceListPage from './priceList/PriceListPage';
 import UserPriceList from './userPriceList/UserPriceList';
 import ScheduleAppointmentPage from './appointment/ScheduleAppointmentPage';
+import AnalyticsPage from './analytics/AnalyticsPage';
+import ManagerDashboard from './manager/ManagerDashboard';
+import MedicamentsPage from './medicaments/MedicamentsPage';
+import PricingPage from './pricing/PricingPage';
+import StaffPage from './staff/StaffPage';
 
 import ItemsPage from './pages/warehouseAdmin/catalog/itemsPage/ItemsPage';
 import ProductDetails from './pages/warehouseAdmin/productDetailsTable/ProductDetails';
@@ -53,6 +58,11 @@ function App() {
         <Route path="/price-list" element={<PriceListPage />} />
         <Route path="/user-price-list" element={<UserPriceList />} />
         <Route path="/schedule-appointment" element={<ScheduleAppointmentPage />} />
+        <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/manager-dashboard" element={<ManagerDashboard />} />
+        <Route path="/medicaments" element={<MedicamentsPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/staff" element={<StaffPage />} />
         
 
 
