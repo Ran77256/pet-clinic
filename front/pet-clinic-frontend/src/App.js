@@ -16,6 +16,7 @@ import CreateMedicalReport from './medicalReport/CreateMedicalReport';
 
 import PriceAdminPage from './priceAdmin/PriceAdminPage';
 import PriceListPage from './priceList/PriceListPage';
+import UserPriceList from './userPriceList/UserPriceList';
 import ScheduleAppointmentPage from './appointment/ScheduleAppointmentPage';
 
 import ItemsPage from './pages/warehouseAdmin/catalog/itemsPage/ItemsPage';
@@ -50,6 +51,7 @@ function App() {
         <Route path="/create-medical-report/:petId/:veterinarianId" element={<CreateMedicalReport />} />
 
         <Route path="/price-list" element={<PriceListPage />} />
+        <Route path="/user-price-list" element={<UserPriceList />} />
         <Route path="/schedule-appointment" element={<ScheduleAppointmentPage />} />
         
 
