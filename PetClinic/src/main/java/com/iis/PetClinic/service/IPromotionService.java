@@ -15,4 +15,9 @@ public interface IPromotionService {
     void deletePromotion(Long id);
 
     List<PromotionDTO> getAllPromotionDTOs();
+    Promotion activatePromotion(Long id);
+    Promotion deactivatePromotion(Long id);
+    void updatePromotionStatuses();
+    void applyPromotionToPriceLists(Long promotionId);
+    void applyPromotionToAllPriceLists(Long promotionId);
 }

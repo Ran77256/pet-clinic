@@ -113,5 +113,16 @@ public class PriceListController {
 
         return ResponseEntity.ok(dtos);
     }
+    @GetMapping("/getall")
+    public ResponseEntity<java.util.List<PriceListDTO>> getAll(
+
+    ) {
+        var all = priceListRepo.findAll(); // radi odmah; vidi napomenu ispod za optimizaciju
+        var dtos = all.stream()
+                .map(pl -> toDTO(pl))
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
+
 
 }

@@ -3,6 +3,8 @@ package com.iis.PetClinic.dto.response;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor @Builder
@@ -13,10 +15,16 @@ public class PromotionDTO {
     private String status;        // enum → String
     private String clientType;    // enum → String
 
-    private Long serviceId;
-    private String serviceName;
+    private List<ServiceInfo> services = new ArrayList<>();
 
     private Long animalTypeId;
+
+    @Getter @Setter
+    @NoArgsConstructor @AllArgsConstructor
+    public static class ServiceInfo {
+        private Long id;
+        private String name;
+    }
     private String animalTypeName;
 
     private BigDecimal value;

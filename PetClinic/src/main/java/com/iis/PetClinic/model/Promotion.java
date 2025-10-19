@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -25,13 +27,18 @@ public class Promotion {
     private Status status;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private ClientType clientType; // INDIVIDUAL / FARM / SHELTER
 
-    @ManyToOne(optional = false)
-    private Service service;
+    @ManyToMany
+    @JoinTable(
+        name = "promotion_services",
+        joinColumns = @JoinColumn(name = "promotion_id"),
+        inverseJoinColumns = @JoinColumn(name = "service_id")
+    )
+    private Set<Service> services = new HashSet<>();
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private AnimalType animalType;
 
     @Column(precision = 12, scale = 2)
@@ -43,8 +50,5 @@ public class Promotion {
     @Column
     private LocalDateTime endDate; // null = neograničeno
 
-    // NOVO: veza na cenovnik
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "price_list_id")
-    private PriceList priceList;
+
 }

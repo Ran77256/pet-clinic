@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class PriceListItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,5 +26,8 @@ public class PriceListItem {
     private Service service;
 
     @Column(nullable=false, precision=12, scale=2)
-    private BigDecimal price; // cena za ovu uslugu u ovoj verziji
+    private BigDecimal price; // originalna cena za ovu uslugu
+
+    @Column(precision=12, scale=2)
+    private BigDecimal promotionalPrice; // cena sa primenjenim popustom
 }

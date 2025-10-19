@@ -16,5 +16,6 @@ public class PriceListItemDTO {
 
     private String serviceName; // naziv usluge (za prikaz)
 
-    private BigDecimal price; // cena u RSD
+    private BigDecimal price; // originalna cena u RSD
+    private BigDecimal promotionalPrice; // cena sa popustom u RSD
 }

@@ -5,7 +5,8 @@ public enum Status {
     RECEIVED,
     CANCELED,
     ACTIVE,
-
     INACTIVE,
-    SOON
+    SOON,
+    PENDING,
+    EXPIRED
 }

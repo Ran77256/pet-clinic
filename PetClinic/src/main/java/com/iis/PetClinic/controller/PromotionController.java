@@ -1,8 +1,8 @@
-// com/iis/PetClinic/controller/PromotionController.java
 package com.iis.PetClinic.controller;
 
 import com.iis.PetClinic.dto.response.PromotionDTO;
 import com.iis.PetClinic.model.Promotion;
+import com.iis.PetClinic.model.Status;
 import com.iis.PetClinic.service.IPromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/promotions")
 @RequiredArgsConstructor
+@CrossOrigin
 public class PromotionController {
 
     private final IPromotionService promotionService;
@@ -36,9 +37,12 @@ public class PromotionController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-
     public Promotion add(@RequestBody Promotion promotion) {
-        return promotionService.addPromotion(promotion);
+        Promotion savedPromotion = promotionService.addPromotion(promotion);
+        if (savedPromotion.getStatus() == Status.ACTIVE) {
+            promotionService.applyPromotionToPriceLists(savedPromotion.getId());
+        }
+        return savedPromotion;
     }
 
     @PutMapping("/update/{id}")
@@ -50,5 +54,27 @@ public class PromotionController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         promotionService.deletePromotion(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/activate")
+    public ResponseEntity<Promotion> activatePromotion(@PathVariable Long id) {
+        return ResponseEntity.ok(promotionService.activatePromotion(id));
+    }
+
+    @PostMapping("/{id}/deactivate")
+    public ResponseEntity<Promotion> deactivatePromotion(@PathVariable Long id) {
+        return ResponseEntity.ok(promotionService.deactivatePromotion(id));
+    }
+
+    @PostMapping("/{id}/apply")
+    public ResponseEntity<Void> applyPromotionToAllPriceLists(@PathVariable Long id) {
+        promotionService.applyPromotionToAllPriceLists(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/update-statuses")
+    public ResponseEntity<Void> updatePromotionStatuses() {
+        promotionService.updatePromotionStatuses();
+        return ResponseEntity.ok().build();
     }
 }

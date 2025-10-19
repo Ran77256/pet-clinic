@@ -1,0 +1,102 @@
+.create-promotion-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.radio-group {
+    margin-bottom: 1rem;
+}
+
+.radio-group label {
+    margin-right: 2rem;
+    font-weight: normal;
+}
+
+.date-inputs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.date-inputs input {
+    flex: 1;
+}
+
+.services-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.service-item {
+    margin-bottom: 0.5rem;
+}
+
+.service-item label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-cancel,
+.btn-save {
+    padding: 0.5rem 2rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.btn-save {
+    background: #4285f4;
+    color: white;
+}
+
+.btn-save:hover {
+    background: #3367d6;
+}
+
+.btn-cancel:hover {
+    background: #e0e0e0;
+}
