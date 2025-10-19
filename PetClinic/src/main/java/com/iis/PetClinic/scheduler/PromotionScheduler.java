@@ -11,8 +11,10 @@ public class PromotionScheduler {
 
     private final IPromotionService promotionService;
 
-    @Scheduled(cron = "0 0 * * * *") // Izvršava se na početku svakog sata
+    @Scheduled(fixedRate = 10000) // Izvršava se svakih 10 sekundi (za testiranje)
     public void updatePromotionStatuses() {
+        System.out.println("\n=== SCHEDULER: Checking promotion statuses ===");
         promotionService.updatePromotionStatuses();
+        System.out.println("=== SCHEDULER: Finished checking statuses ===\n");
     }
 }

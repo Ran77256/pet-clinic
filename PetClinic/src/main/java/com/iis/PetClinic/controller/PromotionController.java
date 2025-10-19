@@ -26,9 +26,12 @@ public class PromotionController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Promotion> getById(@PathVariable Long id) {
+    public ResponseEntity<PromotionDTO> getById(@PathVariable Long id) {
         return promotionService.getPromotionById(id)
-                .map(ResponseEntity::ok)
+                .map(promotion -> {
+                    PromotionDTO dto = promotionService.convertToDTO(promotion);
+                    return ResponseEntity.ok(dto);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -46,8 +49,9 @@ public class PromotionController {
     }
 
     @PutMapping("/update/{id}")
-    public Promotion update(@PathVariable Long id, @RequestBody Promotion updatedPromotion) {
-        return promotionService.updatePromotion(id, updatedPromotion);
+    public ResponseEntity<PromotionDTO> update(@PathVariable Long id, @RequestBody Promotion updatedPromotion) {
+        Promotion updated = promotionService.updatePromotion(id, updatedPromotion);
+        return ResponseEntity.ok(promotionService.convertToDTO(updated));
     }
 
     @DeleteMapping("/delete/{id}")

@@ -29,8 +29,8 @@ const EditPromotionPage = () => {
             
             setPromotionData({
                 name: promotion.name,
-                startDate: new Date(promotion.startDate).toISOString().split('T')[0],
-                endDate: new Date(promotion.endDate).toISOString().split('T')[0],
+                startDate: new Date(new Date(promotion.startDate).getTime() + new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16),
+                endDate: new Date(new Date(promotion.endDate).getTime() + new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16),
                 discountType: promotion.benefitType === 'PERCENTAGE_DISCOUNT' ? 'percent' : 'fixed',
                 discountValue: promotion.value.toString(),
                 selectedServices: promotion.services.map(s => s.id)
@@ -88,11 +88,23 @@ const EditPromotionPage = () => {
         e.preventDefault();
         
         try {
+            const now = new Date();
+            const startDate = new Date(promotionData.startDate);
+            const endDate = new Date(promotionData.endDate);
+            
+            // Add the timezone offset to keep the exact time selected
+            const startDateTime = new Date(startDate.getTime() - startDate.getTimezoneOffset() * 60000);
+            const endDateTime = new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60000);
+            
+            console.log('Selected start time:', promotionData.startDate);
+            console.log('Adjusted start time:', startDateTime.toISOString());
+            
             const requestData = {
                 name: promotionData.name,
-                startDate: new Date(promotionData.startDate).toISOString(),
-                endDate: new Date(promotionData.endDate).toISOString(),
+                startDate: startDateTime.toISOString(),
+                endDate: endDateTime.toISOString(),
                 benefitType: promotionData.discountType === 'percent' ? 'PERCENTAGE_DISCOUNT' : 'FIXED_AMOUNT_DISCOUNT',
+                status: startDate > now ? 'PENDING' : 'ACTIVE',
                 value: parseFloat(promotionData.discountValue),
                 services: promotionData.selectedServices.map(id => ({
                     id: id
@@ -167,17 +179,19 @@ const EditPromotionPage = () => {
                     <label>Period važenja</label>
                     <div className="date-inputs">
                         <input
-                            type="date"
+                            type="datetime-local"
                             name="startDate"
                             value={promotionData.startDate}
                             onChange={handleInputChange}
+                            step="60"
                         />
                         <span>do</span>
                         <input
-                            type="date"
+                            type="datetime-local"
                             name="endDate"
                             value={promotionData.endDate}
                             onChange={handleInputChange}
+                            step="60"
                         />
                     </div>
                 </div>

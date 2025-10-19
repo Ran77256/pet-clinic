@@ -13,13 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
-@org.springframework.stereotype.Service
+@Service
 @RequiredArgsConstructor
 public class PromotionalPricingServiceImpl implements IPromotionalPricingService {
 
@@ -29,9 +27,12 @@ public class PromotionalPricingServiceImpl implements IPromotionalPricingService
     @Override
     public BigDecimal calculatePromotionalPrice(BigDecimal originalPrice, Long serviceId) {
         // Pronađi sve aktivne promocije za datu uslugu
+        LocalDateTime now = LocalDateTime.now();
         var promotions = promotionRepository.findAll().stream()
                 .filter(p -> p.getStatus() == Status.ACTIVE)
                 .filter(p -> p.getServices().stream().anyMatch(s -> s.getId().equals(serviceId)))
+                .filter(p -> p.getStartDate().isBefore(now) && 
+                           (p.getEndDate() == null || p.getEndDate().isAfter(now)))
                 .toList();
 
         // Ako nema aktivnih promocija, vrati originalnu cenu
@@ -71,49 +72,46 @@ public class PromotionalPricingServiceImpl implements IPromotionalPricingService
         Promotion promotion = promotionRepository.findById(promotionId)
                 .orElseThrow(() -> new RuntimeException("Promotion not found with id: " + promotionId));
 
-        // Proveri da li je promocija aktivna
-        if (promotion.getStatus() != Status.ACTIVE) {
-            throw new RuntimeException("Cannot apply inactive promotion");
-        }
-
-        // Nađi sve stavke cenovnika za usluge na koje se odnosi promocija
-        List<PriceListItem> items = new ArrayList<>();
+        System.out.println("Applying promotion: " + promotion.getName() + " (ID: " + promotion.getId() + ")");
+        System.out.println("Current status: " + promotion.getStatus());
+        
+        // Za svaku uslugu na koju se odnosi promocija
         for (com.iis.PetClinic.model.Service service : promotion.getServices()) {
-            items.addAll(priceListItemRepository.findAllByServiceId(service.getId()));
-        }
-
-        // Primeni promociju na svaku stavku
-        for (PriceListItem item : items) {
-            BigDecimal discountedPrice = calculatePrice(item.getPrice(), promotion);
-            item.setPromotionalPrice(discountedPrice);
-            priceListItemRepository.save(item);
+            System.out.println("Processing service: " + service.getName() + " (ID: " + service.getId() + ")");
+            
+            // Nađi sve stavke cenovnika za tu uslugu
+            List<PriceListItem> items = priceListItemRepository.findAllByServiceId(service.getId());
+            System.out.println("Found " + items.size() + " price list items for service");
+            
+            // Za svaku stavku cenovnika izračunaj najbolju cenu uzimajući u obzir SVE aktivne promocije
+            for (PriceListItem item : items) {
+                BigDecimal originalPrice = item.getPrice();
+                BigDecimal currentPromotionalPrice = item.getPromotionalPrice();
+                
+                // calculatePromotionalPrice će uzeti u obzir sve aktivne promocije, uključujući i novu
+                BigDecimal bestPrice = calculatePromotionalPrice(originalPrice, service.getId());
+                
+                System.out.println("Price list item ID: " + item.getId());
+                System.out.println("  Original price: " + originalPrice);
+                System.out.println("  Current promotional price: " + currentPromotionalPrice);
+                System.out.println("  New calculated price: " + bestPrice);
+                
+                // Primeni novu cenu samo ako je bolja od trenutne
+                if (currentPromotionalPrice == null || bestPrice.compareTo(currentPromotionalPrice) < 0) {
+                    System.out.println("  -> Updating promotional price to: " + bestPrice);
+                    item.setPromotionalPrice(bestPrice);
+                    priceListItemRepository.save(item);
+                } else {
+                    System.out.println("  -> Keeping current promotional price");
+                }
+            }
         }
     }
 
     @Override
     @Transactional
     public void checkAndUpdatePromotionStatuses() {
-        LocalDateTime now = LocalDateTime.now();
-        List<Promotion> promotions = promotionRepository.findAll();
-        
-        for (Promotion promotion : promotions) {
-            // Aktiviraj promocije koje treba da počnu
-            if (promotion.getStatus() == Status.PENDING && 
-                promotion.getStartDate().isBefore(now)) {
-                promotion.setStatus(Status.ACTIVE);
-                promotionRepository.save(promotion);
-                applyPromotionToAllPriceLists(promotion.getId());
-            }
-            
-            // Deaktiviraj istekle promocije
-            if (promotion.getStatus() == Status.ACTIVE && 
-                promotion.getEndDate() != null && 
-                promotion.getEndDate().isBefore(now)) {
-                promotion.setStatus(Status.EXPIRED);
-                promotionRepository.save(promotion);
-                removePromotionFromPriceLists(promotion.getId());
-            }
-        }
+        // This has been moved to PromotionService to consolidate status management logic
     }
 
     @Override
@@ -128,9 +126,16 @@ public class PromotionalPricingServiceImpl implements IPromotionalPricingService
             items.addAll(priceListItemRepository.findAllByServiceId(service.getId()));
         }
 
-        // Resetuj promotivne cene
+        // Za svaku stavku, rekalkuliši cenu sa preostalim aktivnim promocijama
         for (PriceListItem item : items) {
-            item.setPromotionalPrice(null);
+            // calculatePromotionalPrice će uzeti u obzir sve preostale aktivne promocije
+            BigDecimal newPrice = calculatePromotionalPrice(item.getPrice(), item.getService().getId());
+            // Ako ima drugih aktivnih promocija, postavi novu cenu, inače postavi null
+            if (newPrice.compareTo(item.getPrice()) < 0) {
+                item.setPromotionalPrice(newPrice);
+            } else {
+                item.setPromotionalPrice(null);
+            }
             priceListItemRepository.save(item);
         }
     }

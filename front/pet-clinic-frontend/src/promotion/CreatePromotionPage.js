@@ -69,24 +69,34 @@ const CreatePromotionPage = () => {
         e.preventDefault();
         
         try {
+            // Kreiramo Date objekte iz input vrednosti
+            const startDate = new Date(promotionData.startDate);
+            const endDate = new Date(promotionData.endDate);
+            
+            // Kompenzujemo vremensku zonu
+            const offset = startDate.getTimezoneOffset() * 60000;
+            const fixedStartDate = new Date(startDate.getTime() + offset);
+            const fixedEndDate = new Date(endDate.getTime() + offset);
+            
+            console.log('Original start:', promotionData.startDate);
+            console.log('Fixed start:', fixedStartDate.toISOString());
+            console.log('Original end:', promotionData.endDate);
+            console.log('Fixed end:', fixedEndDate.toISOString());
+            
             const requestData = {
                 name: promotionData.name,
-                startDate: new Date(promotionData.startDate).toISOString(),
-                endDate: new Date(promotionData.endDate).toISOString(),
+                startDate: fixedStartDate.toISOString(),
+                endDate: fixedEndDate.toISOString(),
                 benefitType: promotionData.discountType === 'percent' ? 'PERCENTAGE_DISCOUNT' : 'FIXED_AMOUNT_DISCOUNT',
-                status: 'ACTIVE',
-                value: parseFloat(promotionData.discountValue),
+                status: 'PENDING', // Postavljamo na PENDING da bi scheduler aktivirao promociju
+                value: Number(promotionData.discountValue),
                 services: promotionData.selectedServices.map(id => ({
                     id: id
                 }))
             };
 
             const response = await axios.post('http://localhost:8080/api/promotions/add', requestData);
-            if (response.data && response.data.id && response.data.status === 'ACTIVE') {
-                // Ako je promocija aktivna, odmah je primenimo
-                await axios.post(`http://localhost:8080/api/promotions/${response.data.id}/apply`);
-            }
-            alert('Promocija je uspešno kreirana!');
+            alert('Promocija je uspešno kreirana! Biće aktivirana u zadato vreme.');
             navigate('/priceAdmin');
         } catch (error) {
             console.error('Error creating promotion:', error);
@@ -148,17 +158,19 @@ const CreatePromotionPage = () => {
                     <label>Period važenja</label>
                     <div className="date-inputs">
                         <input
-                            type="date"
+                            type="datetime-local"
                             name="startDate"
                             value={promotionData.startDate}
                             onChange={handleInputChange}
+                            min={new Date().toISOString().slice(0, 16)}
                         />
                         <span>do</span>
                         <input
-                            type="date"
+                            type="datetime-local"
                             name="endDate"
                             value={promotionData.endDate}
                             onChange={handleInputChange}
+                            min={promotionData.startDate || new Date().toISOString().slice(0, 16)}
                         />
                     </div>
                 </div>

@@ -28,8 +28,8 @@ const PriceListItemRow = ({ item, onUpdatePrice, onDelete, services }) => {
   return (
     <tr>
       <td>{item.serviceName || 'N/A'}</td>
-      <td>{serviceDetails?.animalType?.name || 'N/A'}</td>
-      <td>{serviceDetails?.clientType || 'N/A'}</td>
+      <td>{(serviceDetails && serviceDetails.animalType) ? serviceDetails.animalType.name : 'N/A'}</td>
+      <td>{(serviceDetails && serviceDetails.clientType) ? serviceDetails.clientType : 'N/A'}</td>
       <td>
         {isEditing ? (
           <div className="price-edit-container">
@@ -136,6 +136,10 @@ function PriceAdminPage() {
 
   const handleActivatePromotion = async (id) => {
     try {
+      if (!window.confirm('Da li ste sigurni da želite da aktivirate ovu promociju?')) {
+        return;
+      }
+
       // Prvo aktiviramo promociju
       const activateResponse = await fetch(`http://localhost:8080/api/promotions/${id}/activate`, {
         method: 'POST'
@@ -148,14 +152,16 @@ function PriceAdminPage() {
         });
         
         if (applyResponse.ok) {
-          fetchPromotions();
-          fetchCurrentPriceList(); // Osvežavamo cenovnik da bi se videle nove cene
+          await fetchPromotions(); // Prvo osvežimo listu promocija
+          await fetchCurrentPriceList(); // Zatim osvežimo cenovnik da vidimo nove cene
           alert('Promocija je uspešno aktivirana i primenjena na sve cenovnike');
         } else {
-          alert('Greška pri primeni promocije na cenovnike');
+          const errorData = await applyResponse.json().catch(() => null);
+          alert(errorData?.message || 'Greška pri primeni promocije na cenovnike');
         }
       } else {
-        alert('Greška pri aktiviranju promocije');
+        const errorData = await activateResponse.json().catch(() => null);
+        alert(errorData?.message || 'Greška pri aktiviranju promocije');
       }
     } catch (error) {
       console.error('Error activating promotion:', error);
@@ -165,14 +171,21 @@ function PriceAdminPage() {
 
   const handleDeactivatePromotion = async (id) => {
     try {
+      if (!window.confirm('Da li ste sigurni da želite da deaktivirate ovu promociju?')) {
+        return;
+      }
+
       const response = await fetch(`http://localhost:8080/api/promotions/${id}/deactivate`, {
         method: 'POST'
       });
+      
       if (response.ok) {
-        fetchPromotions();
-        fetchCurrentPriceList(); // Osvežavamo cenovnik da bi se videle originalne cene
+        await fetchPromotions(); // Prvo osvežimo listu promocija
+        await fetchCurrentPriceList(); // Zatim osvežimo cenovnik da vidimo nove/originalne cene
+        alert('Promocija je uspešno deaktivirana');
       } else {
-        alert('Greška pri deaktiviranju promocije');
+        const errorData = await response.json().catch(() => null);
+        alert(errorData?.message || 'Greška pri deaktiviranju promocije');
       }
     } catch (error) {
       console.error('Error deactivating promotion:', error);
@@ -527,13 +540,15 @@ function PriceAdminPage() {
                           <span style={{ background: '#FFF7E0', color: '#B45309', borderRadius: '12px', padding: '2px 12px', fontSize: '13px' }}>Na čekanju</span>
                         ) : promo.status === 'EXPIRED' ? (
                           <span style={{ background: '#FEE2E2', color: '#DC2626', borderRadius: '12px', padding: '2px 12px', fontSize: '13px' }}>Istekla</span>
+                        ) : promo.status === 'INACTIVE' ? (
+                          <span style={{ background: '#F3F4F6', color: '#6B7280', borderRadius: '12px', padding: '2px 12px', fontSize: '13px' }}>Neaktivna</span>
                         ) : (
-                          <span style={{ background: '#FFF7E0', color: '#B45309', borderRadius: '12px', padding: '2px 12px', fontSize: '13px' }}>Neaktivna</span>
+                          <span style={{ background: '#FFF7E0', color: '#B45309', borderRadius: '12px', padding: '2px 12px', fontSize: '13px' }}>{promo.status}</span>
                         )}
                       </td>
                       <td>
                         <button className="edit-btn" onClick={() => handleEditPromotion(promo.id)}>Izmeni</button>
-                        {promo.status !== 'ACTIVE' && promo.status !== 'EXPIRED' && (
+                        {(promo.status === 'PENDING' || promo.status === 'INACTIVE') && (
                           <button 
                             className="activate-btn"
                             onClick={() => handleActivatePromotion(promo.id)}

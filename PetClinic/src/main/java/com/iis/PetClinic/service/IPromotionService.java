@@ -20,4 +20,5 @@ public interface IPromotionService {
     void updatePromotionStatuses();
     void applyPromotionToPriceLists(Long promotionId);
     void applyPromotionToAllPriceLists(Long promotionId);
+    PromotionDTO convertToDTO(Promotion promotion);
 }
