@@ -1,7 +1,11 @@
 package com.iis.PetClinic.service.impl;
 
+import com.iis.PetClinic.dto.projection.ExpirationRiskProjection;
 import com.iis.PetClinic.dto.request.AddProductRequest;
+import com.iis.PetClinic.dto.response.ExpirationRiskDTO;
+import com.iis.PetClinic.dto.response.ItemTotalQuantityDTO;
 import com.iis.PetClinic.dto.response.ProductResponse;
+import com.iis.PetClinic.dto.response.WriteOffDTO;
 import com.iis.PetClinic.exception.BarcodeAlreadyExistsException;
 import com.iis.PetClinic.model.*;
 import com.iis.PetClinic.repository.IItemRepository;
@@ -10,6 +14,8 @@ import com.iis.PetClinic.repository.IProductRepository;
 import com.iis.PetClinic.service.INotificationService;
 import com.iis.PetClinic.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -182,5 +188,26 @@ public class ProductService implements IProductService {
         notification.setDescription(description);
 
         notificationRepository.save(notification);
+    }
+
+    @Override
+    public List<WriteOffDTO> getTop5ExpiredWriteOffs() {
+        Pageable topFive = PageRequest.of(0, 5);
+
+        return productRepository.findTopExpiredWriteOffs(topFive).getContent();
+    }
+
+    @Override
+    public List<ExpirationRiskDTO> getExpirationRiskItems() {
+        List<ExpirationRiskProjection> projections = productRepository.findExpirationRiskItems();
+
+        return projections.stream()
+                .map(p -> new ExpirationRiskDTO(p.getItemName(), p.getExpirationDate()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ItemTotalQuantityDTO> getAvailableStockSummary() {
+        return productRepository.findGroupedQuantitiesWithoutReason();
     }
 }

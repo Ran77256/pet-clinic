@@ -2,7 +2,7 @@ package com.iis.PetClinic.controller;
 
 import com.iis.PetClinic.dto.request.CreateOrderRequest;
 import com.iis.PetClinic.dto.response.CreateOrderResponse;
-import com.iis.PetClinic.model.Order;
+import com.iis.PetClinic.dto.response.ItemOrderCountDTO;
 import com.iis.PetClinic.service.IOrderService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +27,10 @@ public class OrderController {
     @GetMapping("/orders")
     public List<CreateOrderResponse> getOrders(){
         return orderService.getOrders();
+    }
+
+    @GetMapping("/topordered")
+    public List<ItemOrderCountDTO> getTop5OrderedItems(){
+        return orderService.findTop5OrderedItemsWithCount();
     }
 }

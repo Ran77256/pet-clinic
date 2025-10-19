@@ -1,7 +1,10 @@
 package com.iis.PetClinic.service;
 
 import com.iis.PetClinic.dto.request.AddProductRequest;
+import com.iis.PetClinic.dto.response.ExpirationRiskDTO;
+import com.iis.PetClinic.dto.response.ItemTotalQuantityDTO;
 import com.iis.PetClinic.dto.response.ProductResponse;
+import com.iis.PetClinic.dto.response.WriteOffDTO;
 import com.iis.PetClinic.model.Order;
 import org.springframework.http.ResponseEntity;
 
@@ -13,4 +16,7 @@ public interface IProductService {
     ProductResponse addProduct(AddProductRequest product);
     void writeOffProduct();
     void updateProductsAfterOrder(Order order);
+    List<WriteOffDTO> getTop5ExpiredWriteOffs();
+    List<ExpirationRiskDTO> getExpirationRiskItems();
+    List<ItemTotalQuantityDTO> getAvailableStockSummary();
 }

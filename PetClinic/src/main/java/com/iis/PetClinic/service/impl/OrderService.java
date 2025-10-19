@@ -2,6 +2,7 @@ package com.iis.PetClinic.service.impl;
 
 import com.iis.PetClinic.dto.request.CreateOrderRequest;
 import com.iis.PetClinic.dto.response.CreateOrderResponse;
+import com.iis.PetClinic.dto.response.ItemOrderCountDTO;
 import com.iis.PetClinic.model.*;
 import com.iis.PetClinic.repository.IItemRepository;
 import com.iis.PetClinic.repository.IOrderRepository;
@@ -88,5 +89,11 @@ public class OrderService implements IOrderService {
                 order.setStatus(Status.RECEIVED);
             }
         }
+    }
+
+    @Override
+    public List<ItemOrderCountDTO> findTop5OrderedItemsWithCount() {
+
+        return orderRepository.findTop5OrderedItemsWithCount();
     }
 }
