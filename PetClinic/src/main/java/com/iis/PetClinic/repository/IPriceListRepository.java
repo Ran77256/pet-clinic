@@ -37,4 +37,7 @@ public interface IPriceListRepository extends JpaRepository<PriceList, Long> {
     List<PriceList> findDraftsWithItems();
     Optional<PriceList> findFirstByStatus(PriceListStatus status);
 
+    List<PriceList> findByStatusAndValidFromLessThanEqual(PriceListStatus status, LocalDateTime dateTime);
+
+    List<PriceList> findByStatus(PriceListStatus status);
 }

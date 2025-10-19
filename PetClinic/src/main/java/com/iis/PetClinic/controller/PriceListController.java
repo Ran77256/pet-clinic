@@ -33,10 +33,20 @@ public class PriceListController {
         PriceList draft = versioningService.createDraftFromActive(nameForDraft);
         return ResponseEntity.ok(toDTO(draft));
     }
+
     @GetMapping("/current")
     public ResponseEntity<PriceListDTO> getCurrent() {
         var now = LocalDateTime.now();
         return priceListRepo.findActiveAt(now)
+                .map(this::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Pregled pojedinačnog cenovnika
+    @GetMapping("/{id}")
+    public ResponseEntity<PriceListDTO> getPriceList(@PathVariable Long id) {
+        return priceListRepo.findById(id)
                 .map(this::toDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

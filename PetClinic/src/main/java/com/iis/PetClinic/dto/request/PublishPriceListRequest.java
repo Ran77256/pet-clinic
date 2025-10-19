@@ -9,4 +9,7 @@ import java.time.LocalDateTime;
 public class PublishPriceListRequest {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime effectiveFrom;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime effectiveTo;
 }

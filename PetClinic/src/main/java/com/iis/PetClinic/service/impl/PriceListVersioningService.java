@@ -59,20 +59,29 @@ public class PriceListVersioningService implements IPriceListVersioningService {
         PriceList draft = priceListRepo.findById(draftId)
                 .orElseThrow(() -> new IllegalArgumentException("Draft not found: " + draftId));
 
-        if (draft.getStatus() != PriceListStatus.DRAFT || draft.getStatus() != PriceListStatus.ARCHIVED) {
-            throw new IllegalStateException("Only DRAFT  and ARCHIVED can be published.");
+        if (draft.getStatus() != PriceListStatus.DRAFT && draft.getStatus() != PriceListStatus.ARCHIVED) {
+            throw new IllegalStateException("Only DRAFT and ARCHIVED can be published.");
         }
 
-        // zatvori prethodni ACTIVE (ako postoji)
-        PriceList prevActive = priceListRepo.findFirstByStatusOrderByVersionDesc(PriceListStatus.ACTIVE).orElse(null);
-        if (prevActive != null) {
-            prevActive.setStatus(PriceListStatus.ARCHIVED);
-            prevActive.setValidTo(effectiveFrom.minusSeconds(1));
-            priceListRepo.save(prevActive);
+        // If effective date is in the future, set status to PENDING
+        boolean isEffectiveNow = effectiveFrom.isBefore(LocalDateTime.now()) || effectiveFrom.isEqual(LocalDateTime.now());
+
+        if (isEffectiveNow) {
+            // zatvori prethodni ACTIVE (ako postoji)
+            PriceList prevActive = priceListRepo.findFirstByStatusOrderByVersionDesc(PriceListStatus.ACTIVE).orElse(null);
+            if (prevActive != null) {
+                prevActive.setStatus(PriceListStatus.ARCHIVED);
+                prevActive.setValidTo(effectiveFrom.minusSeconds(1));
+                priceListRepo.save(prevActive);
+            }
+
+            // objavi draft kao aktivan
+            draft.setStatus(PriceListStatus.ACTIVE);
+        } else {
+            // postavi kao PENDING za buduću aktivaciju
+            draft.setStatus(PriceListStatus.PENDING);
         }
 
-        // objavi draft
-        draft.setStatus(PriceListStatus.ACTIVE);
         draft.setValidFrom(effectiveFrom);
         priceListRepo.save(draft);
 

@@ -88,6 +88,8 @@ function PriceAdminPage() {
   const [animalTypes, setAnimalTypes] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showAddServiceModal, setShowAddServiceModal] = useState(false);
+  const [selectedPriceList, setSelectedPriceList] = useState(null);
+  const [showPriceListPreview, setShowPriceListPreview] = useState(false);
   const [newItem, setNewItem] = useState({
     serviceId: '',
     price: ''
@@ -328,7 +330,17 @@ function PriceAdminPage() {
     }
   };
 
+  const [showSaveVersionModal, setShowSaveVersionModal] = useState(false);
+  const [versionDates, setVersionDates] = useState({
+    startDate: '',
+    endDate: ''
+  });
+
   const handleSaveVersion = async () => {
+    setShowSaveVersionModal(true);
+  };
+
+  const handleConfirmSaveVersion = async () => {
     try {
       // Create draft from active and then publish it
       const draftResponse = await fetch(`${API_BASE}/price-lists/draft-from-active`, {
@@ -338,21 +350,33 @@ function PriceAdminPage() {
       if (draftResponse.ok) {
         const draft = await draftResponse.json();
         
-        // Publish the draft
+        // Format the date for display
+        const formattedStartDate = new Date(versionDates.startDate).toLocaleDateString();
+        const formattedEndDate = versionDates.endDate ? new Date(versionDates.endDate).toLocaleDateString() : null;
+        
+        // Publish the draft with scheduling information
         const publishResponse = await fetch(`${API_BASE}/price-lists/${draft.id}/publish`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            effectiveFrom: new Date().toISOString()
+            effectiveFrom: versionDates.startDate,
+            effectiveTo: versionDates.endDate || null
           }),
         });
         
         if (publishResponse.ok) {
           await fetchCurrentPriceList();
           await fetchPriceListHistory();
-          alert('Verzija cenovnika je uspešno sačuvana!');
+          setShowSaveVersionModal(false);
+          
+          // Show detailed success message
+          const message = formattedEndDate 
+            ? `Verzija cenovnika je uspešno sačuvana!\nPočetak važenja: ${formattedStartDate}\nKraj važenja: ${formattedEndDate}`
+            : `Verzija cenovnika je uspešno sačuvana!\nPočetak važenja: ${formattedStartDate}`;
+          
+          alert(message);
         }
       }
     } catch (error) {
@@ -384,6 +408,28 @@ function PriceAdminPage() {
     } catch (error) {
       console.error('Error activating version:', error);
       alert('Greška pri aktiviranju verzije');
+    }
+  };
+
+  const handlePreviewPriceList = async (priceListId) => {
+    try {
+      const response = await fetch(`${API_BASE}/price-lists/${priceListId}`);
+      if (response.ok) {
+        const priceList = await response.json();
+        
+        // Fetch items for this price list
+        if (priceList.id) {
+          const itemsResponse = await fetch(`${API_BASE}/price-list-items/by-pricelist/${priceList.id}`);
+          if (itemsResponse.ok) {
+            const items = await itemsResponse.json();
+            setSelectedPriceList({ ...priceList, items });
+            setShowPriceListPreview(true);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching price list preview:', error);
+      alert('Greška pri učitavanju cenovnika');
     }
   };
 
@@ -580,9 +626,29 @@ function PriceAdminPage() {
                   <div className="version-content">
                     <div className="version-date">
                       Cenovnik {priceList.id}
+                      {priceList.effectiveFrom && (
+                        <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                          Planirano: {new Date(priceList.effectiveFrom).toLocaleDateString()}
+                          {priceList.effectiveTo && ` - ${new Date(priceList.effectiveTo).toLocaleDateString()}`}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="version-actions">
+                    <button 
+                      className="preview-btn"
+                      onClick={() => handlePreviewPriceList(priceList.id)}
+                      style={{
+                        marginRight: '8px',
+                        background: '#E5E7EB',
+                        border: 'none',
+                        padding: '4px 12px',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Pregledaj
+                    </button>
                     {!priceList.isActive && (
                       <button 
                         className="activate-version-btn"
@@ -705,6 +771,112 @@ function PriceAdminPage() {
                   <button type="submit" className="primary-btn">
                     Dodaj uslugu
                   </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Price List Preview Modal */}
+        {showPriceListPreview && selectedPriceList && (
+          <div className="modal-overlay" style={{ zIndex: 1000 }}>
+            <div className="modal" style={{ width: '90%', maxWidth: '1000px', maxHeight: '80vh', overflow: 'auto' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h3>Pregled cenovnika {selectedPriceList.id}</h3>
+                <button 
+                  onClick={() => setShowPriceListPreview(false)}
+                  style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer' }}
+                >
+                  ×
+                </button>
+              </div>
+              
+              <table className="price-list-table">
+                <thead>
+                  <tr>
+                    <th>Usluga</th>
+                    <th>Životinja</th>
+                    <th>Klijent</th>
+                    <th>Cena (RSD)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedPriceList.items?.map(item => {
+                    const serviceDetails = services.find(s => s.id === item.serviceId);
+                    return (
+                      <tr key={item.id}>
+                        <td>{item.serviceName || 'N/A'}</td>
+                        <td>{(serviceDetails && serviceDetails.animalType) ? serviceDetails.animalType.name : 'N/A'}</td>
+                        <td>{(serviceDetails && serviceDetails.clientType) ? serviceDetails.clientType : 'N/A'}</td>
+                        <td>
+                          {item.promotionalPrice ? (
+                            <div>
+                              <span style={{ textDecoration: 'line-through', color: '#666' }}>{item.price} RSD</span>
+                              <br/>
+                              <span style={{ color: '#10B981', fontWeight: 'bold' }}>{item.promotionalPrice} RSD</span>
+                            </div>
+                          ) : (
+                            `${item.price || ''} RSD`
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+
+              <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                <button 
+                  onClick={() => setShowPriceListPreview(false)}
+                  style={{ 
+                    padding: '8px 16px',
+                    background: '#4B5563',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Zatvori
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Save Version Modal */}
+        {showSaveVersionModal && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <h3>Sačuvaj verziju cenovnika</h3>
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                handleConfirmSaveVersion();
+              }}>
+                <div className="form-group">
+                  <label>Datum aktivacije:</label>
+                  <input
+                    type="date"
+                    value={versionDates.startDate}
+                    onChange={(e) => setVersionDates(prev => ({ ...prev, startDate: e.target.value }))}
+                    min={new Date().toISOString().split('T')[0]}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Datum završetka (opciono):</label>
+                  <input
+                    type="date"
+                    value={versionDates.endDate}
+                    onChange={(e) => setVersionDates(prev => ({ ...prev, endDate: e.target.value }))}
+                    min={versionDates.startDate}
+                  />
+                </div>
+                <div className="modal-actions">
+                  <button type="button" onClick={() => setShowSaveVersionModal(false)}>
+                    Otkaži
+                  </button>
+                  <button type="submit">Sačuvaj</button>
                 </div>
               </form>
             </div>
