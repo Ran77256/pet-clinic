@@ -2,6 +2,7 @@
 package com.iis.PetClinic.controller;
 
 import com.iis.PetClinic.model.Promotion;
+import com.iis.PetClinic.dto.response.PromotionDTO;
 import com.iis.PetClinic.service.IPromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -18,15 +19,42 @@ public class PromotionController {
     private final IPromotionService promotionService;
 
     @GetMapping("/all")
-    public List<Promotion> getAll() {
-        return promotionService.getAllPromotions();
+    public List<PromotionDTO> getAll() {
+        return promotionService.getAllPromotions().stream().map(p -> PromotionDTO.builder()
+                .id(p.getId())
+                .name(p.getName())
+                .benefitType(p.getBenefitType().name())
+                .status(p.getStatus().name())
+                .clientType(p.getClientType().name())
+                .serviceId(p.getService()!=null? p.getService().getId(): null)
+                .serviceName(p.getService()!=null? p.getService().getName(): null)
+                .animalTypeId(p.getAnimalType()!=null? p.getAnimalType().getId(): null)
+                .animalTypeName(p.getAnimalType()!=null? p.getAnimalType().getName(): null)
+                .value(p.getValue())
+                .startDate(p.getStartDate())
+                .endDate(p.getEndDate())
+                .build()).toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Promotion> getById(@PathVariable Long id) {
-        return promotionService.getPromotionById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<PromotionDTO> getById(@PathVariable Long id) {
+    return promotionService.getPromotionById(id)
+        .map(p -> PromotionDTO.builder()
+            .id(p.getId())
+            .name(p.getName())
+            .benefitType(p.getBenefitType().name())
+            .status(p.getStatus().name())
+            .clientType(p.getClientType().name())
+            .serviceId(p.getService()!=null? p.getService().getId(): null)
+            .serviceName(p.getService()!=null? p.getService().getName(): null)
+            .animalTypeId(p.getAnimalType()!=null? p.getAnimalType().getId(): null)
+            .animalTypeName(p.getAnimalType()!=null? p.getAnimalType().getName(): null)
+            .value(p.getValue())
+            .startDate(p.getStartDate())
+            .endDate(p.getEndDate())
+            .build())
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping(

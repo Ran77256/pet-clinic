@@ -141,3 +141,89 @@
     padding: 2rem;
   }
 }
+
+/* Promotions report styles */
+.promotions-section {
+  max-width: 1100px;
+  margin: 0 auto 4rem auto;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.promotions-table-wrapper {
+  overflow-x: auto;
+}
+
+.promotions-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.promotions-table th,
+.promotions-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eef2f7;
+  text-align: left;
+}
+
+.promotions-table th {
+  background: #f8fafc;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.view-clients-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.view-clients-btn:hover {
+  background: #1e40af;
+}
+
+/* Modal styles (simple) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 520px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.clients-list {
+  list-style: disc;
+  margin-left: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.close-modal-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.close-modal-btn:hover { background: #dc2626; }
