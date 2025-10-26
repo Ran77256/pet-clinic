@@ -100,3 +100,73 @@ CREATE TRIGGER trg_before_user_delete_check_vet
     BEFORE DELETE ON users
     FOR EACH ROW
     EXECUTE FUNCTION safe_delete_and_archive_veterinarian();
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+-- =================================================================
+-- ZADATAK 2: PL/SQL Funkcija za analizu opterećenosti veterinara
+-- AUTOR: [Vaše Ime i Prezime]
+-- =================================================================
+
+CREATE OR REPLACE FUNCTION get_vet_workload_status(p_vet_id BIGINT)
+RETURNS TEXT AS $$
+DECLARE
+v_vet_patient_count BIGINT;
+    v_avg_patients_per_vet NUMERIC;
+    v_workload_status TEXT;
+BEGIN
+    -- === KORAK 1: Izračunavanje prosečnog broja pacijenata po veterinaru u celoj klinici ===
+    -- Koristimo podupit da bismo dobili ukupan broj pacijenata i ukupan broj veterinara
+SELECT
+    -- Delimo ukupan broj pacijenata sa ukupnim brojem veterinara.
+    -- CAST se koristi da bi deljenje bilo sa pokretnim zarezom (decimalno).
+    (SELECT COUNT(*) FROM pets)::NUMERIC / (SELECT COUNT(*) FROM veterinarians)::NUMERIC
+INTO v_avg_patients_per_vet;
+
+-- Ako nema veterinara da se izbegne deljenje sa nulom
+IF v_avg_patients_per_vet IS NULL THEN
+        v_avg_patients_per_vet := 0;
+END IF;
+
+    -- === KORAK 2: Izračunavanje broja pacijenata za SPECIFIČNOG veterinara ===
+SELECT COUNT(*)
+INTO v_vet_patient_count
+FROM pets
+WHERE veterinarian_id = p_vet_id;
+
+-- === KORAK 3: Logika za određivanje statusa ===
+-- Koristimo CASE izraz da poredimo broj pacijenata veterinara sa prosekom.
+v_workload_status := CASE
+        WHEN v_vet_patient_count < v_avg_patients_per_vet * 0.5 THEN 'Neopterećen'
+        WHEN v_vet_patient_count > v_avg_patients_per_vet * 1.5 THEN 'Preopterećen'
+        ELSE 'Optimalan'
+END;
+
+RETURN v_workload_status;
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- =================================================================
+-- PRIMER POZIVA FUNKCIJE U SQL UPITU
+-- =================================================================
+
+-- Ovaj upit prikazuje sve veterinare, njihov broj pacijenata
+-- i status opterećenosti dobijen pozivom naše nove funkcije.
+
+SELECT
+        u.first_name || ' ' || u.last_name AS veterinar,
+        v.specialization,
+        (SELECT COUNT(*) FROM pets p WHERE p.veterinarian_id = v.id) AS broj_pacijenata,
+        -- Pozivamo našu PL/SQL funkciju za svakog veterinara
+        get_vet_workload_status(v.id) AS status_opterecenosti
+FROM
+    veterinarians v
+        JOIN
+    users u ON v.user_id = u.id
+ORDER BY
+    broj_pacijenata DESC;
