@@ -267,6 +267,38 @@ const AnimalAdminPage = () => {
         }
     };
 
+    const deleteVeterinarian = async (vet) => {
+        // Frontend provera da se ne šalje nepotreban zahtev
+        if (vet.petsCount > 0) {
+            alert(`Nije moguće obrisati veterinara ${vet.firstName} ${vet.lastName} jer ima ${vet.petsCount} dodeljenih pacijenata.`);
+            return;
+        }
+
+        const confirmDelete = window.confirm(`Da li ste sigurni da želite da obrišete veterinara ${vet.firstName} ${vet.lastName}?`);
+        if (!confirmDelete) {
+            return;
+        }
+
+        try {
+            // Pozivamo DELETE endpoint. Backend će pokušati da obriše User-a, što AKTIVIRA TRIGER.
+            const response = await fetch(`http://localhost:8080/api/veterinarians/${vet.id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert('Veterinar je uspešno obrisan i arhiviran.');
+                fetchVeterinarians(); // Osvežavamo listu
+            } else {
+                // Prikazujemo grešku koja je došla od servera (npr. iz trigera)
+                const errorText = await response.text();
+                alert(`Greška sa servera: ${errorText}`);
+            }
+        } catch (error) {
+            console.error('Greška pri brisanju veterinara:', error);
+            alert('Došlo je do greške pri komunikaciji sa serverom.');
+        }
+    };
+
     // Logout funkcija
     const handleLogout = () => {
         const confirm = window.confirm('Da li ste sigurni da se želite odjaviti?');
@@ -429,6 +461,7 @@ const AnimalAdminPage = () => {
                                 <th>Specijalizacija</th>
                                 <th>Telefon</th>
                                 <th>Broj pacijenata</th>
+                                <th>Akcije</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -439,6 +472,18 @@ const AnimalAdminPage = () => {
                                     <td>{vet.specialization}</td>
                                     <td>{vet.phoneNumber}</td>
                                     <td>{vet.petsCount}</td>
+                                    <td>
+                                        {/* <-- NOVO DUGME ZA BRISANJE --> */}
+                                        <button 
+                                            className="delete-btn"
+                                            onClick={() => deleteVeterinarian(vet)}
+                                            // Onemogućavamo dugme ako veterinar ima pacijente
+                                            disabled={vet.petsCount > 0} 
+                                            title={vet.petsCount > 0 ? "Ne može se obrisati dok ima pacijente" : "Obriši veterinara"}
+                                        >
+                                            🗑️
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

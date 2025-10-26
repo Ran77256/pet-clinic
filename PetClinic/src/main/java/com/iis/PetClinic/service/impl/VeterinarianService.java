@@ -90,11 +90,24 @@ public class VeterinarianService implements IVeterinarianService {
     @Override
     @Transactional
     public void delete(Long id) {
-        if (!vetRepo.existsById(id)) {
-            throw new NotFoundException("Veterinarian not found: " + id);
+        // 1. Pronađi veterinara po njegovom ID-ju (iz `veterinarians` tabele)
+        Veterinarian vet = vetRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Veterinarian with ID " + id + " not found."));
+
+        // 2. Pronađi povezanog KORISNIKA (User)
+        User userToDelete = vet.getUser();
+        if (userToDelete == null) {
+            // Ako iz nekog razloga ne postoji povezan user, obriši samo veterinara
+            vetRepo.deleteById(id);
+            return;
         }
-        vetRepo.deleteById(id);
+
+        // 3. Obriši KORISNIKA (User-a). Ova komanda će aktivirati naš PL/SQL triger!
+        // Triger će proveriti pacijente, arhivirati podatke, obrisati zapis iz `veterinarians`
+        // i na kraju dozvoliti da se ovaj user obriše.
+        userRepo.delete(userToDelete);
     }
+
 
     private VeterinarianResponseDTO toDto(Veterinarian v, long petsCount) {
         User u = v.getUser();
