@@ -3,6 +3,8 @@ package com.iis.PetClinic.repository;
 import com.iis.PetClinic.model.Role;
 import com.iis.PetClinic.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -14,6 +16,10 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
         Optional<User> findByEmailAndRole(String email, Role role);
 
         Optional<User> findByEmailIgnoreCase(String email);
+
+        @Modifying
+        @Query("DELETE FROM User u WHERE u.id = :id")
+        void deleteUserById(Integer id);
 
 
 

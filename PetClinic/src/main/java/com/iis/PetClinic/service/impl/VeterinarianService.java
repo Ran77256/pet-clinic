@@ -87,7 +87,40 @@ public class VeterinarianService implements IVeterinarianService {
                 .toList();
     }
 
+// U folderu: src/main/java/com/iis/PetClinic/service/impl/VeterinarianService.java
+
+    // ... (sve ostale metode ostaju iste) ...
+
+    // === ZAMENITE POSTOJEĆU 'delete' METODU SA OVOM VERZIJOM ===
     @Override
+    @Transactional
+    public void delete(Long id) {
+        // 1. Pronađi veterinara SAMO da bismo dobili ID korisnika.
+        // Koristimo vetRepo jer je efikasnije.
+        Veterinarian vet = vetRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Veterinarian with ID " + id + " not found."));
+
+        // 2. Uzmi ID korisnika (User-a)
+        Integer userId = vet.getUser().getId();
+        if (userId == null) {
+            // Ako nema povezanog korisnika, ovo je greška u podacima.
+            // U tom slučaju, brišemo samo veterinara i preskačemo triger.
+            vetRepo.delete(vet);
+            return;
+        }
+
+        // 3. POZIVAMO DIREKTNU DELETE METODU!
+        // Ova metoda šalje direktan "DELETE FROM users WHERE id = ?" upit bazi,
+        // što garantovano zaobilazi sve Hibernate probleme i AKTIVIRA NAŠ TRIGER.
+        userRepo.deleteUserById(userId);
+    }
+
+    // ... (sve pomoćne metode ostaju iste) ...
+
+    // ... (sve pomoćne metode ostaju iste) ...
+
+    // ... (sve pomoćne metode ostaju iste) ...
+    /*@Override
     @Transactional
     public void delete(Long id) {
         // 1. Pronađi veterinara po njegovom ID-ju (iz `veterinarians` tabele)
@@ -106,7 +139,7 @@ public class VeterinarianService implements IVeterinarianService {
         // Triger će proveriti pacijente, arhivirati podatke, obrisati zapis iz `veterinarians`
         // i na kraju dozvoliti da se ovaj user obriše.
         userRepo.delete(userToDelete);
-    }
+    }*/
 
 
     private VeterinarianResponseDTO toDto(Veterinarian v, long petsCount) {
