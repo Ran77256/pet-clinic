@@ -8,6 +8,9 @@ const AnimalAdminPage = () => {
     const [animalTypes, setAnimalTypes] = useState([]);
     const [breeds, setBreeds] = useState([]);
     const [healthConditions, setHealthConditions] = useState([]);
+
+    const [veterinarians, setVeterinarians] = useState([]);
+
     
     // State za dodavanje novih stavki
     const [newAnimalType, setNewAnimalType] = useState('');
@@ -20,7 +23,24 @@ const AnimalAdminPage = () => {
         fetchAnimalTypes();
         fetchBreeds();
         fetchHealthConditions();
+        fetchVeterinarians(); 
     }, []);
+
+     const fetchVeterinarians = async () => {
+        try {
+            // Koristimo endpoint koji ste definisali u backendu
+            const response = await fetch('http://localhost:8080/api/veterinarians/getall');
+            if (response.ok) {
+                const data = await response.json();
+                setVeterinarians(data);
+                console.log('Veterinari uspešno učitani:', data);
+            } else {
+                console.error('Greška pri učitavanju veterinara:', response.status);
+            }
+        } catch (error) {
+            console.error('Greška pri komunikaciji sa serverom za veterinare:', error);
+        }
+    };
 
     // API pozivi za učitavanje podataka
     const fetchAnimalTypes = async () => {
@@ -398,6 +418,31 @@ const AnimalAdminPage = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="veterinarians-section">
+                    <h2>Pregled veterinara</h2>
+                    <table className="veterinarians-table">
+                        <thead>
+                            <tr>
+                                <th>Ime i Prezime</th>
+                                <th>Email</th>
+                                <th>Specijalizacija</th>
+                                <th>Telefon</th>
+                                <th>Broj pacijenata</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {veterinarians.map((vet) => (
+                                <tr key={vet.id}>
+                                    <td>{vet.firstName} {vet.lastName}</td>
+                                    <td>{vet.email}</td>
+                                    <td>{vet.specialization}</td>
+                                    <td>{vet.phoneNumber}</td>
+                                    <td>{vet.petsCount}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

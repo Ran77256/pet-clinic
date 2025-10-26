@@ -339,6 +339,47 @@
     background-color: #2a56c6;
 }
 
+.veterinarians-section {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.veterinarians-section h2 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.veterinarians-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.veterinarians-table th, .veterinarians-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.veterinarians-table thead th {
+    background-color: #f8f9fa;
+    color: #555;
+    font-weight: 600;
+}
+
+.veterinarians-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.veterinarians-table td {
+    color: #444;
+}
 /* Responsive design */
 @media (max-width: 768px) {
     .admin-sections {
