@@ -406,3 +406,17 @@
 .btn-primary:hover {
   background: #2563EB;
 }
+
+
+/* Danger button scope */
+.action-btn.danger {
+  background: #EF4444;
+  color: #fff;
+}
+.action-btn.danger:hover {
+  background: #DC2626;
+}
+.action-btn.danger:disabled {
+  background: #FCA5A5;
+  cursor: not-allowed;
+}

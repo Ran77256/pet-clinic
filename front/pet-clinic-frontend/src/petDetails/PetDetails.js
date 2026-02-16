@@ -252,12 +252,7 @@ const PetDetails = () => {
       </div>
 
       {/* Navigation */}
-      <div className="navigation-bar">
-        <button className="nav-back-btn" onClick={handleBackToDashboard}>
-          ← Nazad na ljubimce
-        </button>
-        <h1 className="page-title">Karton ljubimca</h1>
-      </div>
+ 
 
       {/* Main Content */}
       <div className="pet-details-content">

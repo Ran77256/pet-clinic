@@ -26,7 +26,7 @@ function RegisterForm() {
   const navigateByRole = (role) => {
     switch (role) {
       case "WAREHOUSE_ADMIN": return navigate("/orders");
-      case "VETERINARIAN":    return navigate("/vet/dashboard");
+      case "VETERINARIAN":    return navigate("/vet-calendar");
       case "ANIMALS_ADMIN":   return navigate("/animals");
       case "PRICE_ADMIN":     return navigate("/price-list");
       case "MANAGER":         return navigate("/reports");

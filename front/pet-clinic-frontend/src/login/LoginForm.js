@@ -75,16 +75,23 @@ const LoginForm = () => {
         console.log('Navigating to /orders');
         navigate('/orders');
       } else if (userRole === 'VETERINARIAN') {
-        // Get veterinarian ID from user data and use it dynamically
-        const veterinarianId = userData?.id;
-        if (veterinarianId) {
-          console.log('Navigating to /vet-pet-details with dynamic veterinarian ID:', veterinarianId);
-          navigate(`/vet-pet-details/${veterinarianId}`);
-        } else {
-          console.log('No veterinarian ID found, using default');
-          navigate('/vet-pet-details/1');
+        // 1) pokušaj da nadješ veterinara po userId i idi na kalendar
+        const token = localStorage.getItem('token');
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        try {
+          const vetRes = await axios.get(
+            `http://localhost:8080/api/veterinarians/by-user/${userData.id}`,
+            { headers }
+          );
+          const vet = vetRes.data;           // očekuje se { id, ... }
+          localStorage.setItem('veterinarian', JSON.stringify(vet));
+          navigate(`/vet-calendar/${vet.id}`);
+        } catch (err) {
+          console.error('Nije nadjen veterinar za userId=', userData.id, err);
+          // fallback: otvori kalendar bez ID-a; strana može sama da se snađe
+          navigate('/vet-calendar');
         }
-      } else if (userRole === 'PRICE_ADMIN') { 
+      }else if (userRole === 'PRICE_ADMIN') { 
         console.log('Navigating to /priceAdmin');
         navigate('/priceAdmin');
       } else if (userRole === 'ANIMALS_ADMIN') {
@@ -96,7 +103,12 @@ const LoginForm = () => {
       } else if (userRole === 'USER') {
         console.log('Explicitly navigating to /user for USER role');
         navigate('/user');
-      } else {
+      }
+       else if (userRole === 'STAFF_ADMIN') {
+        console.log('Explicitly navigating to /staff for USER role');
+        navigate('/staff-calendars');
+      }
+       else {
         // Default navigation for any other/unknown role
         console.log(`Unknown or null role "${userRole}", defaulting to /user`);
         navigate('/user');

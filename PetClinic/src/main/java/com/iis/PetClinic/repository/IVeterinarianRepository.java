@@ -24,5 +24,10 @@ public interface IVeterinarianRepository extends JpaRepository<Veterinarian, Lon
     boolean existsByUser_EmailIgnoreCase(String email);
 
     Optional<Veterinarian> findByUser_Id(Long userId);
+    Optional<Veterinarian> findByUser_Id(int userId);
+
+    // U IVeterinarianRepository.java dodaj:
+    @Query(value = "SELECT * FROM get_veterinarian_performance_report_by_year(:year)", nativeQuery = true)
+    List<Object[]> getPerformanceReport(@Param("year") int year);
 
 }

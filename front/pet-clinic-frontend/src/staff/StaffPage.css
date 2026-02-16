@@ -1,143 +1,51 @@
-/* StaffPage Styles */
-.staff-page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
+.staff-page { min-height: 100vh; background: #f5f7fb; }
 
-/* Header */
 .staff-header {
-  background: white;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: #fff; padding: 16px 24px; box-shadow: 0 2px 8px rgba(16,24,40,.06);
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px;
 }
+.brand-text .pet-clinic-title { font-size: 20px; font-weight: 800; color: #2563eb; margin: 0; }
+.brand-text .ambulanta-subtitle { margin: 0; color: #6b7280; font-size: 12px; }
 
-.brand-section {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.filters-row { display: flex; gap: 12px; align-items: end; justify-content: center; }
+.field { display:flex; flex-direction: column; gap: 4px; }
+.field input { padding: 8px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; min-width: 160px; }
+.btn { padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
+.btn.ghost { background: #eef2ff; color: #3730a3; }
+.btn.ghost:disabled { opacity: .6; cursor: default; }
+
+.user-section { display:flex; justify-content: end; }
+.logout-btn { background: #ef4444; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; cursor:pointer; }
+.logout-btn:hover { background:#dc2626; }
+
+.staff-content { padding: 24px; max-width: 1280px; margin: 0 auto; }
+.content-header { text-align: center; margin-bottom: 18px; }
+.back-btn { background:#6b7280; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
+.back-btn:hover { background:#4b5563; }
+.content-header h1 { margin: 10px 0 4px; }
+
+.loading, .error { background:#fff; border:1px solid #e5e7eb; padding:12px; border-radius:10px; text-align:center; margin-bottom:16px; }
+.error { color:#b91c1c; }
+
+.kpi-grid {
+  display:grid; grid-template-columns: repeat(5, minmax(140px,1fr)); gap:12px; margin-bottom: 18px;
 }
+.kpi { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:14px; }
+.kpi-label { color:#6b7280; font-size:12px; margin-bottom:6px; }
+.kpi-value { font-size:22px; font-weight:800; color:#111827; }
+.kpi-value.blue { color:#2563eb; }
+.kpi-value.green { color:#059669; }
+.kpi-value.red { color:#dc2626; }
+.kpi-value.violet { color:#7c3aed; }
 
-.brand-text {
-  display: flex;
-  flex-direction: column;
-}
+.charts-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(420px,1fr)); gap:16px; }
+.card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:12px 16px; }
+.card-title { font-weight:700; margin-bottom:8px; color:#111827; }
+.chart-wrap { width:100%; height:260px; }
+.hint { color:#6b7280; font-size:12px; margin-top:8px; }
 
-.pet-clinic-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #2563eb;
-  margin: 0;
-}
-
-.ambulanta-subtitle {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin: 0;
-}
-
-.user-section {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.logout-btn {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: background-color 0.2s;
-}
-
-.logout-btn:hover {
-  background: #dc2626;
-}
-
-/* Main Content */
-.staff-content {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.content-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.back-btn {
-  background: #6b7280;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  font-size: 0.875rem;
-  margin-bottom: 1rem;
-  transition: background-color 0.2s;
-}
-
-.back-btn:hover {
-  background: #4b5563;
-}
-
-.content-header h1 {
-  font-size: 2rem;
-  color: #1f2937;
-  margin: 1rem 0 0.5rem 0;
-}
-
-.content-header p {
-  color: #6b7280;
-  font-size: 1rem;
-}
-
-/* Coming Soon */
-.coming-soon {
-  background: white;
-  padding: 3rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  text-align: center;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.coming-soon-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-}
-
-.coming-soon h2 {
-  color: #1f2937;
-  margin-bottom: 1rem;
-}
-
-.coming-soon p {
-  color: #6b7280;
-  line-height: 1.6;
-  margin-bottom: 0.5rem;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .staff-header {
-    padding: 1rem;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .staff-content {
-    padding: 1rem;
-  }
-  
-  .coming-soon {
-    padding: 2rem;
-  }
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(2, minmax(140px,1fr)); }
+  .staff-header { grid-template-columns: 1fr; gap: 10px; }
+  .filters-row { justify-content: start; flex-wrap: wrap; }
 }

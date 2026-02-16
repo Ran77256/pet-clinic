@@ -1,7 +1,9 @@
 package com.iis.PetClinic.controller;
 
+import com.iis.PetClinic.dto.AppointmentResponse;
 import com.iis.PetClinic.dto.request.PetDTO;
 import com.iis.PetClinic.model.Pet;
+import com.iis.PetClinic.repository.IAppointmentRepository;
 import com.iis.PetClinic.service.IPetService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,11 +18,17 @@ import java.util.List;
 public class PetController {
 
     private final IPetService petService;
+    private final IAppointmentRepository apptRepo;
 
-    public PetController(IPetService petService) {
+    public PetController(IPetService petService, IAppointmentRepository apptRepo) {
         this.petService = petService;
+        this.apptRepo = apptRepo;
     }
-
+    @GetMapping("/{petId}/appointments")
+    public List<AppointmentResponse> byPet(@PathVariable Long petId){
+        return apptRepo.findByPet_IdOrderByAppointmentDateAsc(petId)
+                .stream().map(AppointmentResponse::of).toList();
+    }
     // CREATE
     @PostMapping(
             value = "/add",

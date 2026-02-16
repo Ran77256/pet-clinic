@@ -1,0 +1,662 @@
+/* --- kompaktno polje za pretragu sa dropdownom --- */
+.search-compact {
+  position: relative;
+  max-width: 420px;        /* <<< suženo polje */
+  width: 100%;
+}
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* --- Segmented: Predstojeći / Istorija / Sve --- */
+.segmented {
+  --seg-bg: #f8fafc;
+  --seg-border: #e2e8f0;
+  --seg-active: #1e40af;
+
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 4px;
+
+  padding: 4px;                  /* važan „track“ padding da aktivna boja lepo legne */
+  border: 1px solid var(--seg-border);
+  border-radius: 999px;
+  background: var(--seg-bg);
+  overflow: hidden;              /* za čiste zaobljene ivice */
+}
+
+.segmented button {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 14px;             /* konzistentna visina */
+  min-height: 34px;
+  border-radius: 999px;
+
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  color: #475569;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, box-shadow .15s ease;
+}
+
+.segmented button:hover {
+  background: #eef2ff;           /* nežan hover i na neaktivnima */
+}
+
+.segmented button.active {
+  background: var(--seg-active); /* PUNA boja preko celog dugmeta */
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, .25);
+}
+
+.segmented button:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
+/* Ako hoćeš kompaktnije:
+.segmented button { padding: 6px 12px; min-height: 30px; }
+*/
+
+/* suženo polje + typeahead */
+.search-compact {
+  position: relative;
+  max-width: 420px;   /* <<< suženje polja */
+  width: 100%;
+}
+/* Kontejner za horizontalni raspored (Pregled po danu) */
+/* — Pacijent kartica: vertikalni skrol samo za listu termina — */
+.patient-card {
+  display: flex;
+  flex-direction: column;
+  max-height: 72vh;      /* visina desnog panela (po želji 65–80vh) */
+  overflow: hidden;      /* spreči da kartica sama skroluje */
+}
+
+/* naslov kao sticky (opciono) */
+.card-title.sticky {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+/* i segmented dugmad neka ostanu ispod naslova */
+.sticky-top {
+  position: sticky;
+  top: 40px;            /* malo ispod naslova; prilagodi ako ti treba */
+  background: #fff;
+  z-index: 1;
+  padding: 6px 0 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* skrol isključivo kroz listu termina */
+.patient-scroll {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 6px;   /* prostor za skrolbar */
+}
+
+/* lepši skrolbar (opciono) */
+.patient-scroll::-webkit-scrollbar { width: 8px; }
+.patient-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+.patient-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 8px; }
+
+@supports (scrollbar-width: thin) {
+  .patient-scroll { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+}
+
+
+.search-compact .search-row { display: flex; gap: 8px; }
+
+.search-suggest {
+  position: absolute;
+  top: 100%;
+  left: 0; right: 0;
+  margin-top: 6px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(15,23,42,.12);
+  z-index: 20;
+  overflow: hidden;
+}
+.search-suggest-item {
+  display: grid;
+  grid-template-columns: 1fr 140px 120px;
+  gap: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.search-suggest-item:hover,
+.search-suggest-item.active { background: #f8fafc; }
+.search-suggest-item .s-name { font-weight: 700; color:#0f172a; }
+.search-suggest-item .s-owner { color:#475569; }
+.search-suggest-item .s-type { color:#64748b; }
+
+/* slider (segmented) */
+.segmented {
+  display: inline-flex;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #fff;
+  overflow: hidden;
+}
+.segmented button {
+  padding: 6px 14px;
+  font-weight: 600;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: #475569;
+}
+.segmented button.active { background:#1e40af; color:#fff; }
+
+/* podnaslov u desnoj kartici */
+.card-title .subtitle {
+  font-weight: 600;
+  color: #64748b;
+  margin-left: 6px;
+  font-size: 14px;
+}
+
+
+.search-compact .search-row {
+  display: flex;
+  gap: 8px;
+}
+
+.search-suggest {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 6px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(15,23,42,.12);
+  z-index: 20;
+  overflow: hidden;
+}
+
+.search-suggest-item {
+  display: grid;
+  grid-template-columns: 1fr 140px 120px;
+  gap: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  align-items: center;
+}
+.search-suggest-item:hover,
+.search-suggest-item.active {
+  background: #f8fafc;
+}
+
+.search-suggest-item .s-name { font-weight: 700; color:#0f172a; }
+.search-suggest-item .s-owner { color:#475569; }
+.search-suggest-item .s-type { color:#64748b; }
+
+/* --- segmented (slider) --- */
+.segmented {
+  display: inline-flex;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #fff;
+  overflow: hidden;
+}
+.segmented button {
+  padding: 6px 14px;
+  font-weight: 600;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: #475569;
+}
+.segmented button.active {
+  background: #1e40af;
+  color: #fff;
+}
+
+/* naslov u desnoj kartici (Pacijent — Ime • Vlasnik) */
+.card-title .subtitle {
+  font-weight: 600;
+  color: #64748b;
+  margin-left: 6px;
+  font-size: 14px;
+}
+* ---------- GLOBAL ---------- */
+.staffcal {
+    min-height: 100vh;
+    background: #f7fafc; /* svetla pozadina */
+    font-family: Inter, system-ui, -apple-system;
+    color: #0f172a;
+}
+
+/* ---------- HEADER ---------- */
+.staffcal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    background: #1e40af;
+    border-radius: 10px;
+}
+
+.brand-text .title {
+    font-weight: 800;
+    font-size: 17px;
+    color: #1f2937;
+}
+.brand-text .sub {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* ---------- TABS ---------- */
+.tabs {
+    display: flex;
+    gap: 8px;
+}
+
+.tab {
+    padding: 9px 16px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab:hover:not(.active) {
+    background: #f1f5f9;
+}
+
+.tab.active {
+    background: #1e40af;
+    color: #fff;
+    border-color: #1e40af;
+}
+
+/* ---------- USER BOX ---------- */
+.userbox {
+    display: flex;
+    gap: 8px;
+}
+.userbox .btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.userbox .btn:hover {
+    background: #f1f5f9;
+}
+.userbox .btn.ghost {
+    background: #f8fafc;
+    border: none;
+    color: #475569;
+}
+
+/* ---------- TOOLBAR ---------- */
+.toolbar {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    padding: 16px 28px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    justify-content: flex-start;
+}
+
+
+
+.field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+}
+.field input[type="date"],
+.field select,
+.field input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.field button {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background: #1e40af;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+.field.grow {
+    flex: 1;
+}
+.search-row {
+    display: flex;
+    gap: 8px;
+}
+.search-row input {
+    flex: 1;
+}
+
+/* ---------- CONTENT WRAPPER ---------- */
+.cards {
+    max-width: 1050px;
+    margin: 32px auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 0 16px;
+}
+
+/* ---------- CARD ---------- */
+.card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    border: 1px solid #e2e8f0;
+    padding: 24px 28px;
+}
+
+.card-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: #1f2937;
+    margin-bottom: 16px;
+}
+
+/* ---------- SLOTS (TERMINI) ---------- */
+.slots-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.slot-card {
+    border: 1px solid #e2e8f0;
+    border-left-width: 6px;
+    border-radius: 12px;
+    padding: 12px 16px;
+    background: #fff;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.slot-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.slot-time {
+    font-weight: 700;
+    font-size: 15px;
+    color: #0f172a;
+}
+.slot-title {
+    color: #334155;
+    font-weight: 600;
+    margin-top: 4px;
+}
+.slot-sub {
+    color: #64748b;
+    font-size: 13px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ---------- STATUS COLORS ---------- */
+.st-scheduled {
+    border-left-color: #3b82f6;
+    background: #eff6ff;
+}
+.st-in_progress {
+    border-left-color: #f59e0b;
+    background: #fff7ed;
+}
+.st-completed {
+    border-left-color: #10b981;
+    background: #ecfdf5;
+}
+.st-cancelled {
+    border-left-color: #94a3b8;
+    background: #f8fafc;
+}
+
+/* ---------- TAGS ---------- */
+.tag {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: 1px solid #e2e8f0;
+}
+.tag.small {
+    padding: 2px 8px;
+    font-size: 10px;
+}
+.tag.urgent {
+    border-color: #fca5a5;
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* ---------- SPLIT (PACIJENTI) ---------- */
+.split {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 28px;
+    max-width: 1050px;
+    margin: 32px auto;
+    padding: 0 16px;
+}
+
+/* ---------- PACIJENT LIST ---------- */
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.list-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.list-item:hover {
+    background: #f8fafc;
+}
+.list-item.active {
+    border-color: #1e40af;
+    box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.15);
+}
+.li-title {
+    font-weight: 700;
+    color: #1f2937;
+}
+.li-sub {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* ---------- WAITLIST TABLE ---------- */
+.wl-table {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+}
+.wl-header, .wl-row {
+    display: grid;
+    grid-template-columns: 160px 160px 160px 1fr 140px;
+    gap: 8px;
+    align-items: center;
+}
+.wl-header {
+    font-weight: 700;
+    color: #475569;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+.wl-row {
+    border-bottom: 1px dashed #f1f5f9;
+    padding: 6px 0;
+}
+
+/* ---------- LEGEND ---------- */
+.legend {
+    max-width: 1050px;
+    margin: 16px auto 32px;
+    padding: 14px 0;
+    color: #64748b;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    justify-content: flex-start;
+}
+
+.dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+    border: 1px solid #e2e8f0;
+}
+.dot.st-scheduled {
+    background: #bfdbfe;
+    border-color: #93c5fd;
+}
+.dot.st-in_progress {
+    background: #fde68a;
+    border-color: #fcd34d;
+}
+.dot.st-completed {
+    background: #a7f3d0;
+    border-color: #6ee7b7;
+}
+.dot.st-cancelled {
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+/* ---------- LOADING & EMPTY ---------- */
+.loading,
+.empty {
+    text-align: center;
+    padding: 20px;
+    color: #64748b;
+}
+.muted {
+    color: #94a3b8;
+}
+
+.st-emergency {
+  border-left-color: #ef4444;   /* crvena leva traka */
+  background: #fee2e2;          /* svetlocrvena pozadina */
+}
+.dot.st-emergency { background:#fecaca; border-color:#fca5a5; }
+/* --- kompaktan search input (patient tab) --- */
+.search-compact { position: relative; max-width: 420px; width: 100%; }
+.search-compact .search-row input { flex: 1; }
+.search-suggest {
+  position: absolute; top: 100%; left: 0; right: 0; z-index: 20;
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+  margin-top: 6px; box-shadow: 0 10px 24px rgba(2,6,23,.08); overflow: hidden;
+}
+.search-suggest-item {
+  display: grid; grid-template-columns: 1fr auto auto; gap: 8px;
+  padding: 10px 12px; cursor: pointer; font-size: 14px; align-items: center;
+}
+.search-suggest-item:hover, .search-suggest-item.active { background: #f8fafc; }
+.search-suggest-item .s-name { font-weight: 700; color: #0f172a; }
+.search-suggest-item .s-owner { color: #64748b; font-size: 12px; }
+.search-suggest-item .s-type  { color: #475569; font-size: 12px; }
+
+/* --- EMERGENCY TAB --- */
+.emg-wrapper { max-width: 1050px; margin: 32px auto; padding: 0 16px; }
+.emg-grid { display: grid; grid-template-columns: 360px 1fr; gap: 24px; }
+.emg-form, .emg-calendar { background:#fff; border:1px solid #e2e8f0; border-radius:16px; box-shadow:0 6px 18px rgba(15,23,42,.06); }
+.emg-form { padding: 20px 22px; }
+.emg-title { font-weight: 800; font-size: 18px; color:#1f2937; margin-bottom: 4px; }
+.emg-help  { font-size: 12px; color:#64748b; margin-bottom: 16px; }
+
+.frow { display:flex; flex-direction:column; gap:6px; margin-bottom: 12px; }
+.frow label { font-size:12px; color:#64748b; font-weight:600; }
+.frow input[type="text"], .frow input[type="time"], .frow input[type="date"], .frow select {
+  padding: 10px 12px; border:1px solid #cbd5e1; border-radius:10px; font-size:14px;
+}
+
+.pill { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; border:1px solid #fecaca; background:#fee2e2; color:#991b1b; font-weight:700; }
+.pill .dot-red { width:10px; height:10px; border-radius:50%; background:#ef4444; box-shadow:0 0 0 3px rgba(239,68,68,.15); }
+
+.emg-assign { padding: 12px; background:#fff7ed; border:1px solid #fde68a; border-radius:12px; color:#92400e; font-weight:700; }
+
+.btn-primary {
+  width: 100%; padding: 12px 16px; border:none; border-radius:10px;
+  background:#1e40af; color:#fff; font-weight:800; cursor:pointer;
+  box-shadow:0 8px 18px rgba(30,64,175,.25);
+}
+.btn-primary:hover { background:#1d4ed8; }
+
+.emg-note { margin-top:10px; padding:12px; border:1px solid #e2e8f0; border-radius:10px; color:#475569; background:#f8fafc; font-size:13px; }
+
+/* desni panel – timeline look */
+.emg-calendar { padding: 16px 18px; }
+.emg-cal-title { font-weight:700; color:#1f2937; margin-bottom:10px; }
+.emg-cal-col { display:flex; flex-direction:column; gap:10px; }
+.overlap { border:1px solid #fecaca; background:#fff1f2; color:#b91c1c; border-left:6px solid #ef4444; }
+

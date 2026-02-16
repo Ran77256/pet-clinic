@@ -1,0 +1,143 @@
+/* src/waitlist/WaitlistPage.css */
+.wl-page { min-height: 100vh; background:#f8fafc; font-family: Inter, system-ui, sans-serif; }
+/* ========================= */
+/*  HEADER - 3 BLOKA U LINIJI */
+/* ========================= */
+
+.wl-header {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* levo - sredina - desno */
+  padding: 16px 32px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+/* Levi blok - logo i naziv */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-text .pet-clinic-title {
+  margin: 0;
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 20px;
+}
+.brand-text .ambulanta-subtitle {
+  margin: 0;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+/* Srednji blok - akcije (dugmad) */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 auto; /* centriraj između leve i desne strane */
+}
+
+/* Desni blok - korisnik i log out */
+.userbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end; /* skroz desno */
+  min-width: 180px; /* osiguraj širinu da se ne sabije */
+  text-align: right;
+}
+
+/* Ime korisnika */
+.user-name {
+  font-weight: 600;
+  color: #1e293b;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dugmad - stil ujednačen */
+.btn,
+.logout-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  line-height: 1;
+  padding: 8px 14px;
+  min-height: 38px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Primarna dugmad */
+.btn {
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+}
+.btn:hover {
+  background: #e0e7ff;
+}
+
+
+
+/* Responsive (ako se suzi ekran) */
+@media (max-width: 800px) {
+  .wl-header {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+  .actions {
+    order: 3;
+    margin: 10px 0;
+  }
+  .userbox {
+    order: 2;
+  }
+}
+
+.wl-header {
+  background:#fff; display:flex; align-items:center; justify-content:space-between;
+  padding:16px 24px; box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+.brand-text .pet-clinic-title { margin:0; color:#2563eb; font-weight:700; font-size:20px; }
+.brand-text .ambulanta-subtitle { margin:0; color:#6b7280; font-size:12px; }
+
+.actions { display:flex; gap:10px; }
+.btn {
+  background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; padding:8px 14px;
+  border-radius:8px; font-weight:600; cursor:pointer;
+}
+.btn:hover { background:#e0e7ff; }
+
+.userbox { display:flex; align-items:center; gap:12px; }
+.logout-btn {
+  background:#fee2e2; color:#b91c1c; border:none; padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer;
+}
+.logout-btn:hover { background:#fecaca; }
+
+.wl-toolbar { max-width:1100px; margin:24px auto 0; padding:0 16px; }
+.wl-toolbar h1 { margin:0 0 6px 0; color:#111827; }
+.wl-toolbar p { margin:0; color:#6b7280; }
+
+.wl-content { max-width:1100px; margin:16px auto; padding:0 16px; }
+.wl-loading, .wl-empty {
+  background:#fff; border-radius:12px; padding:32px; text-align:center; color:#6b7280; box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+.wl-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+.wl-card {
+  background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:16px; box-shadow:0 4px 16px rgba(0,0,0,.05);
+}
+.wl-row { display:flex; justify-content:space-between; margin-bottom:8px; }
+.tag { color:#6b7280; font-weight:600; }
+.val { color:#111827; font-weight:600; }
+.wl-meta { margin-top:8px; font-size:12px; color:#9ca3af; }

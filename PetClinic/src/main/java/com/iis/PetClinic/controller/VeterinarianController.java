@@ -1,11 +1,16 @@
+// com/iis/PetClinic/controller/VeterinarianController.java
 package com.iis.PetClinic.controller;
 
+import com.iis.PetClinic.dto.VeterinarianResponse;
 import com.iis.PetClinic.dto.request.VeterinarianCreateUpdateDTO;
 import com.iis.PetClinic.dto.response.VeterinarianResponseDTO;
+import com.iis.PetClinic.model.Veterinarian;
+import com.iis.PetClinic.repository.IVeterinarianRepository;
 import com.iis.PetClinic.service.IVeterinarianService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +22,7 @@ import java.util.List;
 public class VeterinarianController {
 
     private final IVeterinarianService service;
+    private final IVeterinarianRepository vetRepo;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -45,4 +51,14 @@ public class VeterinarianController {
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
+
+    //  pronađi veterinara po userId
+    @GetMapping("/by-user/{userId}")
+    public ResponseEntity<VeterinarianResponse> getByUser(@PathVariable Integer userId) {
+        Veterinarian v = vetRepo.findByUser_Id(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Veterinar ne postoji za userId=" + userId));
+        return ResponseEntity.ok(VeterinarianResponse.of(v));
+    }
+
+
 }

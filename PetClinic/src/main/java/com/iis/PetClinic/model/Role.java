@@ -6,5 +6,7 @@ public enum Role {
     WAREHOUSE_ADMIN,
     MANAGER,
     ANIMALS_ADMIN,      
-    PRICE_ADMIN
+    PRICE_ADMIN,
+    STAFF_ADMIN
+
 }
